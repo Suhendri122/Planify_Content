@@ -29,23 +29,29 @@ public class HandleLogin {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     // Jika ditemukan, login berhasil
-                    try {
-                        // Pindah ke layar dashboard
-                        App.setRoot("dashboard");
-                    } catch (IOException e) {
-                        // Tangani kesalahan jika terjadi saat pindah ke layar dashboard
-                        showErrorAlert("Error", "Failed to load dashboard screen.");
-                        e.printStackTrace();
+//                    try {
+//                        // Pindah ke layar dashboard
+//                        App.setRoot("dashboard");
+//                        return true;
+//                    } catch (IOException e) {
+//                        // Tangani kesalahan jika terjadi saat pindah ke layar dashboard
+//                        showErrorAlert("Error", "Failed to load dashboard screen.");
+//                        e.printStackTrace();
+//                        
+//                        return false;
                     }
                 } else {
                     // Jika tidak ditemukan, tampilkan pesan kesalahan
                     showErrorAlert("Error", "Invalid email or password. Please try again.");
+                    return false;
                 }
             }
         } catch (SQLException e) {
             // Tangani kesalahan koneksi database
             showErrorAlert("Error", "Failed to connect to database.");
             e.printStackTrace();
+            
+            return false;
         }
     }
 
