@@ -1,96 +1,55 @@
 package com.mycompany.planitfycontent;
 
-import com.mycompany.planitfycontent.App;
 import com.mycompany.planitfycontent.database.DatabaseConnection;
-import com.mycompany.planitfycontent.database.DatabaseConnection;
-import com.mycompany.planitfycontent.database.HandleLogin;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javafx.fxml.FXML;
+import javafx.event.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
-public class LoginController {
-
-    @FXML
-     TextField txtEmail;
-
-    @FXML
-    PasswordField txtPassword;
+public class LoginController extends App {
 
     @FXML
-    private void initialize() {
-        // Tidak perlu menambahkan event handler di sini karena kita sudah menambahkannya di file FXML
-    }
+    private TextField txtEmail;
 
     @FXML
-    private void handleLogin(ActionEvent event) {
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        HandleLogin coba = new HandleLogin();
+    private PasswordField txtPassword;
 
-        // Koneksi ke database
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            // Kueri untuk memeriksa apakah email dan password sesuai
-            
-            if(coba.handleLogin(event, txtEmail, txtPassword)) {
-                App.setRoot("dashboard");
-            }
+    @FXML
+    public void handleLogin(ActionEvent event) {
+        try {
+                Connection connection = DatabaseConnection.getConnection(); // Mengambil koneksi dari database
             String query = "SELECT * FROM users WHERE email = ? AND password = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, email);
-                statement.setString(2, password);
-                ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
-                    // Jika ditemukan, login berhasil
-                    try {
-                        // Pindah ke layar dashboard
-                        App.setRoot("dashboard");
-                    } catch (IOException e) {
-                        // Tangani kesalahan jika terjadi saat pindah ke layar dashboard
-                        showErrorAlert("Error", "Failed to load dashboard screen.");
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Jika tidak ditemukan, tampilkan pesan kesalahan
-                    showErrorAlert("Error", "Invalid email or password. Please try again.");
-                }
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, txtEmail.getText());
+            preparedStatement.setString(2, txtPassword.getText());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) { // Jika query mengembalikan hasil
+                setRoot("dashboard"); // Pindah ke halaman dashboard
+                
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Login Gagal", "Email atau password salah!");
             }
-        } catch (SQLException e) {
-            // Tangani kesalahan koneksi database
-            showErrorAlert("Error", "Failed to connect to database.");
+
+            connection.close(); // Tutup koneksi
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Kesalahan", "Terjadi kesalahan saat login.");
         }
     }
-
-    // Validasi email menggunakan ekspresi reguler
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    // Validasi password
-    private boolean isValidPassword(String password) {
-        // Pastikan password memiliki panjang minimal 8 karakter
-        return password.length() >= 8;
-    }
-
-    // Menampilkan alert untuk pesan kesalahan
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    
+    @FXML
+    private static void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }
