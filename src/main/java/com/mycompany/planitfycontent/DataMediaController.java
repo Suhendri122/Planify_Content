@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
 
-public class DashboardController {
+public class DataMediaController {
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {

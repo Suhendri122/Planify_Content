@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.io.IOException;
+import javafx.scene.image.Image;
 
 /**
  * JavaFX App
@@ -27,6 +28,11 @@ public class App extends Application {
         
         scene = new Scene(loadFXML("login"), 1000, 570);
         scene.getStylesheets().add(App.class.getResource("/style.css").toExternalForm());
+        stage.setTitle("Planify Content");
+        
+         Image icon = new Image("/assets/logo.png");
+         stage.getIcons().add(icon);
+    
         window.setScene(scene);
         window.show();
     }

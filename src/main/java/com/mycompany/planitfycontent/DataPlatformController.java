@@ -4,9 +4,10 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import javafx.scene.control.Menu;
 
-public class DashboardController {
-
+public class DataPlatformController{
+    
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
