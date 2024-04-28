@@ -5,5 +5,6 @@
 .button {
     -fx-background-color: #F68716;
     -fx-background-radius: 32px;
+    -fx-cursor: hand;
 }
 

@@ -9,10 +9,14 @@ import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.event.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class LoginController extends App {
+
+    @FXML
+    private Button btnLogin;
 
     @FXML
     private TextField txtEmail;
@@ -23,7 +27,7 @@ public class LoginController extends App {
     @FXML
     public void handleLogin(ActionEvent event) {
         try {
-                Connection connection = DatabaseConnection.getConnection(); // Mengambil koneksi dari database
+            Connection connection = DatabaseConnection.getConnection(); // Mengambil koneksi dari database
             String query = "SELECT * FROM users WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, txtEmail.getText());

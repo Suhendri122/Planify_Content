@@ -1,36 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button disable="true" layoutX="103.0" layoutY="14.0" mnemonicParsing="false" text="Dashboard" />
-      <Button layoutX="199.0" layoutY="14.0" mnemonicParsing="false" text="Proyek" />
-      <Button layoutX="273.0" layoutY="14.0" mnemonicParsing="false" prefWidth="52.0" text="Histori" />
-      <ComboBox layoutX="340.0" layoutY="14.0" prefHeight="26.0" prefWidth="110.0" promptText="Master Data" visibleRowCount="2" />
-      <ComboBox layoutX="467.0" layoutY="13.0" prefHeight="26.0" prefWidth="136.0" promptText="Manajemen Data" visibleRowCount="2" />
-      <TableView layoutX="30.0" layoutY="138.0" prefHeight="200.0" prefWidth="830.0">
-        <columns>
-          <TableColumn prefWidth="30.0" text="No" />
-          <TableColumn prefWidth="150.0" text="Proyek" />
-            <TableColumn prefWidth="100.0" text="PIC Proyek" />
-            <TableColumn prefWidth="150.0" text="Tema" />
-            <TableColumn prefWidth="100.0" text="Media" />
-            <TableColumn prefWidth="100.0" text="Deadline" />
-            <TableColumn prefWidth="100.0" text="Tgl. Post" />
-            <TableColumn prefWidth="100.0" text="PIC Konten" />
-        </columns>
-      </TableView>
-      <Text fill="#358c9c" layoutX="37.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Konten Terdekat (7 Minggu Kedepan)">
+      <MenuBar prefHeight="25.0" prefWidth="1000.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Dashboard">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Proyek">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Histori">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Master Data">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Data Platform" />
+                  <MenuItem mnemonicParsing="false" text="Data Media" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Manajemen Data">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Data Konsumen" />
+                  <MenuItem mnemonicParsing="false" text="Data User" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <Label layoutX="34.0" layoutY="59.0" text="Data User">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
-      </Text>
+      </Label>
+      <TableView layoutX="34.0" layoutY="100.0" prefHeight="142.0" prefWidth="648.0">
+         <columns>
+            <TableColumn prefWidth="47.0" text="No" />
+            <TableColumn prefWidth="150.0" text="Nama" />
+            <TableColumn prefWidth="150.0" text="Email" />
+            <TableColumn prefWidth="150.0" text="Password" />
+            <TableColumn minWidth="0.0" prefWidth="150.0" text="Aksi" />
+         </columns>
+      </TableView>
+      <Button layoutX="614.0" layoutY="54.0" mnemonicParsing="false" text="Tambah">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
