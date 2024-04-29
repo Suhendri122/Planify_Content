@@ -11,7 +11,7 @@ public class DashboardController {
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
     }
-    
+            
     @FXML
     private void bukaHalamanProyek(ActionEvent event) throws IOException {
         App.setRoot("proyek");
@@ -33,8 +33,8 @@ public class DashboardController {
     }
 
     @FXML
-    private void bukaHalamanDataKonsumen(ActionEvent event) throws IOException {
-        App.setRoot("dataKonsumen");
+    private void bukaHalamanDataClient(ActionEvent event) throws IOException {
+        App.setRoot("dataClient");
     }
 
     @FXML

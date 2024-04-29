@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     // Informasi koneksi database
-    private static final String URL = "jdbc:mysql://localhost:3306/Planify_Content";
+    private static final String URL = "jdbc:mysql://localhost:3306/planify_content";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "112233";
 

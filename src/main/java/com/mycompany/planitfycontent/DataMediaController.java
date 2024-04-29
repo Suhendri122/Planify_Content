@@ -33,8 +33,8 @@ public class DataMediaController {
     }
 
     @FXML
-    private void bukaHalamanDataKonsumen(ActionEvent event) throws IOException {
-        App.setRoot("dataKonsumen");
+    private void bukaHalamanDataClient(ActionEvent event) throws IOException {
+        App.setRoot("dataClient");
     }
 
     @FXML

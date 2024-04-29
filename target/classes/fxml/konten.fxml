@@ -11,14 +11,52 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.KontenController">
    <children>
       <ImageView fitHeight="571.0" fitWidth="1000.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bg2.png" />
          </image>
       </ImageView>
-      <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
+      <Label layoutX="14.0" layoutY="106.0" text="Konten">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <TableView layoutX="14.0" layoutY="139.0" prefHeight="245.0" prefWidth="969.0">
+         <columns>
+            <TableColumn prefWidth="33.0" text="No" />
+            <TableColumn prefWidth="100.0" text="Tema" />
+            <TableColumn prefWidth="100.0" text="Media" />
+            <TableColumn prefWidth="118.0" text="Platform" />
+            <TableColumn prefWidth="66.0" text="Link" />
+            <TableColumn minWidth="0.0" prefWidth="111.0" text="Deadline" />
+            <TableColumn prefWidth="111.0" text="Tgl. Post" />
+            <TableColumn prefWidth="105.0" text="PIC Konten" />
+            <TableColumn prefWidth="115.0" text="Status" />
+            <TableColumn prefWidth="108.0" text="Aksi" />
+         </columns>
+      </TableView>
+      <Button layoutX="832.0" layoutY="93.0" mnemonicParsing="false" text="Filter">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="12.0" layoutY="62.0" mnemonicParsing="false" text="Kembali">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font></Button>
+      <Button layoutX="906.0" layoutY="93.0" mnemonicParsing="false" text="Tambah">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="103.0" layoutY="64.0" text="CW Coffee &amp; Eatery">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+    <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
@@ -51,23 +89,5 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
-      <Label layoutX="14.0" layoutY="101.0" text="Konten Terdekat (7 Kedepan)">
-         <font>
-            <Font name="Calibri Bold" size="16.0" />
-         </font>
-      </Label>
-      <TableView layoutX="14.0" layoutY="135.0" prefHeight="367.0" prefWidth="968.0">
-         <columns>
-            <TableColumn prefWidth="33.0" text="No" />
-            <TableColumn prefWidth="164.0" text="Proyek" />
-            <TableColumn prefWidth="105.0" text="PIC Proyek" />
-            <TableColumn prefWidth="119.0" text="Tema" />
-            <TableColumn prefWidth="117.0" text="Media" />
-            <TableColumn minWidth="0.0" prefWidth="112.0" text="Deadline" />
-            <TableColumn prefWidth="117.0" text="Tgl. Post" />
-            <TableColumn prefWidth="107.0" text="PIC Konten" />
-            <TableColumn prefWidth="93.0" text="Aksi" />
-         </columns>
-      </TableView>
    </children>
 </AnchorPane>

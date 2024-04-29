@@ -32,6 +32,6 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <PasswordField fx:id="txtPassword" layoutX="319.0" layoutY="308.0" prefHeight="50.0" prefWidth="362.0" promptText="Masukkan Email Anda" />
+      <PasswordField fx:id="txtPassword" layoutX="319.0" layoutY="308.0" prefHeight="50.0" prefWidth="362.0" promptText="Masukkan Password Anda" />
    </children>
 </AnchorPane>

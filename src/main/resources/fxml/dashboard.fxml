@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DashboardController">
    <children>
-      <MenuBar layoutX="3.0" layoutY="7.0" prefHeight="25.0" prefWidth="994.0">
-         <menus>
-            <Menu disable="true" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard" />
-            <Menu mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek" />
-            <Menu mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori" />
-            <Menu mnemonicParsing="false" text="Master Data">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
-                  <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Manajemen Data">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataKonsumen" text="Data Konsumen" />
-                  <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
+      <ImageView fitHeight="571.0" fitWidth="1000.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/bg2.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="159.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="232.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <MenuButton layoutX="303.0" layoutY="8.0" mnemonicParsing="false" text="Master Data">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
+        </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton layoutX="442.0" layoutY="8.0" mnemonicParsing="false" text="Manajemen Data">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
+         </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
       <Label layoutX="14.0" layoutY="101.0" text="Konten Terdekat (7 Kedepan)">
          <font>
-            <Font name="Arial Bold" size="16.0" />
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Label>
       <TableView layoutX="14.0" layoutY="135.0" prefHeight="367.0" prefWidth="968.0">

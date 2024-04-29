@@ -5,8 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
 
-public class DataUserController {
-    
+public class DataClientController {
+
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");

@@ -11,40 +11,60 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.ProyekController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DataClientController">
    <children>
       <ImageView fitHeight="571.0" fitWidth="1000.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bg2.png" />
          </image>
       </ImageView>
-      <Label layoutX="14.0" layoutY="96.0" text="Proyek">
+      <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
-      </Label>
-      <TableView layoutX="14.0" layoutY="130.0" prefHeight="245.0" prefWidth="968.0">
-        <columns>
-          <TableColumn prefWidth="33.0" text="No" />
-          <TableColumn prefWidth="164.0" text="Nama Proyek" />
-            <TableColumn prefWidth="105.0" text="PIC Proyek" />
-            <TableColumn prefWidth="119.0" text="Nama Konsumen" />
-            <TableColumn prefWidth="117.0" text="No Telepon" />
-            <TableColumn minWidth="0.0" prefWidth="112.0" text="Harga" />
-            <TableColumn prefWidth="117.0" text="Tgl Mulai" />
-            <TableColumn prefWidth="107.0" text="Tgl Selesai" />
-            <TableColumn prefWidth="93.0" text="Aksi" />
-        </columns>
-      </TableView>
-      <Button layoutX="823.0" layoutY="95.0" mnemonicParsing="false" text="Filter">
+      </Button>
+      <Button layoutX="159.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek">
          <font>
             <Font name="Calibri Bold" size="16.0" />
-         </font></Button>
-      <Button layoutX="907.0" layoutY="95.0" mnemonicParsing="false" text="Tambah">
+         </font>
+      </Button>
+      <Button layoutX="232.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori">
          <font>
             <Font name="Calibri Bold" size="16.0" />
-         </font></Button>
-    <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
+         </font>
+      </Button>
+      <MenuButton layoutX="303.0" layoutY="8.0" mnemonicParsing="false" text="Master Data">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
+        </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton layoutX="442.0" layoutY="8.0" mnemonicParsing="false" text="Manajemen Data">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
+         </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton layoutX="614.0" layoutY="5.0" mnemonicParsing="false" text="Manajemen Data">
+         <items>
+            <MenuItem mnemonicParsing="false" text="User" />
+            <MenuItem mnemonicParsing="false" text="Client" />
+         </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>      <ImageView fitHeight="571.0" fitWidth="1000.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/bg2.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
