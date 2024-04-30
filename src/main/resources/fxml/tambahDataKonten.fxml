@@ -60,7 +60,7 @@
       <ChoiceBox layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
       <DatePicker layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
       <TextField layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField disable="true" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="331.0" prefHeight="30.0" text="Status" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />

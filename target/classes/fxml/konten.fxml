@@ -61,7 +61,7 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnFilter" layoutX="850.0" layoutY="85.0" mnemonicParsing="false" text="Filter" textFill="WHITE">
+      <Button id="btnFilter" layoutX="850.0" layoutY="85.0" mnemonicParsing="false" onAction="#bukaHalamanFilter" text="Filter" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>

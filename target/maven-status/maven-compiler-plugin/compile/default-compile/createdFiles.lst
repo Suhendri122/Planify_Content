@@ -2,7 +2,6 @@ com\mycompany\planitfycontent\DashboardController.class
 com\mycompany\planitfycontent\DataMediaController.class
 com\mycompany\planitfycontent\ProyekController.class
 com\mycompany\planitfycontent\App.class
-com\mycompany\planitfycontent\TambahDataProyekController.class
 module-info.class
 com\mycompany\planitfycontent\database\Users.class
 com\mycompany\planitfycontent\DataClientController.class

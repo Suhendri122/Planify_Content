@@ -16,12 +16,12 @@
     -fx-cursor: hand;
 }
 
-#popupBtnBatal{
+#btnBatal{
     -fx-background-color: #B40000;
     -fx-cursor: hand;
 }
 
-#popupBtnTambah {
+#btnTambah, #btnCari {
     -fx-background-color: #358C9C;
     -fx-cursor: hand;
 }

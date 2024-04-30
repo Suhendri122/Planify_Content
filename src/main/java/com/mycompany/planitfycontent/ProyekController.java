@@ -49,33 +49,37 @@ public class ProyekController {
         App.setRoot("dataUser");
     }
     
-    
-    //popup tambah, edit, dan filter
+        //popup tambah, edit, dan filter
     
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataProyek.fxml"));
-        Parent root = fxmlLoader.load();
-        
-        // Get the controller of the popup
-        TambahDataProyekController popupController = fxmlLoader.getController();
-        // Set the parent controller
-        popupController.setParentController(this);
-        
+        Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Proyek"); // Set the popup title
+        stage.setTitle("Tambah Data Proyek"); // Mengatur judul window popup
         stage.setScene(new Scene(root));
-        stage.showAndWait(); // Show the popup and wait until it's closed
+        stage.initStyle(StageStyle.UTILITY);
+        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
     }
-
-    // Method to handle cancel action in the popup
-    public void popupBtnBatal() {
-        System.out.println("Batal button clicked");
+    
+     @FXML
+    private void bukaHalamanFilter(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filterDataProyek.fxml"));
+        Parent root = fxmlLoader.load();    
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Filter Data Proyek"); // Mengatur judul window popup
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
     }
-
-
-
     
-    
+    @FXML
+    private void popupBtnBatal(ActionEvent event) {
+        // Mendapatkan stage dari event
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        // Menutup stage (popup)
+        stage.close();
+    }
 }

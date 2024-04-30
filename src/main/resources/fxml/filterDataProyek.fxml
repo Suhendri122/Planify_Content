@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.ProyekController">
    <children>
       <Label layoutX="15.0" layoutY="16.0" prefHeight="30.0" prefWidth="115.0" text="Nama Proyek" textFill="#358c9c">
          <font>
@@ -45,12 +45,12 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="192.0" layoutY="331.0" mnemonicParsing="false" text="Batal" textFill="WHITE">
+      <Button id="btnBatal" fx:id="btnBatal" layoutX="192.0" layoutY="331.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="263.0" layoutY="331.0" mnemonicParsing="false" text="Cari" textFill="WHITE">
+      <Button id="btnCari" fx:id="btnCari" layoutX="263.0" layoutY="331.0" mnemonicParsing="false" text="Cari" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>

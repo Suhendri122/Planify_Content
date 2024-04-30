@@ -4,6 +4,13 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class DataMediaController {
 
@@ -40,5 +47,27 @@ public class DataMediaController {
     @FXML
     private void bukaHalamanDataUser(ActionEvent event) throws IOException {
         App.setRoot("dataUser");
+    }
+    
+        //popup tambah, edit, dan filter
+    
+    @FXML
+    private void bukaHalamanTambah(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataMedia.fxml"));
+        Parent root = fxmlLoader.load();    
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Tambah Data Media"); // Mengatur judul window popup
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+    }
+    
+    @FXML
+    private void popupBtnBatal(ActionEvent event) {
+        // Mendapatkan stage dari event
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        // Menutup stage (popup)
+        stage.close();
     }
 }

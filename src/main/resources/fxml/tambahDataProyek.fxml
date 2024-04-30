@@ -8,57 +8,57 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.TambahDataProyekController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.ProyekController">
    <children>
       <Label layoutX="15.0" layoutY="16.0" prefHeight="30.0" prefWidth="115.0" text="Nama Proyek" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <TextField layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="61.0" prefHeight="30.0" prefWidth="115.0" text="PIC Proyek" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <ChoiceBox layoutX="140.0" layoutY="61.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="106.0" prefHeight="30.0" text="Nama Konsumen" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <ChoiceBox layoutX="166.0" layoutY="106.0" prefHeight="30.0" prefWidth="144.0" />
       <Label layoutX="15.0" layoutY="151.0" prefHeight="30.0" text="No Telepon" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <TextField disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="196.0" prefHeight="30.0" text="Harga" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <TextField layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="286.0" prefHeight="30.0" text="Tgl Selesai" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+
+      <DatePicker layoutX="140.0" layoutY="241.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="241.0" prefHeight="30.0" text="Tgl Mulai" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="popupBtnBatal" fx:id="popupBtnBatal" layoutX="167.0" layoutY="331.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
+      <DatePicker layoutX="140.0" layoutY="286.0" prefHeight="30.0" prefWidth="170.0" />
+      <Button id="btnBatal" fx:id="btnBatal" layoutX="167.0" layoutY="331.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-
-      <DatePicker layoutX="140.0" layoutY="241.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="61.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="166.0" layoutY="106.0" prefHeight="30.0" prefWidth="144.0" />
-      <TextField layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
-      <DatePicker layoutX="140.0" layoutY="286.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
-      <Button id="popupBtnBatal" layoutX="236.0" layoutY="331.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" fx:id="btnTambah" layoutX="236.0" layoutY="331.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
