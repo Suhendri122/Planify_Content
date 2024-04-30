@@ -27,7 +27,7 @@
          </font>
       </Text>
       <TextField fx:id="txtEmail" layoutX="319.0" layoutY="234.0" prefHeight="50.0" prefWidth="362.0" promptText="Masukkan Email Anda" />
-      <Button fx:id="btnLogin" layoutX="412.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="39.0" prefWidth="175.0" text="Masuk" textFill="WHITE">
+      <Button id="btnlogin" fx:id="btnLogin" layoutX="412.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="39.0" prefWidth="175.0" text="Masuk" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

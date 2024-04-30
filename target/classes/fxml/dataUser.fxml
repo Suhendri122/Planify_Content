@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -13,46 +14,27 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DataUserController">
    <children>
-      <ImageView fitHeight="571.0" fitWidth="1000.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+<ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bg2.png" />
          </image>
       </ImageView>
-      <Label layoutX="34.0" layoutY="91.0" text="Data User">
-         <font>
-            <Font name="Calibri Bold" size="16.0" />
-         </font>
-      </Label>
-      <TableView layoutX="34.0" layoutY="142.0" prefHeight="142.0" prefWidth="648.0">
-         <columns>
-            <TableColumn prefWidth="47.0" text="No" />
-            <TableColumn prefWidth="150.0" text="Nama" />
-            <TableColumn prefWidth="150.0" text="Email" />
-            <TableColumn prefWidth="150.0" text="Password" />
-            <TableColumn minWidth="0.0" prefWidth="150.0" text="Aksi" />
-         </columns>
-      </TableView>
-      <Button layoutX="604.0" layoutY="86.0" mnemonicParsing="false" text="Tambah">
+      <Button layoutX="57.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-    <Button layoutX="62.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard">
+      <Button layoutX="154.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="159.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek">
+      <Button layoutX="228.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="232.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori">
-         <font>
-            <Font name="Calibri Bold" size="16.0" />
-         </font>
-      </Button>
-      <MenuButton layoutX="303.0" layoutY="8.0" mnemonicParsing="false" text="Master Data">
+      <MenuButton layoutX="300.0" layoutY="7.0" mnemonicParsing="false" text="Master Data" textFill="WHITE">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
           <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
@@ -61,14 +43,73 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
-      <MenuButton layoutX="442.0" layoutY="8.0" mnemonicParsing="false" text="Manajemen Data">
+      <MenuButton layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
          <items>
-            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
+         </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton><ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/bg2.png" />
+         </image>
+      </ImageView>
+      <Button id="btnmenu" layoutX="57.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button id="btnmenu" layoutX="154.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button id="btnmenu" layoutX="228.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <MenuButton id="btnmenu" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" text="Master Data" textFill="WHITE">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
+        </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
+         <items>
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
             <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
          </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
+      <Label layoutX="20.0" layoutY="100.0" text="Data User" textFill="#358c9c">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button id="btnTambah" layoutX="430.0" layoutY="85.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="485.0">
+         <content>
+            <TableView prefHeight="420.0" prefWidth="485.0">
+               <columns>
+                  <TableColumn prefWidth="35.0" text="No" />
+                  <TableColumn prefWidth="150.0" text="Nama" />
+                  <TableColumn prefWidth="200.0" text="Email" />
+                  <TableColumn minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
+               </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

@@ -1,6 +1,17 @@
-.button {
+
+
+
+#btnlogin {
     -fx-background-color: #F68716;
-    -fx-background-radius: 32px;
     -fx-cursor: hand;
+}
+
+#btnmenu {
+    -fx-background-color: #358C9C;
+    -fx-cursor: hand;
+}
+
+#btnFilter, #btnTambah {
+    -fx-background-color: #F68716;
 }
 
