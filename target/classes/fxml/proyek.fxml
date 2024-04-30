@@ -57,14 +57,16 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" layoutX="905.0" layoutY="85.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="905.0" layoutY="85.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
-         </font></Button>
+         </font>
+    </Button>
       <Button id="btnFilter" layoutX="835.0" layoutY="85.0" mnemonicParsing="false" text="Filter" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
-         </font></Button>
+         </font>
+      </Button>
       <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="960.0">
          <content>
             <TableView prefHeight="420.0" prefWidth="960.0">

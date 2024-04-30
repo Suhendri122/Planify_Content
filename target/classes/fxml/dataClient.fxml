@@ -46,7 +46,7 @@
       <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
-            <MenuItem disable="true" mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
          </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />

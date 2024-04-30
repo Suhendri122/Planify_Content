@@ -13,5 +13,16 @@
 
 #btnFilter, #btnTambah {
     -fx-background-color: #F68716;
+    -fx-cursor: hand;
+}
+
+#popupBtnBatal{
+    -fx-background-color: #B40000;
+    -fx-cursor: hand;
+}
+
+#popupBtnTambah {
+    -fx-background-color: #358C9C;
+    -fx-cursor: hand;
 }
 
