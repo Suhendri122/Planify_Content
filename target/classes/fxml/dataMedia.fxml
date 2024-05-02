@@ -66,8 +66,8 @@
          <content>
             <TableView fx:id="tableView" prefHeight="420.0" prefWidth="355.0">
                <columns>
-                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="media" prefWidth="220.0" text="Media" />
+                  <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="mediaColumn" prefWidth="220.0" text="Media" />
                   <TableColumn fx:id="aksi" minWidth="0.0" prefWidth="100.0" text="Aksi" />
                </columns>
             </TableView>

@@ -24,32 +24,68 @@ public class TableDashboard {
         this.picKonten = new SimpleStringProperty(picKonten);
     }
 
+    public int getNo() {
+        return no.get();
+    }
+
+    public void setNo(int no) {
+        this.no.set(no);
+    }
+
     public SimpleIntegerProperty noProperty() {
         return no;
+    }
+
+    public String getProyek() {
+        return proyek.get();
     }
 
     public SimpleStringProperty proyekProperty() {
         return proyek;
     }
 
+    public String getPicProyek() {
+        return picProyek.get();
+    }
+
     public SimpleStringProperty picProyekProperty() {
         return picProyek;
+    }
+
+    public String getTema() {
+        return tema.get();
     }
 
     public SimpleStringProperty temaProperty() {
         return tema;
     }
 
+    public String getMedia() {
+        return media.get();
+    }
+
     public SimpleStringProperty mediaProperty() {
         return media;
+    }
+
+    public String getDeadline() {
+        return deadline.get();
     }
 
     public SimpleStringProperty deadlineProperty() {
         return deadline;
     }
 
+    public String getTglPost() {
+        return tglPost.get();
+    }
+
     public SimpleStringProperty tglPostProperty() {
         return tglPost;
+    }
+
+    public String getPicKonten() {
+        return picKonten.get();
     }
 
     public SimpleStringProperty picKontenProperty() {

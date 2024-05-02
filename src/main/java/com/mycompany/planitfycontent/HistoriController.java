@@ -2,19 +2,24 @@ package com.mycompany.planitfycontent;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.MenuItem;
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import com.mycompany.planitfycontent.database.DatabaseConnection;
+import com.mycompany.planitfycontent.database.HistoriDAO;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class HistoriController {
+public class HistoriController implements Initializable{
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -52,60 +57,71 @@ public class HistoriController {
     }
     
     @FXML
-    private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
-        stage.close();
-    }
-    
-        @FXML
     private TableView<TableHistori> tableView;
 
     @FXML
-    private TableColumn<TableHistori, Integer> no;
+    private TableColumn<TableHistori, String> noColumn;
+        
     @FXML
-    private TableColumn<TableHistori, String> proyek;
-    @FXML
-    private TableColumn<TableHistori, String> picProyek;
-    @FXML
-    private TableColumn<TableHistori, String> namaKonsumen;
-    @FXML
-    private TableColumn<TableHistori, String> tema;
-    @FXML
-    private TableColumn<TableHistori, String> media;
-    @FXML
-    private TableColumn<TableHistori, String> platform;
-    @FXML
-    private TableColumn<TableHistori, String> link;
-    @FXML
-    private TableColumn<TableHistori, String> deadline;
-    @FXML
-    private TableColumn<TableHistori, String> tglPost;
-    @FXML
-    private TableColumn<TableHistori, String> picKonten;
-    @FXML
-    private TableColumn<TableHistori, String> status;
+    private TableColumn<TableHistori, String> proyekColumn;
 
-    public void initialize() {
-        // Add dummy data to TableView
-        tableView.getItems().add(new TableHistori(1, "Proyek 1", "PIC Proyek 1", "Nama Konsumen 1", "Tema 1", "Media 1", "Platform 1", "Link 1", "Deadline 1", "Tgl. Post 1", "PIC Konten 1", "Status 1"));
-        tableView.getItems().add(new TableHistori(2, "Proyek 2", "PIC Proyek 2", "Nama Konsumen 2", "Tema 2", "Media 2", "Platform 2", "Link 2", "Deadline 2", "Tgl. Post 2", "PIC Konten 2", "Status 2"));
+    @FXML
+    private TableColumn<TableHistori, String> picProyekColumn;
 
-        // Connect each TableColumn with corresponding data property
-        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
-        proyek.setCellValueFactory(cellData -> cellData.getValue().proyekProperty());
-        picProyek.setCellValueFactory(cellData -> cellData.getValue().picProyekProperty());
-        namaKonsumen.setCellValueFactory(cellData -> cellData.getValue().namaKonsumenProperty());
-        tema.setCellValueFactory(cellData -> cellData.getValue().temaProperty());
-        media.setCellValueFactory(cellData -> cellData.getValue().mediaProperty());
-        platform.setCellValueFactory(cellData -> cellData.getValue().platformProperty());
-        link.setCellValueFactory(cellData -> cellData.getValue().linkProperty());
-        deadline.setCellValueFactory(cellData -> cellData.getValue().deadlineProperty());
-        tglPost.setCellValueFactory(cellData -> cellData.getValue().tglPostProperty());
-        picKonten.setCellValueFactory(cellData -> cellData.getValue().picKontenProperty());
-        status.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+    @FXML
+    private TableColumn<TableHistori, String> namaClientColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> temaColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> mediaColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> platformColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> linkColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> deadlineColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> tglPostColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> picKontenColumn;
+
+    @FXML
+    private TableColumn<TableHistori, String> statusColumn;
+
+
+    // Metode lainnya...
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            HistoriDAO historiDAO = new HistoriDAO(connection);
+            List<TableHistori> historiData = historiDAO.getHistoriData();
+            ObservableList<TableHistori> observableHistoriData = FXCollections.observableArrayList(historiData);
+            tableView.setItems(observableHistoriData);
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            proyekColumn.setCellValueFactory(new PropertyValueFactory<>("proyek"));
+            picProyekColumn.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
+            namaClientColumn.setCellValueFactory(new PropertyValueFactory<>("namaClient"));
+            temaColumn.setCellValueFactory(new PropertyValueFactory<>("tema"));
+            mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
+            platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
+            linkColumn.setCellValueFactory(new PropertyValueFactory<>("link"));
+            deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+            tglPostColumn.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
+            picKontenColumn.setCellValueFactory(new PropertyValueFactory<>("picKonten"));
+            statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
     }
 }
-
-

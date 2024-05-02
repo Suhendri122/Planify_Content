@@ -1,11 +1,19 @@
 package com.mycompany.planitfycontent;
 
+import com.mycompany.planitfycontent.database.DashboardDAO;
+import com.mycompany.planitfycontent.database.DataPlatformDAO;
+import com.mycompany.planitfycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -14,9 +22,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import com.mycompany.planitfycontent.TableDataPlatform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+
 
 public class DataPlatformController implements Initializable{
     
@@ -79,32 +93,38 @@ public class DataPlatformController implements Initializable{
         stage.close();
     }
     
-    @FXML
-    private TableView<TableDataPlatform> tableView;
-
-    @FXML
-    private TableColumn<TableDataPlatform, Integer> no;
-
-    @FXML
-    private TableColumn<TableDataPlatform, String> platform;
     
     @FXML
-    private TableColumn<TableDataPlatform, String> aksi;
+    private TableView<TableDataPlatform> tableView;
+     
+     @FXML
+    private TableColumn<TableDataPlatform, Integer> noColumn;
 
+    @FXML
+    private TableColumn<TableDataPlatform, String> platformColumn;
+     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set up columns
-        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
-        platform.setCellValueFactory(cellData -> cellData.getValue().platformProperty());
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            DataPlatformDAO DataPlatformDAO = new DataPlatformDAO(connection);
+            List<TableDataPlatform> platformData = DataPlatformDAO.getAllDataPlatforms();
+            ObservableList<TableDataPlatform> observablePlatformData = FXCollections.observableArrayList(platformData);
 
-        // Set up data
-        TableDataPlatform dataPlatform1 = new TableDataPlatform(1, "Platform 1");
-        TableDataPlatform dataPlatform2 = new TableDataPlatform(2, "Platform 2");
+            tableView.setItems(observablePlatformData);
 
-        TableDataPlatform tableDataPlatform = new TableDataPlatform();
-        tableDataPlatform.addDataPlatform(dataPlatform1);
-        tableDataPlatform.addDataPlatform(dataPlatform2);
+            // Inisialisasi kolom-kolom lain
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
 
-        tableView.setItems(tableDataPlatform.getDataPlatforms());
+            // Atur nomor untuk setiap item
+            int index = 1;
+            for (TableDataPlatform item : platformData) {
+                item.noProperty().set(index++);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+        }
     }
 }

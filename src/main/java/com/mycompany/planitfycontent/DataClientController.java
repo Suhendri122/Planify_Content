@@ -1,20 +1,31 @@
 package com.mycompany.planitfycontent;
 
+import com.mycompany.planitfycontent.database.DataClientDAO;
+import com.mycompany.planitfycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class DataClientController {
+public class DataClientController implements Initializable{
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -85,38 +96,45 @@ public class DataClientController {
         stage.close();
     }
     
-    @FXML
+        @FXML
     private TableView<TableDataClient> tableView;
 
     @FXML
-    private TableColumn<TableDataClient, Integer> no;
+    private TableColumn<TableDataClient, Integer> noColumn;
 
     @FXML
-    private TableColumn<TableDataClient, String> nama;
-    
-    @FXML
-    private TableColumn<TableDataClient, String> noTelp;
-    
-    @FXML
-    private TableColumn<TableDataClient, String> usaha;
+    private TableColumn<TableDataClient, String> namaColumn;
 
     @FXML
-    public void initialize() {
-        // Set up columns
-        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
-        nama.setCellValueFactory(cellData -> cellData.getValue().namaProperty());
-        noTelp.setCellValueFactory(cellData -> cellData.getValue().noTelpProperty());
-        usaha.setCellValueFactory(cellData -> cellData.getValue().usahaProperty());
+    private TableColumn<TableDataClient, String> noTelpColumn;
 
-        // Set up data
-        TableDataClient dataClient1 = new TableDataClient(1, "John Doe", "123456789", "Usaha 1");
-        TableDataClient dataClient2 = new TableDataClient(2, "Jane Doe", "987654321", "Usaha 2");
+    @FXML
+    private TableColumn<TableDataClient, String> usahaColumn;
 
-        TableDataClient tableDataClient = new TableDataClient();
-        tableDataClient.addDataClient(dataClient1);
-        tableDataClient.addDataClient(dataClient2);
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            DataClientDAO dataClientDAO = new DataClientDAO(connection);
+            List<TableDataClient> clientData = dataClientDAO.getAllDataClients();
+            ObservableList<TableDataClient> observableClientData = FXCollections.observableArrayList(clientData);
 
-        tableView.setItems(tableDataClient.getDataClient());
+            tableView.setItems(observableClientData);
+
+            // Initialize columns
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+            noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+            usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+
+            // Set numbering for each item
+            int index = 1;
+            for (TableDataClient item : clientData) {
+                item.noProperty().set(index++);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle error if failed to get connection or data
+        }
     }
-    
 }

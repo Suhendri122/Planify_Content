@@ -103,7 +103,14 @@
             <TableColumn fx:id="harga" minWidth="0.0" prefWidth="112.0" text="Harga" />
             <TableColumn fx:id="tglMulai" prefWidth="117.0" text="Tgl Mulai" />
             <TableColumn fx:id="tglSelesai" prefWidth="107.0" text="Tgl Selesai" />
-            <TableColumn fx:id="aksi" prefWidth="93.0" text="Aksi" />
+            <TableColumn fx:id="aksi" prefWidth="93.0" text="Aksi">
+                <cellValueFactory>
+                    <!-- Implementasi factory -->
+                </cellValueFactory>
+                <cellFactory>
+                    <!-- Implementasi factory -->
+                </cellFactory>
+            </TableColumn>
         </columns>
       </TableView>
    </children>

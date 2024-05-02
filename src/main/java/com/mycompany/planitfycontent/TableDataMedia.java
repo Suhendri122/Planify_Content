@@ -8,30 +8,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TableDataMedia {
-    private ObservableList<TableDataMedia> dataMedias = FXCollections.observableArrayList();
+    private final SimpleIntegerProperty no;
+    private final SimpleStringProperty media;
 
-    private final IntegerProperty no = new SimpleIntegerProperty();
-    private final StringProperty media = new SimpleStringProperty();
-
-    public TableDataMedia() {
-        // Constructor tanpa parameter
-    }
 
     public TableDataMedia(int no, String media) {
-        this.no.set(no);
-        this.media.set(media);
+        this.no = new SimpleIntegerProperty(no);
+        this.media = new SimpleStringProperty(media);
     }
 
     public int getNo() {
         return no.get();
     }
 
-    public IntegerProperty noProperty() {
-        return no;
-    }
-
     public void setNo(int no) {
         this.no.set(no);
+    }
+
+    public IntegerProperty noProperty() {
+        return no;
     }
 
     public String getMedia() {
@@ -40,17 +35,5 @@ public class TableDataMedia {
 
     public StringProperty mediaProperty() {
         return media;
-    }
-
-    public void setMedia(String media) {
-        this.media.set(media);
-    }
-
-    public ObservableList<TableDataMedia> getDataMedias() {
-        return dataMedias;
-    }
-
-    public void addDataMedia(TableDataMedia dataMedia) {
-        dataMedias.add(dataMedia);
     }
 }

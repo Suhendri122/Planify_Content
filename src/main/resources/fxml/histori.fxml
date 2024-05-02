@@ -63,18 +63,18 @@
          <content>
             <TableView fx:id="tableView" prefHeight="350.0" prefWidth="1284.0">
                <columns>
-                  <TableColumn fx:id="no" prefWidth="33.0" text="No" />
-                  <TableColumn fx:id="proyek" prefWidth="164.0" text="Proyek" />
-                  <TableColumn fx:id="picProyek" prefWidth="105.0" text="PIC Proyek" />
-                  <TableColumn fx:id="namaKonsumen" prefWidth="119.0" text="Nama Konsumen" />
-                  <TableColumn fx:id="tema" prefWidth="101.0" text="Tema" />
-                  <TableColumn fx:id="media" minWidth="0.0" prefWidth="97.0" text="Media" />
-                  <TableColumn fx:id="platform" prefWidth="95.0" text="Platform" />
-                  <TableColumn fx:id="link" prefWidth="59.20013427734375" text="Link" />
-                  <TableColumn fx:id="deadline" prefWidth="99.199951171875" text="Deadline" />
-                  <TableColumn fx:id="tglPost" prefWidth="170.40008544921875" text="Tgl. Post" />
-                  <TableColumn fx:id="picKonten" prefWidth="119.0" text="PIC Konten" />
-                  <TableColumn fx:id="status" prefWidth="115.0" text="Status" />
+                  <TableColumn fx:id="noColumn" prefWidth="33.0" text="No" />
+                  <TableColumn fx:id="proyekColumn" prefWidth="164.0" text="Proyek" />
+                  <TableColumn fx:id="picProyekColumn" prefWidth="105.0" text="PIC Proyek" />
+                  <TableColumn fx:id="namaClientColumn" prefWidth="119.0" text="Nama Client" />
+                  <TableColumn fx:id="temaColumn" prefWidth="101.0" text="Tema" />
+                  <TableColumn fx:id="mediaColumn" minWidth="0.0" prefWidth="97.0" text="Media" />
+                  <TableColumn fx:id="platformColumn" prefWidth="95.0" text="Platform" />
+                  <TableColumn fx:id="linkColumn" prefWidth="59.20013427734375" text="Link" />
+                  <TableColumn fx:id="deadlineColumn" prefWidth="99.199951171875" text="Deadline" />
+                  <TableColumn fx:id="tglPostColumn" prefWidth="170.40008544921875" text="Tgl. Post" />
+                  <TableColumn fx:id="picKontenColumn" prefWidth="119.0" text="PIC Konten" />
+                  <TableColumn fx:id="statusColumn" prefWidth="115.0" text="Status" />
                </columns>
             </TableView>
          </content>

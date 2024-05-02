@@ -1,10 +1,14 @@
 package com.mycompany.planitfycontent;
 
+import com.mycompany.planitfycontent.database.DatabaseConnection;
+import com.mycompany.planitfycontent.database.ProyekDAO;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,11 +19,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ProyekController {
+public class ProyekController implements Initializable{
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -56,69 +61,82 @@ public class ProyekController {
         App.setRoot("dataUser");
     }
     
-        //popup tambah, edit, dan filter
-    
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataProyek.fxml"));
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Proyek"); // Mengatur judul window popup
+        stage.setTitle("Tambah Data Proyek");
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+        stage.showAndWait();
     }
 
-    
     @FXML
     private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
         stage.close();
     }
-
+    
     @FXML
-    private TableView<Proyek> tableView;
+private TableView<TableProyek> tableView;
 
-    @FXML
-    private TableColumn<Proyek, String> noColumn;
+@FXML
+private TableColumn<TableProyek, Integer> no;
 
-    @FXML
-    private TableColumn<Proyek, String> namaProyekColumn;
+@FXML
+private TableColumn<TableProyek, String> namaProyek;
+@FXML
+private TableColumn<TableProyek, String> picProyek;
 
-    @FXML
-    private TableColumn<Proyek, String> picProyekColumn;
+@FXML
+private TableColumn<TableProyek, String> namaClient;
 
-    @FXML
-    private TableColumn<Proyek, String> namaClientColumn;
+@FXML
+private TableColumn<TableProyek, String> noTelepon;
 
-    @FXML
-    private TableColumn<Proyek, String> noTeleponColumn;
+@FXML
+private TableColumn<TableProyek, String> harga;
 
-    @FXML
-    private TableColumn<Proyek, String> hargaColumn;
+@FXML
+private TableColumn<TableProyek, String> tglMulai;
 
-    @FXML
-    private TableColumn<Proyek, String> tglMulaiColumn;
+@FXML
+private TableColumn<TableProyek, String> tglSelesai;
 
-    @FXML
-    private TableColumn<Proyek, String> tglSelesaiColumn;
+@FXML
+private TableColumn<TableProyek, String> aksi;
+// Tambahkan TableColumn untuk properti lainnya
 
-    private ObservableList<Proyek> proyekList;
+@Override
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    // Menginisialisasi kolom
+    no.setCellValueFactory(new PropertyValueFactory<>("id"));
+    namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
+    picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
+    namaClient.setCellValueFactory(new PropertyValueFactory<>("namaClient"));
+    noTelepon.setCellValueFactory(new PropertyValueFactory<>("noTelepon"));
+    harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
+    tglMulai.setCellValueFactory(new PropertyValueFactory<>("tglMulai"));
+    tglSelesai.setCellValueFactory(new PropertyValueFactory<>("tglSelesai"));
+    aksi.setCellValueFactory(new PropertyValueFactory<>("aksi"));
 
-
-    public void initialize() {
-        // Inisialisasi ObservableList
-        proyekList = FXCollections.observableArrayList();
-
-        // Tambahkan data dummy
-        proyekList.add(new Proyek("1", "Proyek A", "PIC A", "Client A", "123456", "$1000", "2024-05-01", "2024-06-01"));
-        proyekList.add(new Proyek("2", "Proyek B", "PIC B", "Client B", "789012", "$2000", "2024-06-01", "2024-07-01"));
-
-        // Set data ke TableView
-        tableView.setItems(proyekList);
-
+    // Di bagian di mana Anda membutuhkan koneksi ke database
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        // Gunakan koneksi ke database untuk mendapatkan data proyek
+        ProyekDAO proyekDAO = new ProyekDAO(connection);
+        List<TableProyek> proyekList = proyekDAO.getAllProyek();
+        ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+        tableView.setItems(observableProyekList);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle kesalahan jika gagal mendapatkan koneksi atau data proyek
     }
+    
 }
+
+
+}
+

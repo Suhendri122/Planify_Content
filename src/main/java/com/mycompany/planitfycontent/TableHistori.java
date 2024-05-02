@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class TableHistori {
     private final SimpleIntegerProperty no;
-    private final SimpleStringProperty proyek;
+    private final SimpleStringProperty namaProyek;
     private final SimpleStringProperty picProyek;
-    private final SimpleStringProperty namaKonsumen;
+    private final SimpleStringProperty namaClient;
     private final SimpleStringProperty tema;
     private final SimpleStringProperty media;
     private final SimpleStringProperty platform;
@@ -17,13 +17,11 @@ public class TableHistori {
     private final SimpleStringProperty picKonten;
     private final SimpleStringProperty status;
 
-    public TableHistori(int no, String proyek, String picProyek, String namaKonsumen, String tema,
-                        String media, String platform, String link, String deadline, String tglPost,
-                        String picKonten, String status) {
+    public TableHistori(int no, String namaProyek, String picProyek, String namaClient, String tema, String media, String platform, String link, String deadline, String tglPost, String picKonten, String status) {
         this.no = new SimpleIntegerProperty(no);
-        this.proyek = new SimpleStringProperty(proyek);
+        this.namaProyek = new SimpleStringProperty(namaProyek);
         this.picProyek = new SimpleStringProperty(picProyek);
-        this.namaKonsumen = new SimpleStringProperty(namaKonsumen);
+        this.namaClient = new SimpleStringProperty(namaClient);
         this.tema = new SimpleStringProperty(tema);
         this.media = new SimpleStringProperty(media);
         this.platform = new SimpleStringProperty(platform);
@@ -43,11 +41,11 @@ public class TableHistori {
     }
 
     public String getProyek() {
-        return proyek.get();
+        return namaProyek.get();
     }
 
     public SimpleStringProperty proyekProperty() {
-        return proyek;
+        return namaProyek;
     }
 
     public String getPicProyek() {
@@ -58,12 +56,12 @@ public class TableHistori {
         return picProyek;
     }
 
-    public String getNamaKonsumen() {
-        return namaKonsumen.get();
+    public String getNamaClient() {
+        return namaClient.get();
     }
 
-    public SimpleStringProperty namaKonsumenProperty() {
-        return namaKonsumen;
+    public SimpleStringProperty namaClientProperty() {
+        return namaClient;
     }
 
     public String getTema() {

@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TableDataUser {
-    private ObservableList<TableDataUser> dataUsers = FXCollections.observableArrayList();
+    private final ObservableList<TableDataUser> dataUsers = FXCollections.observableArrayList();
 
     private final IntegerProperty no = new SimpleIntegerProperty();
     private final StringProperty nama = new SimpleStringProperty();

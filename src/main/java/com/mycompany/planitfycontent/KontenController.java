@@ -4,10 +4,14 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -49,6 +53,14 @@ public class KontenController {
         App.setRoot("dataUser");
     }
     
+    @FXML
+    private void bukaHalamanDataClient(ActionEvent event) throws IOException {
+        App.setRoot("dataClient");
+    }
+    
+    @FXML
+    private Button btnBack;
+    
     //popup tambah, edit, dan filter
     
     @FXML
@@ -82,4 +94,15 @@ public class KontenController {
         // Menutup stage (popup)
         stage.close();
     }
+    
+    @FXML
+    private void handleBackButton(ActionEvent event) throws IOException {
+        // Kembali ke halaman sebelumnya
+        // Di sini Anda dapat menentukan logika kembali ke halaman sebelumnya
+        // Misalnya, menggunakan App.setRoot("namaHalamanSebelumnya")
+
+        // Kembali ke halaman proyek
+        App.setRoot("proyek");
+    }
+
 }

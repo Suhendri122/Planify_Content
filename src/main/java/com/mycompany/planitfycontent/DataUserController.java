@@ -8,13 +8,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.SQLException;
+import com.mycompany.planitfycontent.database.DataUserDAO;
+import com.mycompany.planitfycontent.database.DatabaseConnection;
+import javafx.fxml.Initializable;
 
-public class DataUserController {
+public class DataUserController implements Initializable {
     
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -72,33 +82,34 @@ public class DataUserController {
         stage.close();
     }
     
-    @FXML
+        @FXML
     private TableView<TableDataUser> tableView;
 
     @FXML
-    private TableColumn<TableDataUser, Integer> no;
+    private TableColumn<TableDataUser, Integer> noColumn;
 
     @FXML
-    private TableColumn<TableDataUser, String> nama;
+    private TableColumn<TableDataUser, String> namaColumn;
+
+    @FXML
+    private TableColumn<TableDataUser, String> emailColumn;
     
-    @FXML
-    private TableColumn<TableDataUser, String> email;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            DataUserDAO dataUserDAO = new DataUserDAO(connection);
+            ObservableList<TableDataUser> userData = FXCollections.observableArrayList(dataUserDAO.getAllDataUsers());
 
-    @FXML
-    public void initialize() {
-        // Set up columns
-        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
-        nama.setCellValueFactory(cellData -> cellData.getValue().namaProperty());
-        email.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+            tableView.setItems(userData);
 
-        // Set up data
-        TableDataUser dataUser1 = new TableDataUser(1, "John Doe", "john.doe@example.com");
-        TableDataUser dataUser2 = new TableDataUser(2, "Jane Doe", "jane.doe@example.com");
-
-        TableDataUser tableDataUser = new TableDataUser();
-        tableDataUser.addDataUser(dataUser1);
-        tableDataUser.addDataUser(dataUser2);
-
-        tableView.setItems(tableDataUser.getDataUsers());
+            // Initialize columns
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+            emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle error if failed to get connection or data
+        }
     }
 }

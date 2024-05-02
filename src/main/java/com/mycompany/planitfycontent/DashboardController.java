@@ -1,19 +1,25 @@
 package com.mycompany.planitfycontent;
 
+import com.mycompany.planitfycontent.database.DashboardDAO;
+import com.mycompany.planitfycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.fxml.Initializable;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
-public class DashboardController implements Initializable {
+public class DashboardController implements Initializable{
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -50,54 +56,62 @@ public class DashboardController implements Initializable {
         App.setRoot("dataUser");
     }
     
+    @FXML
+    private TableView<TableDashboard> tableView;
+
+    @FXML
+    private TableColumn<TableDashboard, String> noColumn;
     
-        @FXML
-        private TableView<TableDashboard> tableView;
+    @FXML
+    private TableColumn<TableDashboard, String> proyekColumn;
 
-        @FXML
-        private TableColumn<TableDashboard, Integer> no;
-        @FXML
-        private TableColumn<TableDashboard, String> proyek;
-        @FXML
-        private TableColumn<TableDashboard, String> picProyek;
-        @FXML
-        private TableColumn<TableDashboard, String> tema;
-        @FXML
-        private TableColumn<TableDashboard, String> media;
-        @FXML
-        private TableColumn<TableDashboard, String> deadline;
-        @FXML
-        private TableColumn<TableDashboard, String> tglPost;
-        @FXML
-        private TableColumn<TableDashboard, String> picKonten;
+    @FXML
+    private TableColumn<TableDashboard, String> picProyekColumn;
 
-        private ObservableList<TableDashboard> dataList;
+     @FXML
+    private TableColumn<TableDashboard, String> deadlineColumn;
 
-        @Override
-        public void initialize(URL url, ResourceBundle resourceBundle) {
-            // Inisialisasi ObservableList
-            dataList = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<TableDashboard, String> tglPostColumn;
 
-            // Mengatur data dummy ke dalam ObservableList
-            dataList.add(new TableDashboard(1, "ISTESA", "Aldio", "Hut ISTESA", "Video Horizontal", "03/05/2024", "04/05/2024", "Suhendri"));
-            dataList.add(new TableDashboard(2, "ISTESA", "Aldio", "Hut ISTESA H-1", "postingan 1:1", "03/05/2024", "05/05/2024", "Kristanto"));
-            dataList.add(new TableDashboard(3, "ISTESA", "Aldio", "Kuis", "postingan 1:1", "03/05/2024", "03/05/2024", "Aldio"));
-            dataList.add(new TableDashboard(4, "Royal Cake", "Kristanto", "Promo buy 2 get 1", "postingan 1:1", "04/05/2024", "05/05/2024", "Aldio"));
-            dataList.add(new TableDashboard(5, "Royal Cake", "Kristanto", "Promo 5.5", "postingan 1:1", "04/05/2024", "05/05/2024", "Kristanto"));
-            dataList.add(new TableDashboard(6, "Royal Cake", "Kristanto", "Promo Anniversary 2th", "postingan 1:1", "05/05/2024", "06/05/2024", "Suhendri"));
-            dataList.add(new TableDashboard(7, "Royal Cake", "Kristanto", "Anniversary 2th", "postingan 1:1", "06/05/2024", "07/05/2024", "Kristanto"));
+    @FXML
+    private TableColumn<TableDashboard, String> temaColumn;
 
-            // Mengatur sumber data TableView
-            tableView.setItems(dataList);
+    @FXML
+    private TableColumn<TableDashboard, String> mediaColumn;
 
-            // Menghubungkan setiap TableColumn dengan properti data yang sesuai
-            no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
-            proyek.setCellValueFactory(cellData -> cellData.getValue().proyekProperty());
-            picProyek.setCellValueFactory(cellData -> cellData.getValue().picProyekProperty());
-            tema.setCellValueFactory(cellData -> cellData.getValue().temaProperty());
-            media.setCellValueFactory(cellData -> cellData.getValue().mediaProperty());
-            deadline.setCellValueFactory(cellData -> cellData.getValue().deadlineProperty());
-            tglPost.setCellValueFactory(cellData -> cellData.getValue().tglPostProperty());
-            picKonten.setCellValueFactory(cellData -> cellData.getValue().picKontenProperty());
+    @FXML
+    private TableColumn<TableDashboard, String> picKontenColumn;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            DashboardDAO dashboardDAO = new DashboardDAO(connection);
+            List<TableDashboard> dashboardData = dashboardDAO.getDashboardData();
+            ObservableList<TableDashboard> observableDashboardData = FXCollections.observableArrayList(dashboardData);
+            tableView.setItems(observableDashboardData);
+
+            // Inisialisasi kolom-kolom lain
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            proyekColumn.setCellValueFactory(new PropertyValueFactory<>("proyek"));
+            picProyekColumn.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
+            deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+            tglPostColumn.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
+            temaColumn.setCellValueFactory(new PropertyValueFactory<>("tema"));
+            mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
+            picKontenColumn.setCellValueFactory(new PropertyValueFactory<>("picKonten"));
+
+            // Atur nomor untuk setiap item
+            int index = 1;
+            for (TableDashboard item : dashboardData) {
+                item.noProperty().set(index++);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
+    }
+
 }
+

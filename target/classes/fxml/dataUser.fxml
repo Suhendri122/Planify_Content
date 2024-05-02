@@ -103,10 +103,10 @@
          <content>
             <TableView fx:id="tableView" prefHeight="420.0" prefWidth="485.0">
                <columns>
-                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="nama" prefWidth="150.0" text="Nama" />
-                  <TableColumn fx:id="email" prefWidth="200.0" text="Email" />
-                  <TableColumn fx:id="aksi" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
+                  <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="namaColumn" prefWidth="150.0" text="Nama" />
+                  <TableColumn fx:id="emailColumn" prefWidth="200.0" text="Email" />
+                  <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
                </columns>
             </TableView>
          </content>
