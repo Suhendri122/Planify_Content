@@ -10,4 +10,5 @@ com\mycompany\planitfycontent\KontenController.class
 com\mycompany\planitfycontent\DataPlatformController.class
 com\mycompany\planitfycontent\LoginController.class
 com\mycompany\planitfycontent\HistoriController.class
+com\mycompany\planitfycontent\KontenTerdekat.class
 com\mycompany\planitfycontent\database\DatabaseConnection.class

@@ -14,7 +14,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DashboardController">
    <children>
 <ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
-         <image>
+         <image>    
             <Image url="@../assets/bg2.png" />
          </image>
       </ImageView>
@@ -56,17 +56,16 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <TableView layoutX="20.0" layoutY="130.0" prefHeight="360.0" prefWidth="960.0">
+      <TableView fx:id="tableView" layoutX="20.0" layoutY="130.0" prefHeight="194.0" prefWidth="960.0">
          <columns>
-            <TableColumn prefWidth="35.0" text="No" />
-            <TableColumn prefWidth="160.0" text="Proyek" />
-            <TableColumn prefWidth="120.0" text="PIC Proyek" />
-            <TableColumn prefWidth="110.0" text="Tema" />
-            <TableColumn prefWidth="110.0" text="Media" />
-            <TableColumn minWidth="0.0" prefWidth="100.0" text="Deadline" />
-            <TableColumn prefWidth="100.0" text="Tgl. Post" />
-            <TableColumn prefWidth="125.0" text="PIC Konten" />
-            <TableColumn prefWidth="100.0" resizable="false" text="Aksi" />
+            <TableColumn fx:id="no" prefWidth="35.0" text="No" />
+            <TableColumn fx:id="proyek" prefWidth="220.0" text="Proyek" />
+            <TableColumn fx:id="picProyek" prefWidth="130.0" text="PIC Proyek" />
+            <TableColumn fx:id="tema" prefWidth="130.0" text="Tema" />
+            <TableColumn fx:id="media" prefWidth="130.0" text="Media" />
+            <TableColumn fx:id="deadline" minWidth="0.0" prefWidth="100.0" text="Deadline" />
+            <TableColumn fx:id="tglPost" prefWidth="100.0" text="Tgl. Post" />
+            <TableColumn fx:id="picKonten" prefWidth="110.0" text="PIC Konten" />
          </columns>
       </TableView>
    </children>

@@ -7,10 +7,12 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.DataClientController">
    <children>
@@ -52,24 +54,19 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
-      <Label layoutX="20.0" layoutY="100.0" prefWidth="122.0" text="Data Konsumen" textFill="#358c9c">
+      <Label layoutX="20.0" layoutY="100.0" prefWidth="122.0" text="Data Client" textFill="#358c9c">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" layoutX="630.0" layoutY="85.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="630.0" layoutY="160.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button id="btnFilter" layoutX="560.0" layoutY="85.0" mnemonicParsing="false" text="Filter" onAction="#bukaHalamanFilter" textFill="WHITE">
-         <font>
-            <Font name="Calibri Bold" size="16.0" />
-         </font>
-      </Button>
-      <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="685.0">
+      <ScrollPane layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
          <content>
-            <TableView prefHeight="420.0" prefWidth="685.0">
+            <TableView prefHeight="340.0" prefWidth="685.0">
                <columns>
                   <TableColumn prefWidth="35.0" text="No" />
                   <TableColumn prefWidth="200.0" text="Nama" />
@@ -80,5 +77,22 @@
             </TableView>
          </content>
       </ScrollPane>
+      <Text fill="#5b5b5b" layoutX="20.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Text>
+      <TextField layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <Button layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Button>
+      <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <Text fill="#5b5b5b" layoutX="274.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

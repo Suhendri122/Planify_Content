@@ -61,6 +61,6 @@
       <TextField layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
       <DatePicker layoutX="140.0" layoutY="286.0" prefHeight="30.0" prefWidth="170.0" />
       <TextField layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

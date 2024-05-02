@@ -51,7 +51,7 @@ public class HistoriController {
     
     @FXML
     private void bukaHalamanFilter(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filterHistori.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filter Histori.fxml"));
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -69,4 +69,5 @@ public class HistoriController {
         stage.close();
     }
 }
+
 
