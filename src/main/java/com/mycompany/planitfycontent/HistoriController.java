@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -50,23 +52,59 @@ public class HistoriController {
     }
     
     @FXML
-    private void bukaHalamanFilter(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filter Histori.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Filter Data Histori"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
-    }
-    
-    @FXML
     private void popupBtnBatal(ActionEvent event) {
         // Mendapatkan stage dari event
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         // Menutup stage (popup)
         stage.close();
+    }
+    
+        @FXML
+    private TableView<TableHistori> tableView;
+
+    @FXML
+    private TableColumn<TableHistori, Integer> no;
+    @FXML
+    private TableColumn<TableHistori, String> proyek;
+    @FXML
+    private TableColumn<TableHistori, String> picProyek;
+    @FXML
+    private TableColumn<TableHistori, String> namaKonsumen;
+    @FXML
+    private TableColumn<TableHistori, String> tema;
+    @FXML
+    private TableColumn<TableHistori, String> media;
+    @FXML
+    private TableColumn<TableHistori, String> platform;
+    @FXML
+    private TableColumn<TableHistori, String> link;
+    @FXML
+    private TableColumn<TableHistori, String> deadline;
+    @FXML
+    private TableColumn<TableHistori, String> tglPost;
+    @FXML
+    private TableColumn<TableHistori, String> picKonten;
+    @FXML
+    private TableColumn<TableHistori, String> status;
+
+    public void initialize() {
+        // Add dummy data to TableView
+        tableView.getItems().add(new TableHistori(1, "Proyek 1", "PIC Proyek 1", "Nama Konsumen 1", "Tema 1", "Media 1", "Platform 1", "Link 1", "Deadline 1", "Tgl. Post 1", "PIC Konten 1", "Status 1"));
+        tableView.getItems().add(new TableHistori(2, "Proyek 2", "PIC Proyek 2", "Nama Konsumen 2", "Tema 2", "Media 2", "Platform 2", "Link 2", "Deadline 2", "Tgl. Post 2", "PIC Konten 2", "Status 2"));
+
+        // Connect each TableColumn with corresponding data property
+        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
+        proyek.setCellValueFactory(cellData -> cellData.getValue().proyekProperty());
+        picProyek.setCellValueFactory(cellData -> cellData.getValue().picProyekProperty());
+        namaKonsumen.setCellValueFactory(cellData -> cellData.getValue().namaKonsumenProperty());
+        tema.setCellValueFactory(cellData -> cellData.getValue().temaProperty());
+        media.setCellValueFactory(cellData -> cellData.getValue().mediaProperty());
+        platform.setCellValueFactory(cellData -> cellData.getValue().platformProperty());
+        link.setCellValueFactory(cellData -> cellData.getValue().linkProperty());
+        deadline.setCellValueFactory(cellData -> cellData.getValue().deadlineProperty());
+        tglPost.setCellValueFactory(cellData -> cellData.getValue().tglPostProperty());
+        picKonten.setCellValueFactory(cellData -> cellData.getValue().picKontenProperty());
+        status.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
     }
 }
 

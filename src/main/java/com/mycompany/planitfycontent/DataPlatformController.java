@@ -4,16 +4,21 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class DataPlatformController{
+public class DataPlatformController implements Initializable{
     
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -56,14 +61,15 @@ public class DataPlatformController{
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataPlatform.fxml"));
-        Parent root = fxmlLoader.load();    
+        Parent root = fxmlLoader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Platform"); // Mengatur judul window popup
+        stage.setTitle("Tambah Data Platform");
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+        stage.showAndWait();
     }
+
     
     @FXML
     private void popupBtnBatal(ActionEvent event) {
@@ -71,5 +77,34 @@ public class DataPlatformController{
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         // Menutup stage (popup)
         stage.close();
+    }
+    
+    @FXML
+    private TableView<TableDataPlatform> tableView;
+
+    @FXML
+    private TableColumn<TableDataPlatform, Integer> no;
+
+    @FXML
+    private TableColumn<TableDataPlatform, String> platform;
+    
+    @FXML
+    private TableColumn<TableDataPlatform, String> aksi;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set up columns
+        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
+        platform.setCellValueFactory(cellData -> cellData.getValue().platformProperty());
+
+        // Set up data
+        TableDataPlatform dataPlatform1 = new TableDataPlatform(1, "Platform 1");
+        TableDataPlatform dataPlatform2 = new TableDataPlatform(2, "Platform 2");
+
+        TableDataPlatform tableDataPlatform = new TableDataPlatform();
+        tableDataPlatform.addDataPlatform(dataPlatform1);
+        tableDataPlatform.addDataPlatform(dataPlatform2);
+
+        tableView.setItems(tableDataPlatform.getDataPlatforms());
     }
 }

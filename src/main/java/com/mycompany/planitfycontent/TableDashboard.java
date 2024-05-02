@@ -3,7 +3,7 @@ package com.mycompany.planitfycontent;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class KontenTerdekat {
+public class TableDashboard {
     private final SimpleIntegerProperty no;
     private final SimpleStringProperty proyek;
     private final SimpleStringProperty picProyek;
@@ -13,7 +13,7 @@ public class KontenTerdekat {
     private final SimpleStringProperty tglPost;
     private final SimpleStringProperty picKonten;
 
-    public KontenTerdekat(int no, String proyek, String picProyek, String tema, String media, String deadline, String tglPost, String picKonten) {
+    public TableDashboard(int no, String proyek, String picProyek, String tema, String media, String deadline, String tglPost, String picKonten) {
         this.no = new SimpleIntegerProperty(no);
         this.proyek = new SimpleStringProperty(proyek);
         this.picProyek = new SimpleStringProperty(picProyek);

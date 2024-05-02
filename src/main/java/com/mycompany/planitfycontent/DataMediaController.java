@@ -4,15 +4,24 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import com.mycompany.planitfycontent.TableDataMedia;
 
-public class DataMediaController {
+
+public class DataMediaController implements Initializable {
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -49,7 +58,7 @@ public class DataMediaController {
         App.setRoot("dataUser");
     }
     
-        //popup tambah, edit, dan filter
+    // Popup tambah, edit, dan filter
     
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
@@ -70,4 +79,31 @@ public class DataMediaController {
         // Menutup stage (popup)
         stage.close();
     }
+    
+    @FXML
+    private TableView<TableDataMedia> tableView;
+
+    @FXML
+    private TableColumn<TableDataMedia, Integer> no;
+
+    @FXML
+    private TableColumn<TableDataMedia, String> media;
+    
+    @FXML
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set up columns
+        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
+        media.setCellValueFactory(cellData -> cellData.getValue().mediaProperty());
+
+        // Set up data
+        TableDataMedia dataMedia1 = new TableDataMedia(1, "Media 1");
+        TableDataMedia dataMedia2 = new TableDataMedia(2, "Media 2");
+
+        TableDataMedia tableDataMedia = new TableDataMedia();
+        tableDataMedia.addDataMedia(dataMedia1);
+        tableDataMedia.addDataMedia(dataMedia2);
+
+        tableView.setItems(tableDataMedia.getDataMedias());
+    }
+
 }

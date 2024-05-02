@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -82,4 +84,39 @@ public class DataClientController {
         // Menutup stage (popup)
         stage.close();
     }
+    
+    @FXML
+    private TableView<TableDataClient> tableView;
+
+    @FXML
+    private TableColumn<TableDataClient, Integer> no;
+
+    @FXML
+    private TableColumn<TableDataClient, String> nama;
+    
+    @FXML
+    private TableColumn<TableDataClient, String> noTelp;
+    
+    @FXML
+    private TableColumn<TableDataClient, String> usaha;
+
+    @FXML
+    public void initialize() {
+        // Set up columns
+        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
+        nama.setCellValueFactory(cellData -> cellData.getValue().namaProperty());
+        noTelp.setCellValueFactory(cellData -> cellData.getValue().noTelpProperty());
+        usaha.setCellValueFactory(cellData -> cellData.getValue().usahaProperty());
+
+        // Set up data
+        TableDataClient dataClient1 = new TableDataClient(1, "John Doe", "123456789", "Usaha 1");
+        TableDataClient dataClient2 = new TableDataClient(2, "Jane Doe", "987654321", "Usaha 2");
+
+        TableDataClient tableDataClient = new TableDataClient();
+        tableDataClient.addDataClient(dataClient1);
+        tableDataClient.addDataClient(dataClient2);
+
+        tableView.setItems(tableDataClient.getDataClient());
+    }
+    
 }

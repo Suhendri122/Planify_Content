@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -49,8 +51,7 @@ public class DataUserController {
         App.setRoot("dataUser");
     }
     
-        //popup tambah, edit, dan filter
-    
+    // Popup tambah, edit, dan filter
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataUser.fxml"));
@@ -69,5 +70,35 @@ public class DataUserController {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         // Menutup stage (popup)
         stage.close();
+    }
+    
+    @FXML
+    private TableView<TableDataUser> tableView;
+
+    @FXML
+    private TableColumn<TableDataUser, Integer> no;
+
+    @FXML
+    private TableColumn<TableDataUser, String> nama;
+    
+    @FXML
+    private TableColumn<TableDataUser, String> email;
+
+    @FXML
+    public void initialize() {
+        // Set up columns
+        no.setCellValueFactory(cellData -> cellData.getValue().noProperty().asObject());
+        nama.setCellValueFactory(cellData -> cellData.getValue().namaProperty());
+        email.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+
+        // Set up data
+        TableDataUser dataUser1 = new TableDataUser(1, "John Doe", "john.doe@example.com");
+        TableDataUser dataUser2 = new TableDataUser(2, "Jane Doe", "jane.doe@example.com");
+
+        TableDataUser tableDataUser = new TableDataUser();
+        tableDataUser.addDataUser(dataUser1);
+        tableDataUser.addDataUser(dataUser2);
+
+        tableView.setItems(tableDataUser.getDataUsers());
     }
 }

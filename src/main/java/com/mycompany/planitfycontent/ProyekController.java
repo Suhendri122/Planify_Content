@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class ProyekController implements Initializable {
+public class ProyekController {
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -68,18 +69,7 @@ public class ProyekController implements Initializable {
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
     }
-    
-     @FXML
-    private void bukaHalamanFilter(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filterDataProyek.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Filter Data Proyek"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
-    }
+
     
     @FXML
     private void popupBtnBatal(ActionEvent event) {
@@ -88,7 +78,7 @@ public class ProyekController implements Initializable {
         // Menutup stage (popup)
         stage.close();
     }
-    
+
     @FXML
     private TableView<Proyek> tableView;
 
@@ -118,8 +108,8 @@ public class ProyekController implements Initializable {
 
     private ObservableList<Proyek> proyekList;
 
-    @Override
-    public void initialize(URL url ResourceBundke resourceBundle) {
+
+    public void initialize() {
         // Inisialisasi ObservableList
         proyekList = FXCollections.observableArrayList();
 
@@ -130,14 +120,5 @@ public class ProyekController implements Initializable {
         // Set data ke TableView
         tableView.setItems(proyekList);
 
-        // Hubungkan setiap TableColumn dengan properti data yang sesuai
-        no.setCellValueFactory(cellData -> cellData.getValue().getNo());
-        namaProyek.setCellValueFactory(cellData -> cellData.getValue().getNamaProyek());
-        picProyek.setCellValueFactory(cellData -> cellData.getValue().getPicProyek());
-        namaClient.setCellValueFactory(cellData -> cellData.getValue().getNamaClient());
-        noTelepon.setCellValueFactory(cellData -> cellData.getValue().getNoTelepon());
-        harga.setCellValueFactory(cellData -> cellData.getValue().getHarga());
-        tglMulai.setCellValueFactory(cellData -> cellData.getValue().getTglMulai());
-        tglSelesai.setCellValueFactory(cellData -> cellData.getValue().getTglSelesai());
     }
 }

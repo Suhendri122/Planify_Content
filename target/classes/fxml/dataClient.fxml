@@ -66,13 +66,13 @@
       </Button>
       <ScrollPane layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
          <content>
-            <TableView prefHeight="340.0" prefWidth="685.0">
+            <TableView fx:id="tableView" prefHeight="340.0" prefWidth="685.0">
                <columns>
-                  <TableColumn prefWidth="35.0" text="No" />
-                  <TableColumn prefWidth="200.0" text="Nama" />
-                  <TableColumn prefWidth="150.0" text="No Telp." />
-                  <TableColumn prefWidth="200.0" text="Usaha" />
-                  <TableColumn minWidth="0.0" prefWidth="100.0" text="Aksi" />
+                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="nama" prefWidth="200.0" text="Nama" />
+                  <TableColumn fx:id="noTelp" prefWidth="150.0" text="No Telp." />
+                  <TableColumn fx:id="usaha" prefWidth="200.0" text="Usaha" />
+                  <TableColumn fx:id="aksi" minWidth="0.0" prefWidth="100.0" text="Aksi" />
                </columns>
             </TableView>
          </content>

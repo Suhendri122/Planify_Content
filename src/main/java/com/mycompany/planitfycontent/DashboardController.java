@@ -52,26 +52,26 @@ public class DashboardController implements Initializable {
     
     
         @FXML
-        private TableView<KontenTerdekat> tableView;
+        private TableView<TableDashboard> tableView;
 
         @FXML
-        private TableColumn<KontenTerdekat, Integer> no;
+        private TableColumn<TableDashboard, Integer> no;
         @FXML
-        private TableColumn<KontenTerdekat, String> proyek;
+        private TableColumn<TableDashboard, String> proyek;
         @FXML
-        private TableColumn<KontenTerdekat, String> picProyek;
+        private TableColumn<TableDashboard, String> picProyek;
         @FXML
-        private TableColumn<KontenTerdekat, String> tema;
+        private TableColumn<TableDashboard, String> tema;
         @FXML
-        private TableColumn<KontenTerdekat, String> media;
+        private TableColumn<TableDashboard, String> media;
         @FXML
-        private TableColumn<KontenTerdekat, String> deadline;
+        private TableColumn<TableDashboard, String> deadline;
         @FXML
-        private TableColumn<KontenTerdekat, String> tglPost;
+        private TableColumn<TableDashboard, String> tglPost;
         @FXML
-        private TableColumn<KontenTerdekat, String> picKonten;
+        private TableColumn<TableDashboard, String> picKonten;
 
-        private ObservableList<KontenTerdekat> dataList;
+        private ObservableList<TableDashboard> dataList;
 
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,13 +79,13 @@ public class DashboardController implements Initializable {
             dataList = FXCollections.observableArrayList();
 
             // Mengatur data dummy ke dalam ObservableList
-            dataList.add(new KontenTerdekat(1, "ISTESA", "Aldio", "Hut ISTESA", "Video Horizontal", "03/05/2024", "04/05/2024", "Suhendri"));
-            dataList.add(new KontenTerdekat(2, "ISTESA", "Aldio", "Hut ISTESA H-1", "postingan 1:1", "03/05/2024", "05/05/2024", "Kristanto"));
-            dataList.add(new KontenTerdekat(3, "ISTESA", "Aldio", "Kuis", "postingan 1:1", "03/05/2024", "03/05/2024", "Aldio"));
-            dataList.add(new KontenTerdekat(4, "Royal Cake", "Kristanto", "Promo buy 2 get 1", "postingan 1:1", "04/05/2024", "05/05/2024", "Aldio"));
-            dataList.add(new KontenTerdekat(5, "Royal Cake", "Kristanto", "Promo 5.5", "postingan 1:1", "04/05/2024", "05/05/2024", "Kristanto"));
-            dataList.add(new KontenTerdekat(6, "Royal Cake", "Kristanto", "Promo Anniversary 2th", "postingan 1:1", "05/05/2024", "06/05/2024", "Suhendri"));
-            dataList.add(new KontenTerdekat(7, "Royal Cake", "Kristanto", "Anniversary 2th", "postingan 1:1", "06/05/2024", "07/05/2024", "Kristanto"));
+            dataList.add(new TableDashboard(1, "ISTESA", "Aldio", "Hut ISTESA", "Video Horizontal", "03/05/2024", "04/05/2024", "Suhendri"));
+            dataList.add(new TableDashboard(2, "ISTESA", "Aldio", "Hut ISTESA H-1", "postingan 1:1", "03/05/2024", "05/05/2024", "Kristanto"));
+            dataList.add(new TableDashboard(3, "ISTESA", "Aldio", "Kuis", "postingan 1:1", "03/05/2024", "03/05/2024", "Aldio"));
+            dataList.add(new TableDashboard(4, "Royal Cake", "Kristanto", "Promo buy 2 get 1", "postingan 1:1", "04/05/2024", "05/05/2024", "Aldio"));
+            dataList.add(new TableDashboard(5, "Royal Cake", "Kristanto", "Promo 5.5", "postingan 1:1", "04/05/2024", "05/05/2024", "Kristanto"));
+            dataList.add(new TableDashboard(6, "Royal Cake", "Kristanto", "Promo Anniversary 2th", "postingan 1:1", "05/05/2024", "06/05/2024", "Suhendri"));
+            dataList.add(new TableDashboard(7, "Royal Cake", "Kristanto", "Anniversary 2th", "postingan 1:1", "06/05/2024", "07/05/2024", "Kristanto"));
 
             // Mengatur sumber data TableView
             tableView.setItems(dataList);

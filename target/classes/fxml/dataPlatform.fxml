@@ -64,11 +64,11 @@
       </Button>
       <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="355.0">
          <content>
-            <TableView prefHeight="420.0" prefWidth="355.0">
+            <TableView fx:id="tableView" prefHeight="420.0" prefWidth="355.0">
                <columns>
-                  <TableColumn prefWidth="35.0" text="No" />
-                  <TableColumn prefWidth="220.0" text="Platform" />
-                  <TableColumn minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
+                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="platform" prefWidth="220.0" text="Platform" />
+                  <TableColumn fx:id="aksi" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
                </columns>
             </TableView>
          </content>

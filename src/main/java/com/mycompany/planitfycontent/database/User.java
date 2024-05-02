@@ -1,11 +1,11 @@
 package com.mycompany.planitfycontent.database;
 
-public class Users {
+public class User{
     private int id;
     private String email;
     private String password;
 
-    public Users(int id, String email, String password) {
+    public User(int id, String email, String password) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -23,10 +23,10 @@ public class Users {
         return password;
     }
 
-    public static Users findUserByEmail(String email) {
+    public static User findUserByEmail(String email) {
         // Replace this with actual database query
         if (email.equals("user@example.com")) {
-            return new Users(1, "user@example.com", "password123");
+            return new User(1, "user@example.com", "password123");
         }
         return null;
     }

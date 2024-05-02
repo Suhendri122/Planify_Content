@@ -28,7 +28,7 @@ public class LoginController extends App {
     public void handleLogin(ActionEvent event) {
         try {
             Connection connection = DatabaseConnection.getConnection(); // Mengambil koneksi dari database
-            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+            String query = "SELECT * FROM user WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, txtEmail.getText());
             preparedStatement.setString(2, txtPassword.getText());
