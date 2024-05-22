@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planitfycontent.KontenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.KontenController">
    <children>
 <ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -40,8 +40,8 @@
       </Button>
       <MenuButton id="btnmenu" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" text="Master Data" textFill="WHITE">
         <items>
-          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataPlatform" text="Data Platform" />
-          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataMedia" text="Data Media" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanPlatform" text="Data Platform" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanMedia" text="Data Media" />
         </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />
@@ -49,8 +49,8 @@
       </MenuButton>
       <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
          <items>
-            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataUser" text="Data User" />
-            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanDataClient" text="Data Client" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanUser" text="Data User" />
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanClient" text="Data Client" />
          </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />

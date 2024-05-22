@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.ClientController">
+   <children>
+<ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/bg2.png" />
+         </image>
+      </ImageView>
+      <Button id="btnmenu" layoutX="57.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanDashboard" text="Dashboard" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button id="btnmenu" layoutX="154.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanProyek" text="Proyek" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button id="btnmenu" layoutX="228.0" layoutY="7.0" mnemonicParsing="false" onAction="#bukaHalamanHistori" text="Histori" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <MenuButton id="btnmenu" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" text="Master Data" textFill="WHITE">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanPlatform" text="Data Platform" />
+          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanMedia" text="Data Media" />
+        </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanUser" text="Data User" />
+            <MenuItem mnemonicParsing="false" disable="true" text="Data Client" />
+         </items>
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </MenuButton>
+      <Label layoutX="20.0" layoutY="100.0" prefWidth="122.0" text="Data Client" textFill="#358c9c">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button id="btnTambah" layoutX="630.0" layoutY="160.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+      <ScrollPane layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
+         <content>
+            <TableView fx:id="tableView" prefHeight="340.0" prefWidth="685.0">
+               <columns>
+                  <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="namaColumn" prefWidth="200.0" text="Nama" />
+                  <TableColumn fx:id="noTelpColumn" prefWidth="150.0" text="No Telp." />
+                  <TableColumn fx:id="usahaColumn" prefWidth="200.0" text="Usaha" />
+                  <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
+               </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <Text fill="#5b5b5b" layoutX="20.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Text>
+      <TextField layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <Button layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Button>
+      <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <Text fill="#5b5b5b" layoutX="274.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
