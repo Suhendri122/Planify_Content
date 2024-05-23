@@ -56,10 +56,6 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
-      <Button fx:id="btnBack" layoutX="20.0" layoutY="60.0" mnemonicParsing="false" text="&lt;" textFill="#358c9c">
-         <font>
-            <Font name="Arial Bold" size="16.0" />
-         </font></Button>
       <Label layoutX="20.0" layoutY="100.0" text="Konten" textFill="#358c9c">
          <font>
             <Font name="Arial Bold" size="16.0" />

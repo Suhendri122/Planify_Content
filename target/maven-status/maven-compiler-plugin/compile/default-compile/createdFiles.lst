@@ -4,6 +4,7 @@ com\mycompany\planifycontent\ClientController.class
 com\mycompany\planifycontent\TablePlatform.class
 com\mycompany\planifycontent\database\PlatformDAO.class
 com\mycompany\planifycontent\TableProyek.class
+com\mycompany\planifycontent\EditProyekController.class
 com\mycompany\planifycontent\database\HistoriDAO.class
 com\mycompany\planifycontent\ProyekController.class
 com\mycompany\planifycontent\database\UserDAO.class
@@ -12,15 +13,16 @@ com\mycompany\planifycontent\HistoriController.class
 com\mycompany\planifycontent\database\MediaDAO.class
 com\mycompany\planitfycontent\TableKonten.class
 com\mycompany\planifycontent\database\User.class
+com\mycompany\planifycontent\ProyekController$1$1.class
 com\mycompany\planifycontent\MediaController.class
 com\mycompany\planifycontent\database\ClientDAO.class
 com\mycompany\planifycontent\TableHistori.class
 com\mycompany\planifycontent\App.class
-com\mycompany\planifycontent\Proyek.class
 com\mycompany\planifycontent\DashboardController.class
 module-info.class
 com\mycompany\planifycontent\PlatformController.class
 com\mycompany\planifycontent\TableMedia.class
+com\mycompany\planifycontent\ProyekController$1.class
 com\mycompany\planifycontent\TableUser.class
 com\mycompany\planifycontent\database\DatabaseConnection.class
 com\mycompany\planifycontent\LoginController.class

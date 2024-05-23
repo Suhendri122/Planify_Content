@@ -96,14 +96,14 @@
       <TableView id="tableView" fx:id="tableView" layoutX="20.0" layoutY="226.0" prefHeight="245.0" prefWidth="960.0">
         <columns>
           <TableColumn fx:id="no" prefWidth="33.0" text="No" />
-          <TableColumn fx:id="namaProyek" prefWidth="164.0" text="Nama Proyek" />
+          <TableColumn fx:id="namaProyek" prefWidth="140.0" text="Nama Proyek" />
             <TableColumn fx:id="picProyek" prefWidth="105.0" text="PIC Proyek" />
             <TableColumn fx:id="namaClient" prefWidth="119.0" text="Nama Client" />
             <TableColumn fx:id="noTelepon" prefWidth="117.0" text="No Telepon" />
             <TableColumn fx:id="harga" minWidth="0.0" prefWidth="112.0" text="Harga" />
-            <TableColumn fx:id="tglMulai" prefWidth="117.0" text="Tgl Mulai" />
-            <TableColumn fx:id="tglSelesai" prefWidth="107.0" text="Tgl Selesai" />
-            <TableColumn fx:id="aksi" prefWidth="93.0" text="Aksi">
+            <TableColumn fx:id="tglMulai" prefWidth="100.0" text="Tgl Mulai" />
+            <TableColumn fx:id="tglSelesai" prefWidth="100.0" text="Tgl Selesai" />
+            <TableColumn fx:id="aksi" prefWidth="131.20001220703125" text="Aksi">
                 <cellValueFactory>
                     <!-- Implementasi factory -->
                 </cellValueFactory>

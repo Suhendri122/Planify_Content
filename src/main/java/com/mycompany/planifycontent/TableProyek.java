@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class TableProyek {
     private final IntegerProperty id;
     private final StringProperty namaProyek;
-    private final StringProperty picProyek;
+    private final StringProperty picProyek; // Update properti picProyek
     private final StringProperty namaClient;
     private final StringProperty noTelepon;
     private final StringProperty harga;

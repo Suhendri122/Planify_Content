@@ -82,22 +82,12 @@ public class KontenController {
         stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
     }
     
-    @FXML
-    private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
-        stage.close();
-    }
-    
-    @FXML
-    private void handleBackButton(ActionEvent event) throws IOException {
-        // Kembali ke halaman sebelumnya
-        // Di sini Anda dapat menentukan logika kembali ke halaman sebelumnya
-        // Misalnya, menggunakan App.setRoot("namaHalamanSebelumnya")
+        private TableProyek proyek; // Properti untuk menyimpan data proyek
 
-        // Kembali ke halaman proyek
-        App.setRoot("proyek");
+    // Metode untuk mengatur data proyek
+    public void setProyek(TableProyek proyek) {
+        this.proyek = proyek;
+        // Di sini Anda dapat menambahkan logika untuk menampilkan data proyek ke dalam tampilan halaman konten
+        // Misalnya, mengatur teks pada label atau menampilkan data dalam tabel
     }
-
 }

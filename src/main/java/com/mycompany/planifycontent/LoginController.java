@@ -2,6 +2,9 @@ package com.mycompany.planifycontent;
 
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +34,7 @@ public class LoginController extends App {
             String query = "SELECT * FROM user WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, txtEmail.getText());
-            preparedStatement.setString(2, txtPassword.getText());
+            preparedStatement.setString(2, getMd5(txtPassword.getText()));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) { // Jika query mengembalikan hasil
@@ -56,4 +59,20 @@ public class LoginController extends App {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    
+        private static String getMd5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashText = number.toString(16);
+            while (hashText.length() < 32) {
+                hashText = "0" + hashText;
+            }
+            return hashText;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

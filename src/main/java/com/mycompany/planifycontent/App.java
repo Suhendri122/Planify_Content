@@ -14,6 +14,11 @@ import javafx.scene.image.Image;
 public class App extends Application {
     private static Stage window;
     private static Scene scene;
+    private static FXMLLoader loader;
+
+    static FXMLLoader getLoader() {
+        return loader;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,7 +41,9 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml"));
-        return fxmlLoader.load();
+        Parent root = fxmlLoader.load();
+        loader = fxmlLoader; // Mengatur objek FXMLLoader ke variabel loader
+        return root;
     }
     
     public static void main(String[] args) {
