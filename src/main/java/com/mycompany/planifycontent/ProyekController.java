@@ -2,6 +2,9 @@ package com.mycompany.planifycontent;
 
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.ProyekDAO;
+import com.mycompany.planifycontent.database.UserDAO;
+import com.mycompany.planifycontent.database.ClientDAO;
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -18,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -65,6 +69,13 @@ public class ProyekController implements Initializable {
 
     @FXML
     private TableColumn<TableProyek, String> aksi;
+    
+    // Buat koneksi ke ChoiceBox 'user' di proyek.fxml
+    @FXML
+    private ChoiceBox<String> userBox;
+    
+    @FXML
+    private ChoiceBox<String> clientBox;
 
     private Stage mainStage;
 
@@ -74,6 +85,24 @@ public class ProyekController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try{
+            // Masukkan function buat ambil data mahasiswa di database
+            getListMahasiswa();
+        }
+        catch(Exception e){
+            System.out.println("error");
+        }
+        
+        
+        try{
+            // Masukkan function buat ambil data mahasiswa di database
+            getListKonsumen();
+        }
+        catch(Exception e){
+            System.out.println("error");
+        }
+
         no.setCellValueFactory(new PropertyValueFactory<>("id"));
         namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
         picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
@@ -208,8 +237,56 @@ public class ProyekController implements Initializable {
     } catch (IOException e) {
         e.printStackTrace();
     }
-}
+   }
+    
+    // Function buat masukkin nama user kedalam ChoiceBox
+    private void getListMahasiswa() throws Exception{
+        try{
+            // Buat koneksi ke database user
+            Connection connection = DatabaseConnection.getConnection();
+            UserDAO dataUserDAO = new UserDAO(connection);
+            
+            // Simpan data ke dalam array untuk dikelola datanya
+            List<TableUser> userData = dataUserDAO.getAllDataUsers();
+            ObservableList<String> users = FXCollections.observableArrayList();
 
+            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
+            for(TableUser user : userData){
+                users.add(user.getNama());
+            }
+
+            // Terapkan ke ChoiceBox
+            userBox.setItems(users);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    private void getListKonsumen() throws Exception{
+        try{
+            // Buat koneksi ke database user
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            
+            // Simpan data ke dalam array untuk dikelola datanya
+            List<TableClient> clientData = dataClientDAO.getAllDataClients();
+            ObservableList<String> users = FXCollections.observableArrayList();
+
+            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
+            for(TableClient client : clientData){
+                users.add(client.getNama());
+            }
+
+            // Terapkan ke ChoiceBox
+            clientBox.setItems(users);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
