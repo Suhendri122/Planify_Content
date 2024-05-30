@@ -1,6 +1,5 @@
 package com.mycompany.planifycontent;
 
-import com.mycompany.planifycontent.database.DashboardDAO;
 import com.mycompany.planifycontent.database.PlatformDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
@@ -26,19 +25,55 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.mycompany.planifycontent.TablePlatform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.TextField;
 
+public class PlatformController implements Initializable {
 
+    @FXML
+    private TableView<TablePlatform> tableView;
 
-public class PlatformController implements Initializable{
-    
+    @FXML
+    private TableColumn<TablePlatform, Integer> noColumn;
+
+    @FXML
+    private TableColumn<TablePlatform, String> platformColumn;
+
+    @FXML
+    private TextField platformNameField;
+
+    private ObservableList<TablePlatform> platformData;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        platformData = FXCollections.observableArrayList();
+        
+        if (tableView != null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
+                List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
+                platformData.setAll(platformList);
+
+                tableView.setItems(platformData);
+
+                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+                platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
+
+                int index = 1;
+                for (TablePlatform item : platformData) {
+                    item.setNo(index++);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
     }
-    
+
     @FXML
     private void bukaHalamanProyek(ActionEvent event) throws IOException {
         App.setRoot("proyek");
@@ -50,7 +85,7 @@ public class PlatformController implements Initializable{
     }
 
     @FXML
-    private void bukaHalamanatform(ActionEvent event) throws IOException {
+    private void bukaHalamanPlatform(ActionEvent event) throws IOException {
         App.setRoot("platform");
     }
 
@@ -68,10 +103,7 @@ public class PlatformController implements Initializable{
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-    
-    
-    //popup tambah, edit, dan filter
-    
+
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahPlatform.fxml"));
@@ -82,49 +114,45 @@ public class PlatformController implements Initializable{
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait();
+        initialize(null, null); // Refresh data setelah pop-up ditutup
     }
 
-    
+    @FXML
+    private void handleTambah(ActionEvent event) {
+        if (platformNameField != null) {
+            String platformName = platformNameField.getText();
+            if (platformName != null && !platformName.isEmpty()) {
+                try {
+                    Connection connection = DatabaseConnection.getConnection();
+                    PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
+                    dataPlatformDAO.tambahPlatform(platformName);
+                    List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
+
+                    if (platformData != null) {
+                        platformData.setAll(platformList);
+
+                        int index = 1;
+                        for (TablePlatform item : platformData) {
+                            item.setNo(index++);
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            closeWindow();
+        }
+    }
+
     @FXML
     private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
-        stage.close();
+        closeWindow();
     }
-    
-    
-    @FXML
-    private TableView<TablePlatform> tableView;
-     
-     @FXML
-    private TableColumn<TablePlatform, Integer> noColumn;
 
-    @FXML
-    private TableColumn<TablePlatform, String> platformColumn;
-     
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            PlatformDAO DataPlatformDAO = new PlatformDAO(connection);
-            List<TablePlatform> platformData = DataPlatformDAO.getAllDataPlatforms();
-            ObservableList<TablePlatform> observablePlatformData = FXCollections.observableArrayList(platformData);
-
-            tableView.setItems(observablePlatformData);
-
-            // Inisialisasi kolom-kolom lain
-            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-            platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
-
-            // Atur nomor untuk setiap item
-            int index = 1;
-            for (TablePlatform item : platformData) {
-                item.noProperty().set(index++);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+    private void closeWindow() {
+        if (platformNameField != null) {
+            Stage stage = (Stage) platformNameField.getScene().getWindow();
+            stage.close();
         }
     }
 }
