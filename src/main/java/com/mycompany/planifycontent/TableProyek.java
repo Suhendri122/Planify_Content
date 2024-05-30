@@ -7,8 +7,10 @@ import javafx.beans.property.StringProperty;
 
 public class TableProyek {
     private final IntegerProperty id;
+    private final IntegerProperty userId; // Add user ID property
+    private final IntegerProperty clientId; // Add client ID property
     private final StringProperty namaProyek;
-    private final StringProperty picProyek; // Update properti picProyek
+    private final StringProperty picProyek;
     private final StringProperty namaClient;
     private final StringProperty noTelepon;
     private final StringProperty harga;
@@ -16,8 +18,10 @@ public class TableProyek {
     private final StringProperty tglSelesai;
     private final StringProperty aksi;
 
-    public TableProyek(int id, String namaProyek, String picProyek, String namaClient, String noTelepon, String harga, String tglMulai, String tglSelesai, String aksi) {
+    public TableProyek(int id, int userId, int clientId, String namaProyek, String picProyek, String namaClient, String noTelepon, String harga, String tglMulai, String tglSelesai, String aksi) {
         this.id = new SimpleIntegerProperty(id);
+        this.userId = new SimpleIntegerProperty(userId); // Initialize user ID
+        this.clientId = new SimpleIntegerProperty(clientId); // Initialize client ID
         this.namaProyek = new SimpleStringProperty(namaProyek);
         this.picProyek = new SimpleStringProperty(picProyek);
         this.namaClient = new SimpleStringProperty(namaClient);
@@ -27,6 +31,8 @@ public class TableProyek {
         this.tglSelesai = new SimpleStringProperty(tglSelesai);
         this.aksi = new SimpleStringProperty(aksi);
     }
+
+    // getters and setters...
 
     public int getId() {
         return id.get();
@@ -38,6 +44,30 @@ public class TableProyek {
 
     public IntegerProperty idProperty() {
         return id;
+    }
+
+    public int getUserId() {
+        return userId.get();
+    }
+
+    public void setUserId(int userId) {
+        this.userId.set(userId);
+    }
+
+    public IntegerProperty userIdProperty() {
+        return userId;
+    }
+
+    public int getClientId() {
+        return clientId.get();
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId.set(clientId);
+    }
+
+    public IntegerProperty clientIdProperty() {
+        return clientId;
     }
 
     public String getNamaProyek() {

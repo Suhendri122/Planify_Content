@@ -25,6 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import com.mycompany.planifycontent.TablePlatform;
 import javafx.scene.control.TextField;
 
 public class PlatformController implements Initializable {
@@ -107,7 +109,7 @@ public class PlatformController implements Initializable {
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahPlatform.fxml"));
-        Parent root = fxmlLoader.load();
+        Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Tambah Data Platform");

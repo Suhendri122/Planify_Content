@@ -1,112 +1,98 @@
-package com.mycompany.planitfycontent;
-
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+package com.mycompany.planifycontent;
 
 public class TableKonten {
-    private final SimpleIntegerProperty no;
-    private final SimpleStringProperty tema;
-    private final SimpleStringProperty media;
-    private final SimpleStringProperty platform;
-    private final SimpleStringProperty link;
-    private final SimpleStringProperty deadline;
-    private final SimpleStringProperty tglPost;
-    private final SimpleStringProperty picKonten;
-    private final SimpleStringProperty status;
-    private final SimpleStringProperty aksi;
+    private int id;
+    private String namaUser;
+    private String namaMedia;
+    private String namaPlatform;
+    private String linkDesain;
+    private String tema;
+    private String deadline;
+    private String tglPost;
+    private String status;
 
-    public TableKonten(int no, String tema, String media, String platform, String link, String deadline, String tglPost, String picKonten, String status, String aksi) {
-        this.no = new SimpleIntegerProperty(no);
-        this.tema = new SimpleStringProperty(tema);
-        this.media = new SimpleStringProperty(media);
-        this.platform = new SimpleStringProperty(platform);
-        this.link = new SimpleStringProperty(link);
-        this.deadline = new SimpleStringProperty(deadline);
-        this.tglPost = new SimpleStringProperty(tglPost);
-        this.picKonten = new SimpleStringProperty(picKonten);
-        this.status = new SimpleStringProperty(status);
-        this.aksi = new SimpleStringProperty(aksi);
+    public TableKonten(int id, String namaUser, String namaMedia, String namaPlatform, String linkDesain, String tema, String deadline, String tglPost, String status) {
+        this.id = id;
+        this.namaUser = namaUser;
+        this.namaMedia = namaMedia;
+        this.namaPlatform = namaPlatform;
+        this.linkDesain = linkDesain;
+        this.tema = tema;
+        this.deadline = deadline;
+        this.tglPost = tglPost;
+        this.status = status;
     }
 
-    // Getters
-    public int getNo() {
-        return no.get();
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNamaUser() {
+        return namaUser;
+    }
+
+    public void setNamaUser(String namaUser) {
+        this.namaUser = namaUser;
+    }
+
+    public String getNamaMedia() {
+        return namaMedia;
+    }
+
+    public void setNamaMedia(String namaMedia) {
+        this.namaMedia = namaMedia;
+    }
+
+    public String getNamaPlatform() {
+        return namaPlatform;
+    }
+
+    public void setNamaPlatform(String namaPlatform) {
+        this.namaPlatform = namaPlatform;
+    }
+
+    public String getLinkDesain() {
+        return linkDesain;
+    }
+
+    public void setLinkDesain(String linkDesain) {
+        this.linkDesain = linkDesain;
     }
 
     public String getTema() {
-        return tema.get();
-    }
-
-    public String getMedia() {
-        return media.get();
-    }
-
-    public String getPlatform() {
-        return platform.get();
-    }
-
-    public String getLink() {
-        return link.get();
-    }
-
-    public String getDeadline() {
-        return deadline.get();
-    }
-
-    public String getTglPost() {
-        return tglPost.get();
-    }
-
-    public String getPicKonten() {
-        return picKonten.get();
-    }
-
-    public String getStatus() {
-        return status.get();
-    }
-
-    public String getAksi() {
-        return aksi.get();
-    }
-
-    // Property getters
-    public SimpleIntegerProperty noProperty() {
-        return no;
-    }
-
-    public SimpleStringProperty temaProperty() {
         return tema;
     }
 
-    public SimpleStringProperty mediaProperty() {
-        return media;
+    public void setTema(String tema) {
+        this.tema = tema;
     }
 
-    public SimpleStringProperty platformProperty() {
-        return platform;
-    }
-
-    public SimpleStringProperty linkProperty() {
-        return link;
-    }
-
-    public SimpleStringProperty deadlineProperty() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public SimpleStringProperty tglPostProperty() {
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getTglPost() {
         return tglPost;
     }
 
-    public SimpleStringProperty picKontenProperty() {
-        return picKonten;
+    public void setTglPost(String tglPost) {
+        this.tglPost = tglPost;
     }
 
-    public SimpleStringProperty statusProperty() {
+    public String getStatus() {
         return status;
     }
 
-    public SimpleStringProperty aksiProperty() {
-        return aksi;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

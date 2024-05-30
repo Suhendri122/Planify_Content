@@ -1,5 +1,6 @@
 com\mycompany\planifycontent\TableClient.class
 com\mycompany\planifycontent\KontenController.class
+com\mycompany\planifycontent\database\KontenDAO.class
 com\mycompany\planifycontent\ClientController.class
 com\mycompany\planifycontent\TablePlatform.class
 com\mycompany\planifycontent\database\PlatformDAO.class
@@ -11,7 +12,6 @@ com\mycompany\planifycontent\database\UserDAO.class
 com\mycompany\planifycontent\database\ProyekDAO.class
 com\mycompany\planifycontent\HistoriController.class
 com\mycompany\planifycontent\database\MediaDAO.class
-com\mycompany\planitfycontent\TableKonten.class
 com\mycompany\planifycontent\database\User.class
 com\mycompany\planifycontent\ProyekController$1$1.class
 com\mycompany\planifycontent\MediaController.class
@@ -28,4 +28,5 @@ com\mycompany\planifycontent\database\DatabaseConnection.class
 com\mycompany\planifycontent\LoginController.class
 com\mycompany\planifycontent\UserController.class
 com\mycompany\planifycontent\database\DashboardDAO.class
+com\mycompany\planifycontent\TableKonten.class
 com\mycompany\planifycontent\TableDashboard.class
