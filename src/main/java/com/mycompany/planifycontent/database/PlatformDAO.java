@@ -16,19 +16,26 @@ public class PlatformDAO {
     }
 
     public List<TablePlatform> getAllDataPlatforms() throws SQLException {
-    List<TablePlatform> platforms = new ArrayList<>();
-    String query = "SELECT id, nama_platform FROM platform";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int no = 1;
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String nama = resultSet.getString("nama_platform");
-            TablePlatform platform = new TablePlatform(no++, nama);
-            platforms.add(platform);
+        List<TablePlatform> platforms = new ArrayList<>();
+        String query = "SELECT id, nama_platform FROM platform";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int no = 1;
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nama = resultSet.getString("nama_platform");
+                TablePlatform platform = new TablePlatform(no++, nama);
+                platforms.add(platform);
+            }
+        }
+        return platforms;
+    }
+
+    public void tambahPlatform(String namaPlatform) throws SQLException {
+        String query = "INSERT INTO platform (nama_platform) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, namaPlatform);
+            preparedStatement.executeUpdate();
         }
     }
-    return platforms;
-}
-
 }

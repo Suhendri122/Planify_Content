@@ -297,26 +297,6 @@ public class ProyekController implements Initializable {
     }
 }
     
-    
-    private void filterDataByTglSelesai(LocalDate tglSelesai) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getProyekByTglSelesai(tglSelesai);
-            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-            tableView.setItems(observableProyekList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } 
-    
-    @FXML
-    private void filterButtonOnAction(ActionEvent event) {
-        LocalDate tglSelesai = tglSelesaiDatePicker.getValue();
-        filterDataByTglSelesai(tglSelesai);
-    }
-    
-    
    private void showEditPopup(TableProyek proyek) {
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editProyek.fxml"));
