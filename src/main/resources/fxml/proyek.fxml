@@ -79,9 +79,9 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <DatePicker layoutX="388.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <DatePicker layoutX="388.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
-      <Button id="btnFilter" layoutX="559.0" layoutY="182.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
+      <DatePicker fx:id="tglMulaiDatePicker" layoutX="388.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <DatePicker fx:id="tglSelesaiDatePicker" layoutX="388.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <Button id="btnFilter" fx:id="filterButton" layoutX="559.0" layoutY="182.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
