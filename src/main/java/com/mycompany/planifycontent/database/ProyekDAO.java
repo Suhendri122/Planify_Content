@@ -2,11 +2,14 @@ package com.mycompany.planifycontent.database;
 
 import com.mycompany.planifycontent.TableProyek;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ProyekDAO {
     private final Connection connection;
@@ -21,6 +24,7 @@ public class ProyekDAO {
                        "FROM proyek " +
                        "INNER JOIN client ON proyek.client_id = client.id " +
                        "INNER JOIN user ON proyek.user_id = user.id";
+                       
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -44,7 +48,69 @@ public class ProyekDAO {
 
         return proyekList;
     }
+    
+    public List<TableProyek> getProyekByPIC(String picProyek) throws SQLException {
+        List<TableProyek> proyekList = new ArrayList<>();
 
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
+                "FROM proyek p " +
+                "INNER JOIN user u ON p.user_id = u.id " +
+                "INNER JOIN client c ON p.client_id = c.id " +
+                "WHERE u.nama =?");
+
+        preparedStatement.setString(1, picProyek);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            int userId = resultSet.getInt("user_id");
+            int clientId = resultSet.getInt("client_id");
+            String namaProyek = resultSet.getString("nama_proyek");
+            String picProyekName = resultSet.getString("pic_proyek");
+            String namaClient = resultSet.getString("nama_client");
+            String noTelepon = resultSet.getString("no_telp");
+            String harga = resultSet.getString("harga");
+            String tglMulai = resultSet.getString("tgl_mulai");
+            String tglSelesai = resultSet.getString("tgl_selesai");
+
+            TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, "");
+            proyekList.add(proyek);
+        }
+
+        return proyekList;
+    }
+    
+    public List<TableProyek> getProyekByClient(String clientName) throws SQLException {
+    Connection connection = DatabaseConnection.getConnection();
+    PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
+            "FROM proyek p " +
+            "INNER JOIN user u ON p.user_id = u.id " +
+            "INNER JOIN client c ON p.client_id = c.id " +
+            "WHERE c.nama =?");
+    preparedStatement.setString(1, clientName);
+    ResultSet resultSet = preparedStatement.executeQuery();
+    List<TableProyek> proyekList = new ArrayList<>();
+    while (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        int userId = resultSet.getInt("user_id");
+        int clientId = resultSet.getInt("client_id");
+        String namaProyek = resultSet.getString("nama_proyek");
+        String picProyekName = resultSet.getString("pic_proyek");
+        String namaClient = resultSet.getString("nama_client");
+        String noTelepon = resultSet.getString("no_telp");
+        String harga = resultSet.getString("harga");
+        String tglMulai = resultSet.getString("tgl_mulai");
+        String tglSelesai = resultSet.getString("tgl_selesai");
+        TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, "");
+        proyekList.add(proyek);
+    }
+    return proyekList;
+}
+    
+    
+    
     public List<String> getAllUsers() throws SQLException {
         List<String> users = new ArrayList<>();
         String query = "SELECT nama FROM user";
@@ -75,7 +141,20 @@ public class ProyekDAO {
 
         return clientList;
     }
-
+    
+    
+    public List<TableProyek> getProyekByTglMulai(LocalDate tglMulai) throws SQLException {
+    Connection connection = DatabaseConnection.getConnection();
+    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM proyek WHERE tgl_mulai = ?");
+    preparedStatement.setDate(1, Date.valueOf(tglMulai));
+    ResultSet resultSet = preparedStatement.executeQuery();
+    List<TableProyek> proyekList = new ArrayList<>();
+    while (resultSet.next()) {
+        // buat objek TableProyek dan tambahkan ke daftar
+    }
+    return proyekList;
+}
+    
     public String getPhoneNumberByClientName(String clientName) throws SQLException {
         String phoneNumber = null;
         String query = "SELECT no_telp FROM client WHERE nama = ?";

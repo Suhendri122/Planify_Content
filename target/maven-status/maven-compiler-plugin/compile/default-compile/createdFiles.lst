@@ -7,7 +7,6 @@ com\mycompany\planifycontent\database\PlatformDAO.class
 com\mycompany\planifycontent\TableProyek.class
 com\mycompany\planifycontent\EditProyekController.class
 com\mycompany\planifycontent\database\HistoriDAO.class
-com\mycompany\planifycontent\ProyekController.class
 com\mycompany\planifycontent\database\UserDAO.class
 com\mycompany\planifycontent\database\ProyekDAO.class
 com\mycompany\planifycontent\HistoriController.class
@@ -19,7 +18,6 @@ com\mycompany\planifycontent\database\ClientDAO.class
 com\mycompany\planifycontent\TableHistori.class
 com\mycompany\planifycontent\App.class
 com\mycompany\planifycontent\DashboardController.class
-module-info.class
 com\mycompany\planifycontent\PlatformController.class
 com\mycompany\planifycontent\TableMedia.class
 com\mycompany\planifycontent\ProyekController$1.class

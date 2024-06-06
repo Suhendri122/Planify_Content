@@ -2,15 +2,23 @@ package com.mycompany.planifycontent;
 
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.ProyekDAO;
+import com.mycompany.planifycontent.database.UserDAO;
+import com.mycompany.planifycontent.database.ClientDAO;
+
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,9 +41,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 
 public class ProyekController implements Initializable {
+
+    ObservableList<Map<Integer, String>> users = FXCollections.observableArrayList();
 
     @FXML
     private TableView<TableProyek> tableView;
@@ -65,15 +77,74 @@ public class ProyekController implements Initializable {
 
     @FXML
     private TableColumn<TableProyek, String> aksi;
+    
+    // Buat koneksi ke ChoiceBox 'user' di proyek.fxml
+    @FXML
+    private ChoiceBox<String> userBox;
+    
+    @FXML
+    private ChoiceBox<String> clientBox;
+    
+    @FXML
+    private ChoiceBox<String> picProyekBox;
+    
+    @FXML
+    private DatePicker tglMulaiDatePicker;
+    
+    @FXML
+    private DatePicker tglSelesaiDatePicker;
+
+    @FXML
+    private Button filterButton;
 
     private Stage mainStage;
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
+    
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try{
+            // Masukkan function buat ambil data mahasiswa di database
+            getListMahasiswa();
+        }
+        catch(Exception e){
+            System.out.println("error");
+        }
+        
+        
+        try{
+            // Masukkan function buat ambil data mahasiswa di database
+            getListKonsumen();
+        }
+        catch(Exception e){
+            System.out.println("error");
+        }
+        
+        userBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+    if (newValue != null) {
+        filterDataByPIC(newValue);
+    }
+});
+        
+        clientBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+    if (newValue!= null) {
+        filterDataByClient(newValue);
+    }
+});
+        
+        tglMulaiDatePicker.setValue(LocalDate.now()); // set nilai default ke tanggal hari ini
+    filterButton.setOnAction(event -> {
+    LocalDate tanggalTerpilih = tglMulaiDatePicker.getValue();
+    filterDataByTglMulai(tanggalTerpilih);
+});
+    
+    
+
+
         no.setCellValueFactory(new PropertyValueFactory<>("id"));
         namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
         picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
@@ -188,7 +259,64 @@ public class ProyekController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    
+    private void filterDataByPIC(String picProyek) {
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        ProyekDAO proyekDAO = new ProyekDAO(connection);
+        List<TableProyek> proyekList = proyekDAO.getProyekByPIC(picProyek);
+        ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+        tableView.setItems(observableProyekList);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    }
+    
+    private void filterDataByClient(String clientName) {
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        ProyekDAO proyekDAO = new ProyekDAO(connection);
+        List<TableProyek> proyekList = proyekDAO.getProyekByClient(clientName);
+        ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+        tableView.setItems(observableProyekList);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+}
+    
+    private void filterDataByTglMulai(LocalDate tglMulai) {
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        ProyekDAO proyekDAO = new ProyekDAO(connection);
+        List<TableProyek> proyekList = proyekDAO.getProyekByTglMulai(tglMulai);
+        ObservableList<TableProyek> observableProyekList = FXCollections.observableList(proyekList); // Konversi daftar ke ObservableList
+        tableView.setItems(observableProyekList);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
+    
+    private void filterDataByTglSelesai(LocalDate tglSelesai) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ProyekDAO proyekDAO = new ProyekDAO(connection);
+            List<TableProyek> proyekList = proyekDAO.getProyekByTglSelesai(tglSelesai);
+            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+            tableView.setItems(observableProyekList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
+    
+    @FXML
+    private void filterButtonOnAction(ActionEvent event) {
+        LocalDate tglSelesai = tglSelesaiDatePicker.getValue();
+        filterDataByTglSelesai(tglSelesai);
+    }
+    
+    
    private void showEditPopup(TableProyek proyek) {
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editProyek.fxml"));
@@ -208,8 +336,58 @@ public class ProyekController implements Initializable {
     } catch (IOException e) {
         e.printStackTrace();
     }
-}
+   }
+    
+    // Function buat masukkin nama user kedalam ChoiceBox
+    private void getListMahasiswa() throws Exception{
+        try{
+            // Buat koneksi ke database user
+            Connection connection = DatabaseConnection.getConnection();
+            UserDAO dataUserDAO = new UserDAO(connection);
 
+            // Simpan data ke dalam array untuk dikelola datanya
+            List<TableUser> userData = dataUserDAO.getAllDataUsers();
+
+            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
+            for(TableUser user : userData){
+                Map<Integer, String> x = new HashMap<Integer, String>();
+                x.put(user.getNo(), user.getNama());
+            
+                users.add(x);
+                
+                // Terapkan ke ChoiceBox
+                userBox.getItems().addAll(user.getNama());
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    private void getListKonsumen() throws Exception{
+        try{
+            // Buat koneksi ke database user
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            
+            // Simpan data ke dalam array untuk dikelola datanya
+            List<TableClient> clientData = dataClientDAO.getAllDataClients();
+            ObservableList<String> users  = FXCollections.observableArrayList();
+
+            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
+            for(TableClient client : clientData){
+                users.add(client.getNama());
+            }
+
+            // Terapkan ke ChoiceBox
+            clientBox.setItems(users);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {

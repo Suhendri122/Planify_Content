@@ -1,30 +1,31 @@
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditProyekController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\PlatformController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableDashboard.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\ClientDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\UserController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\HistoriDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableHistori.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\PlatformDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\DashboardDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\KontenController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableUser.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\MediaDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableClient.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\KontenDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\App.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\HistoriController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\ProyekController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\LoginController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableKonten.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableProyek.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\DashboardController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\User.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\MediaController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\module-info.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\UserDAO.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\DatabaseConnection.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableMedia.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\ClientController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TablePlatform.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\ProyekDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\DashboardController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\ClientDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\DatabaseConnection.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\HistoriController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\PlatformController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\ProyekController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableUser.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\ClientController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableMedia.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\MediaDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\User.java
+D:\PBO\Planify_Content\src\main\java\module-info.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableDashboard.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\PropertyValueFactory.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\DashboardDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableProyek.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableKonten.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\UserController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\KontenController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\ProyekDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\App.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\HistoriDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\KontenDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableClient.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\MediaController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\LoginController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableHistori.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\UserDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\PlatformDAO.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\EditProyekController.java
+D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TablePlatform.java
