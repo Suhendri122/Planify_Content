@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.DatePicker;
 
 
 public class ProyekDAO {
@@ -18,13 +19,44 @@ public class ProyekDAO {
         this.connection = connection;
     }
 
-    public List<TableProyek> getAllProyek() throws SQLException {
+    public List<TableProyek> getAllProyek(String pic, String client, String startDate, String endDate) throws SQLException {
         List<TableProyek> proyekList = new ArrayList<>();
         String query = "SELECT proyek.id, proyek.nama_proyek, proyek.user_id, user.nama AS pic_proyek, proyek.client_id, client.nama, client.no_telp, proyek.harga, proyek.tgl_mulai, proyek.tgl_selesai " +
                        "FROM proyek " +
                        "INNER JOIN client ON proyek.client_id = client.id " +
                        "INNER JOIN user ON proyek.user_id = user.id";
-                       
+
+
+        // Bikin sistem filtering berdasarkan isi data parameter
+        List<String> filter = new ArrayList<String>();
+
+        // Jika PIC tidak 0 atau "Semua" maka cari berdasarkan ID PIC
+        if(!pic.equals("0")){
+            filter.add("user.id = '" + pic + "'");
+        }
+        
+        // Jika PIC tidak 0 atau "Semua" maka cari berdasarkan ID Client
+        if(!client.equals("0")){
+            filter.add("client.id = '" + client + "'");
+        }
+
+        // Jika startDate bukan string kosong maka cari tanggal setelah tanggal mulai
+        if(!startDate.equals("")){
+            filter.add("tgl_mulai >= '" + startDate.toString() + "'");
+        }
+
+        // Jika endDate bukan string kosong maka cari tanggal sebelum tanggal selesai
+        if(!endDate.equals("")){
+            filter.add("tgl_selesai <= '" + endDate.toString() + "'");
+        }
+
+        // Jika filter tidak kosong, tambahkan keyword WHERE di depan dan kumpulkan semua filter yang digunakan jadi satu dengan "AND" sebagai pemisah
+        if(filter.size() != 0){
+            query += " WHERE " + String.join(" AND ", filter);
+        }
+
+        // Sebagai pengecek query, comment kalau ga dipakai
+        // System.out.println(query);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();

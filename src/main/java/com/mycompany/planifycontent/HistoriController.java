@@ -16,6 +16,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.HistoriDAO;
+import com.mycompany.planifycontent.database.ProyekDAO;
+
+import java.time.LocalDate;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 
 public class HistoriController implements Initializable {
 
@@ -46,6 +53,16 @@ public class HistoriController implements Initializable {
     private TableColumn<TableHistori, String> picKontenColumn;
     @FXML
     private TableColumn<TableHistori, String> statusColumn;
+
+    @FXML
+    private DatePicker dariTgl;
+    @FXML
+    private DatePicker sampaiTgl;
+    @FXML
+    private Button filterButton;
+    
+    private Stage mainStage;
+    private Connection connection;
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -81,13 +98,14 @@ public class HistoriController implements Initializable {
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            Connection connection = DatabaseConnection.getConnection();
+            
+            connection = DatabaseConnection.getConnection();
             HistoriDAO historiDAO = new HistoriDAO(connection);
-            List<TableHistori> historiData = historiDAO.getHistoriData();
+            List<TableHistori> historiData = historiDAO.getHistoriData("", "");
             ObservableList<TableHistori> observableHistoriData = FXCollections.observableArrayList(historiData);
             tableView.setItems(observableHistoriData);
             noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
@@ -102,9 +120,33 @@ public class HistoriController implements Initializable {
             tglPostColumn.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
             picKontenColumn.setCellValueFactory(new PropertyValueFactory<>("picKonten"));
             statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+            
+            filterButton.setOnAction((e -> {
+        refreshTable();
+        }));
+
+            
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception
         }
+        
+        // Tiap kali tombol filter (cari) ditekan, refresh tabel dengan filter yang ad
     }
+    
+    public void refreshTable() {
+    try {
+        String startDate = dariTgl.getValue() == null? "" : dariTgl.getValue().toString();
+        String endDate = sampaiTgl.getValue() == null? "" : sampaiTgl.getValue().toString();
+        
+        Connection connection = DatabaseConnection.getConnection();
+        HistoriDAO historiDAO = new HistoriDAO(connection);
+        List<TableHistori> historiData = historiDAO.getHistoriData(startDate, endDate);
+        ObservableList<TableHistori> observableHistoriData = FXCollections.observableArrayList(historiData);
+        tableView.setItems(observableHistoriData);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
 }
