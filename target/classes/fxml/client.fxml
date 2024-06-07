@@ -68,10 +68,10 @@
          <content>
             <TableView fx:id="tableView" prefHeight="340.0" prefWidth="685.0">
                <columns>
-                  <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="namaColumn" prefWidth="200.0" text="Nama" />
-                  <TableColumn fx:id="noTelpColumn" prefWidth="150.0" text="No Telp." />
-                  <TableColumn fx:id="usahaColumn" prefWidth="200.0" text="Usaha" />
+                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
+                  <TableColumn fx:id="nama" prefWidth="200.0" text="Nama" />
+                  <TableColumn fx:id="noTelp" prefWidth="150.0" text="No Telp." />
+                  <TableColumn fx:id="usaha" prefWidth="200.0" text="Usaha" />
                   <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
                </columns>
             </TableView>
@@ -86,6 +86,11 @@
       <Button layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
          <font>
             <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Button>
+            <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
       <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />

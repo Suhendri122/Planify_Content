@@ -25,10 +25,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.mycompany.planifycontent.TablePlatform;
+import com.mycompany.planifycontent.TableMedia;
 import com.mycompany.planifycontent.database.MediaDAO;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 
 
@@ -69,6 +80,20 @@ public class MediaController implements Initializable{
         App.setRoot("user");
     }
     
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
+    
     
     //popup tambah, edit, dan filter
     
@@ -102,13 +127,17 @@ public class MediaController implements Initializable{
 
     @FXML
     private TableColumn<TableMedia, String> mediaColumn;
+    
+    @FXML
+    private TableColumn<TableMedia, String> aksiColumn;
      
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            MediaDAO DataMediaDAO = new MediaDAO(connection);
-            List<TableMedia> mediaData = DataMediaDAO.getAllDataMedia();
+            MediaDAO MediaDAO = new MediaDAO(connection);
+            List<TableMedia> mediaData = MediaDAO.getAllMedia();
             ObservableList<TableMedia> observableMediaData = FXCollections.observableArrayList(mediaData);
 
             tableView.setItems(observableMediaData);
@@ -116,6 +145,91 @@ public class MediaController implements Initializable{
             // Inisialisasi kolom-kolom lain
             noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
             mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
+            
+            // Inisialisasi kolom aksi
+            aksiColumn.setCellFactory(new Callback<TableColumn<TableMedia, String>, TableCell<TableMedia, String>>() {
+                @Override
+                public TableCell<TableMedia, String> call(TableColumn<TableMedia, String> param) {
+                    return new TableCell<TableMedia, String>() {
+                        final Button btnEdit = new Button();
+                        final Button btnDelete = new Button();
+                        final HBox hbox = new HBox(btnEdit, btnDelete);
+                        final AnchorPane anchorPane = new AnchorPane();
+
+                        {
+                            // Setup buttons
+                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                            ivEdit.setFitHeight(20);
+                            ivEdit.setFitWidth(20);
+                            btnEdit.setGraphic(ivEdit);
+
+                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                            ivDelete.setFitHeight(20);
+                            ivDelete.setFitWidth(20);
+                            btnDelete.setGraphic(ivDelete);
+             
+
+
+                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
+                            
+                            btnEdit.setPadding(new Insets(5));
+                            btnDelete.setPadding(new Insets(5));
+
+                            // Setup button actions
+                            btnEdit.setOnAction(event -> {
+                                TableMedia media = getTableView().getItems().get(getIndex());
+                                showEditPopup(media);
+                            });
+
+                            btnDelete.setOnAction(event -> {
+                                TableMedia media = getTableView().getItems().get(getIndex());
+
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Konfirmasi Penghapusan");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
+
+                                alert.showAndWait().ifPresent(response -> {
+                                    if (response == ButtonType.OK) {
+                                        try {
+                                            Connection connection = DatabaseConnection.getConnection();
+                                            MediaDAO mediaDAO = new MediaDAO(connection);
+                                            mediaDAO.deleteMedia(media.getNo());
+                                            refreshTable();
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            });
+
+                        }
+
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                anchorPane.getChildren().clear();
+                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                btnEdit.setPadding(new Insets(5));
+                                btnDelete.setPadding(new Insets(5));
+
+                                setGraphic(anchorPane);
+                                setText(null);
+                            }
+                        }
+
+                    };
+                }
+            });
 
             // Atur nomor untuk setiap item
             int index = 1;
@@ -127,4 +241,45 @@ public class MediaController implements Initializable{
             // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
+}
+
+public void refreshTable() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            MediaDAO mediaDAO = new MediaDAO(connection);
+            List<TableMedia> mediaList = mediaDAO.getAllMedia();
+            ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
+            updateMediaIds(observableMediaList); // Reorder IDs before setting the items
+            tableView.setItems(observableMediaList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateMediaIds(ObservableList<TableMedia> mediaList) {
+        for (int i = 0; i < mediaList.size(); i++) {
+            mediaList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
+        }
+    }
+
+    private void showEditPopup(TableMedia media) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editMedia.fxml"));
+            Parent root = loader.load();
+
+            EditMediaController controller = loader.getController();
+            controller.setMedia(media);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit Media");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

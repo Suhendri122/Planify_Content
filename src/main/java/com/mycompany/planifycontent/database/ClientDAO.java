@@ -15,7 +15,7 @@ public class ClientDAO {
         this.connection = connection;
     }
 
-    public List<TableClient> getAllDataClients() throws SQLException {
+    public List<TableClient> getAllClients() throws SQLException {
         List<TableClient> clients = new ArrayList<>();
         String query = "SELECT id, nama, no_telp, usaha FROM Client";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -25,10 +25,47 @@ public class ClientDAO {
             String nama = resultSet.getString("nama");
                 String no_telp = resultSet.getString("no_telp");
                 String usaha = resultSet.getString("usaha");
-                TableClient clientItem = new TableClient(no++, nama, no_telp, usaha);
+                TableClient clientItem = new TableClient(no++, nama, no_telp, usaha, "");
                 clients.add(clientItem);
             }
         }
         return clients;
+    }
+    
+     public void deleteClient(int id) throws SQLException {
+        String query = "DELETE FROM client WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+        updateClientNumbers();
+    }
+
+    public void updateClientNumbers() throws SQLException {
+        String query = "SET @row_number = 0; " +
+                       "UPDATE platform SET id = (@row_number:=@row_number + 1) ORDER BY id;";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateClient(int id, String newName, String newNoTelp, String newUsaha) throws SQLException {
+        String query = "UPDATE client SET nama = ?, no_telp = ?, usaha = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newName);
+            stmt.setString(2, newNoTelp);
+            stmt.setString(3, newUsaha);
+            stmt.setInt(4, id);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    public void insertClient(String name) throws SQLException {
+        String query = "INSERT INTO client (nama) VALUES (?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            stmt.executeUpdate();
+        }
     }
 }

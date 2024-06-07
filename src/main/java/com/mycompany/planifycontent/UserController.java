@@ -22,7 +22,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import com.mycompany.planifycontent.database.UserDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
+import java.util.List;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 public class UserController implements Initializable {
     
@@ -61,6 +72,20 @@ public class UserController implements Initializable {
         App.setRoot("user");
     }
     
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
+    
     // Popup tambah, edit, dan filter
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
@@ -82,34 +107,171 @@ public class UserController implements Initializable {
         stage.close();
     }
     
-        @FXML
+    @FXML
     private TableView<TableUser> tableView;
 
     @FXML
-    private TableColumn<TableUser, Integer> noColumn;
+    private TableColumn<TableUser, Integer> no;
 
     @FXML
-    private TableColumn<TableUser, String> namaColumn;
+    private TableColumn<TableUser, String> user;
 
     @FXML
-    private TableColumn<TableUser, String> emailColumn;
+    private TableColumn<TableUser, String> email;
+    
+    @FXML
+    private TableColumn<TableUser, String> aksiColumn;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            UserDAO dataUserDAO = new UserDAO(connection);
-            ObservableList<TableUser> userData = FXCollections.observableArrayList(dataUserDAO.getAllDataUsers());
+            UserDAO UserDAO = new UserDAO(connection);
+            List<TableUser> userData = UserDAO.getAllUsers();
+            ObservableList<TableUser> observableUserData = FXCollections.observableArrayList(userData);
 
-            tableView.setItems(userData);
+            tableView.setItems(observableUserData);
 
             // Initialize columns
-            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+            no.setCellValueFactory(new PropertyValueFactory<>("no"));
+            user.setCellValueFactory(new PropertyValueFactory<>("user"));
+            email.setCellValueFactory(new PropertyValueFactory<>("email"));
+            
+            aksiColumn.setCellFactory(new Callback<TableColumn<TableUser, String>, TableCell<TableUser, String>>() {
+                @Override
+                public TableCell<TableUser, String> call(TableColumn<TableUser, String> param) {
+                    return new TableCell<TableUser, String>() {
+                        final Button btnEdit = new Button();
+                        final Button btnDelete = new Button();
+                        final HBox hbox = new HBox(btnEdit, btnDelete);
+                        final AnchorPane anchorPane = new AnchorPane();
+
+                        {
+                            // Setup buttons
+                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                            ivEdit.setFitHeight(20);
+                            ivEdit.setFitWidth(20);
+                            btnEdit.setGraphic(ivEdit);
+
+                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                            ivDelete.setFitHeight(20);
+                            ivDelete.setFitWidth(20);
+                            btnDelete.setGraphic(ivDelete);
+             
+
+
+                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
+                            
+                            btnEdit.setPadding(new Insets(5));
+                            btnDelete.setPadding(new Insets(5));
+
+                            // Setup button actions
+                            btnEdit.setOnAction(event -> {
+                                TableUser user = getTableView().getItems().get(getIndex());
+                                showEditPopup(user);
+                            });
+
+                            btnDelete.setOnAction(event -> {
+                                TableUser user = getTableView().getItems().get(getIndex());
+
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Konfirmasi Penghapusan");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
+
+                                alert.showAndWait().ifPresent(response -> {
+                                    if (response == ButtonType.OK) {
+                                        try {
+                                            Connection connection = DatabaseConnection.getConnection();
+                                            UserDAO userDAO = new UserDAO(connection);
+                                            userDAO.deleteUser(user.getNo()); 
+                                            refreshTable();
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            });
+
+                        }
+
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                anchorPane.getChildren().clear();
+                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                btnEdit.setPadding(new Insets(5));
+                                btnDelete.setPadding(new Insets(5));
+
+                                setGraphic(anchorPane);
+                                setText(null);
+                            }
+                        }
+
+                    };
+                }
+            });
+
+            // Atur nomor untuk setiap item
+            int index = 1;
+            for (TableUser item : userData) {
+                item.noProperty().set(index++);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle error if failed to get connection or data
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+        }
+    }
+}
+
+public void refreshTable() {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            List<TableUser> userList = userDAO.getAllUsers();
+            ObservableList<TableUser> observableUserList = FXCollections.observableArrayList(userList);
+            updateUserIds(observableUserList); // Reorder IDs before setting the items
+            tableView.setItems(observableUserList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateUserIds(ObservableList<TableUser> userList) {
+        for (int i = 0; i < userList.size(); i++) {
+            userList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
+        }
+    }
+
+    private void showEditPopup(TableUser user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editUser.fxml"));
+            Parent root = loader.load();
+
+            EditUserController controller = loader.getController();
+            controller.setUser(user);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit User");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

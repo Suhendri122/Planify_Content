@@ -56,6 +56,11 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
+            <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
       <TableView fx:id="tableView" layoutX="20.0" layoutY="130.0" prefHeight="194.0" prefWidth="960.0">
          <columns>
             <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />

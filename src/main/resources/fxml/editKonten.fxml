@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.EditKontenController">
    <children>
       <Label layoutX="15.0" layoutY="15.0" prefHeight="30.0" prefWidth="115.0" text="Tema" textFill="#358c9c">
          <font>
@@ -55,18 +55,18 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <DatePicker layoutX="140.0" layoutY="195.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
-      <DatePicker layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField disable="true" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
+      <DatePicker fx:id="kontenTglPostField" layoutX="140.0" layoutY="195.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="kontenMediaField" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="kontenPlatformField" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
+      <DatePicker fx:id="kontenDeadlineField" layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="kontenTemaField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="kontenLinkDesainField" disable="true" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="331.0" prefHeight="30.0" text="Status" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="140.0" layoutY="285.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="331.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="kontenUserField" layoutX="140.0" layoutY="285.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="kontenStatusField" layoutX="140.0" layoutY="331.0" prefHeight="30.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

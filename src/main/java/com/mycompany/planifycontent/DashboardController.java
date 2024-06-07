@@ -16,6 +16,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -55,6 +58,20 @@ public class DashboardController implements Initializable{
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
+    
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
     
     @FXML
     private TableView<TableDashboard> tableView;
