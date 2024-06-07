@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -109,31 +110,94 @@ public class ClientController implements Initializable{
 
     @FXML
     private TableColumn<TableClient, String> usahaColumn;
+    
+    
+     @FXML
+    private ChoiceBox<String> namaclient;
+    
+    @FXML
+    private ChoiceBox<String> namausaha;
+    
+    @FXML
+    private Button filtercari;
+
+    private Stage mainStage;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            ClientDAO dataClientDAO = new ClientDAO(connection);
-            List<TableClient> clientData = dataClientDAO.getAllDataClients();
-            ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
+        ClientDAO dataClientDAO = new ClientDAO(connection);
+        List<TableClient> clientData = dataClientDAO.getAllDataClients();
+        ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
 
-            tableView.setItems(observableClientData);
+        tableView.setItems(observableClientData);
 
-            // Initialize columns
-            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-            usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+        // Initialize columns
+        noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+        namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+        usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
 
-            // Set numbering for each item
-            int index = 1;
-            for (TableClient item : clientData) {
-                item.noProperty().set(index++);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle error if failed to get connection or data
+        // Set numbering for each item
+        int index = 1;
+        for (TableClient item : clientData) {
+            item.noProperty().set(index++);
         }
+        
+        // Populate ChoiceBox items
+        ObservableList<String> namaItems = FXCollections.observableArrayList();
+        ObservableList<String> usahaItems = FXCollections.observableArrayList();
+
+        for (TableClient client : clientData) {
+            if (!namaItems.contains(client.getNama())) {
+                namaItems.add(client.getNama());
+            }
+            if (!usahaItems.contains(client.getUsaha())) {
+                usahaItems.add(client.getUsaha());
+            }
+        }
+
+        namaclient.setItems(namaItems);
+        namausaha.setItems(usahaItems);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle error if failed to get connection or data
     }
+        
+       // Remove the ChangeListener from the ChoiceBox selection model
+    namaclient.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
+        filterCariAction(null);
+    });
+    
+    namausaha.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
+        filterCariAction(null);
+    });
+    
+    // Add an action listener to the "Cari" button
+    filtercari.setOnAction(event -> {
+        filterCariAction(event);
+    });
+        
+    }
+    
+    
+    @FXML
+private void filterCariAction(ActionEvent event) {
+    String nama = namaclient.getSelectionModel().getSelectedItem();
+    String usaha = namausaha.getSelectionModel().getSelectedItem();
+
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        ClientDAO dataClientDAO = new ClientDAO(connection);
+        List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(nama, usaha);
+        ObservableList<TableClient> observableFilteredData = FXCollections.observableArrayList(filteredData);
+
+        tableView.setItems(observableFilteredData);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle error if failed to get connection or data
+    }
+}
 }

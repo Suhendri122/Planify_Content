@@ -82,7 +82,7 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Button layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
+      <Button fx:id="filtercari" layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" >
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -92,7 +92,7 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <ChoiceBox layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="namaclient" layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="namausaha" layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>
