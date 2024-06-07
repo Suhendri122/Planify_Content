@@ -17,22 +17,21 @@ public class ClientDAO {
     }
 
     public List<TableClient> getAllClients() throws SQLException {
-        List<TableClient> clients = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        String query = "SELECT id, nama, no_telp, usaha FROM Client";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            int no = 1;
-            while (resultSet.next()) {
+    List<TableClient> clients = new ArrayList<>();
+    String query = "SELECT id, nama, no_telp, usaha FROM Client";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+        int no = 1;
+        while (resultSet.next()) {
             String nama = resultSet.getString("nama");
-                String no_telp = resultSet.getString("no_telp");
-                String usaha = resultSet.getString("usaha");
-                TableClient clientItem = new TableClient(no++, nama, no_telp, usaha, "");
-                clients.add(clientItem);
-            }
+            String no_telp = resultSet.getString("no_telp");
+            String usaha = resultSet.getString("usaha");
+            TableClient clientItem = new TableClient(no++, nama, no_telp, usaha, "");
+            clients.add(clientItem);
         }
-        return clients;
     }
+    return clients;
+}
 
    public List<TableClient> getDataClientsByFilter(String nama, String usaha) throws SQLException {
     List<TableClient> filteredData = new ArrayList<>();
@@ -66,7 +65,7 @@ public class ClientDAO {
             String namaClient = resultSet.getString("nama");
             String noTelp = resultSet.getString("no_telp");
             String usahaClient = resultSet.getString("usaha");
-            TableClient clientItem = new TableClient(no++, namaClient, noTelp, usahaClient);
+            TableClient clientItem = new TableClient(no++, namaClient, noTelp, usahaClient, "");
             filteredData.add(clientItem);
         }
     }
@@ -109,4 +108,9 @@ public class ClientDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<TableClient> getAllDataClients() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

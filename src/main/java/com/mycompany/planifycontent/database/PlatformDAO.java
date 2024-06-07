@@ -71,4 +71,10 @@ public class PlatformDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<TablePlatform> getAllDataPlatforms() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+   
 }

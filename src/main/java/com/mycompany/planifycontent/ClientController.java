@@ -209,6 +209,7 @@ public class ClientController implements Initializable{
     });
         
     }
+    }
     
     
     @FXML
