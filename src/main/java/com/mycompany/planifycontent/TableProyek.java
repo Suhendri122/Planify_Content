@@ -1,5 +1,6 @@
 package com.mycompany.planifycontent;
 
+import java.time.LocalDate;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +31,10 @@ public class TableProyek {
         this.tglMulai = new SimpleStringProperty(tglMulai);
         this.tglSelesai = new SimpleStringProperty(tglSelesai);
         this.aksi = new SimpleStringProperty(aksi);
+    }
+
+    public TableProyek(int id, String namaProyek, String picProyek, String namaClient, String noTelepon, String harga, LocalDate tglMulai, LocalDate tglSelesai) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     // getters and setters...
