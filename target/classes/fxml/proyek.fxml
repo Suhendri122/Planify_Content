@@ -86,7 +86,7 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Button>
-      <Button id="btnTambah" layoutX="905.0" layoutY="182.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" prefHeight="30.0" prefWidth="74.0" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" fx:id="btnTambah" layoutX="905.0" layoutY="182.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" prefHeight="30.0" prefWidth="74.0" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -111,6 +111,11 @@
             </TableColumn>
         </columns>
       </TableView>
+      <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
       <ChoiceBox fx:id="userBox" layoutX="123.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
       <ChoiceBox fx:id="clientBox" layoutX="123.0" layoutY="182.0" prefHeight="30.0" prefWidth="140.0" />
    </children>

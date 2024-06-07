@@ -3,10 +3,12 @@ D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\DashboardContr
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\ClientDAO.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\DatabaseConnection.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\HistoriController.java
+D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditClientController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\PlatformController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\ProyekController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableUser.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\ClientController.java
+D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditKontenController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableMedia.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\MediaDAO.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\User.java
@@ -20,8 +22,11 @@ D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\UserController
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\KontenController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\ProyekDAO.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\App.java
+D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditUserController.java
+D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditPlatformController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\HistoriDAO.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\database\KontenDAO.java
+D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditMediaController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\TableClient.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\MediaController.java
 D:\PBO\Planify_Content\src\main\java\com\mycompany\planifycontent\LoginController.java

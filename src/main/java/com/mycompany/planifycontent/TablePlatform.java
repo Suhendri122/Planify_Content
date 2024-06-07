@@ -8,11 +8,14 @@ import javafx.beans.property.StringProperty;
 public class TablePlatform {
     private final SimpleIntegerProperty no;
     private final SimpleStringProperty platform;
+    private final StringProperty aksi;
+        private int id; // Tambahkan properti id
 
 
-    public TablePlatform(int no, String platform) {
+    public TablePlatform(int no, String platform, String aksi) {
         this.no = new SimpleIntegerProperty(no);
         this.platform = new SimpleStringProperty(platform);
+        this.aksi = new SimpleStringProperty(aksi);
     }
 
     public int getNo() {
@@ -33,5 +36,13 @@ public class TablePlatform {
 
     public StringProperty platformProperty() {
         return platform;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

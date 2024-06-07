@@ -12,13 +12,16 @@ public class TableClient {
     private final SimpleStringProperty nama;
     private final SimpleStringProperty no_telp;
     private final SimpleStringProperty usaha;
+    private final StringProperty aksi;
+    private int id;
 
 
-    public TableClient(int no, String nama, String no_telp, String usaha) {
+    public TableClient(int no, String nama, String no_telp, String usaha, String aksi) {
         this.no = new SimpleIntegerProperty(no);
         this.nama = new SimpleStringProperty(nama);
         this.no_telp = new SimpleStringProperty(no_telp);
         this.usaha = new SimpleStringProperty(usaha);
+        this.aksi = new SimpleStringProperty(aksi);
     }
 
     public int getNo() {
@@ -59,5 +62,13 @@ public class TableClient {
 
     public void setNama(String string) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+        public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -23,6 +23,9 @@ import java.time.LocalDate;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class HistoriController implements Initializable {
 
@@ -98,7 +101,21 @@ public class HistoriController implements Initializable {
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-    
+        
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

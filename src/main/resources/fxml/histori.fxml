@@ -96,5 +96,10 @@
       </Button>
       <DatePicker fx:id="dariTgl" promptText="Dari Tgl" layoutX="115.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
       <DatePicker fx:id="sampaiTgl" promptText="Sampai Tgl" layoutX="380.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
+            <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

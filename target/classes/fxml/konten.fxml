@@ -79,7 +79,7 @@
                   <TableColumn fx:id="tglPost" prefWidth="110.0" text="Tgl. Post" />
                   <TableColumn fx:id="picKonten" prefWidth="105.0" text="PIC Konten" />
                   <TableColumn fx:id="status" prefWidth="115.0" text="Status" />
-                  <TableColumn fx:id="aksi" prefWidth="100.0" text="Aksi" />
+                  <TableColumn fx:id="aksiColumn" prefWidth="100.0" text="Aksi" />
                </columns>
             </TableView>
          </content>
@@ -98,6 +98,11 @@
       <Button layoutX="551.0" layoutY="135.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
          <font>
             <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Button>
+            <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
       <Text fill="#5b5b5b" layoutX="20.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status">

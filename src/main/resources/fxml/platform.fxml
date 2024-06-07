@@ -57,7 +57,12 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" layoutX="300.0" layoutY="85.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="300.0" layoutY="85.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="16.0" />
+         </font>
+      </Button>
+            <Button id="btnmenu" layoutX="925.0" layoutY="7.0" mnemonicParsing="false" onAction="#logout" text="Logout" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
@@ -68,7 +73,7 @@
             <columns>
                 <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
                 <TableColumn fx:id="platformColumn" prefWidth="220.0" text="Platform" />
-                <TableColumn minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
+                <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
             </columns>
         </TableView>
          </content>

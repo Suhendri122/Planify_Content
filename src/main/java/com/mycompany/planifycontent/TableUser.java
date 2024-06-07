@@ -4,48 +4,40 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class TableUser {
-    private final ObservableList<TableUser> dataUsers = FXCollections.observableArrayList();
+    private final SimpleIntegerProperty no;
+    private final SimpleStringProperty user;
+    private final SimpleStringProperty email;
+    private final StringProperty aksi;
+        private int id; // Tambahkan properti id
 
-    private final IntegerProperty no = new SimpleIntegerProperty();
-    private final StringProperty nama = new SimpleStringProperty();
-    private final StringProperty email = new SimpleStringProperty();
 
-    public TableUser() {
-        // Constructor tanpa parameter
-    }
-
-    public TableUser(int no, String nama, String email) {
-        this.no.set(no);
-        this.nama.set(nama);
-        this.email.set(email);
+    public TableUser(int no, String user, String email, String aksi) {
+        this.no = new SimpleIntegerProperty(no);
+        this.user = new SimpleStringProperty(user);
+        this.email = new SimpleStringProperty(email);
+        this.aksi = new SimpleStringProperty(aksi);
     }
 
     public int getNo() {
         return no.get();
     }
 
+    public void setNo(int no) {
+        this.no.set(no);
+    }
+    
     public IntegerProperty noProperty() {
         return no;
     }
 
-    public void setNo(int no) {
-        this.no.set(no);
+    public String getUser() {
+        return user.get();
     }
 
-    public String getNama() {
-        return nama.get();
-    }
-
-    public StringProperty namaProperty() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama.set(nama);
+    public StringProperty userProperty() {
+        return user;
     }
 
     public String getEmail() {
@@ -55,16 +47,12 @@ public class TableUser {
     public StringProperty emailProperty() {
         return email;
     }
-
-    public void setEmail(String email) {
-        this.email.set(email);
+    
+    public int getId() {
+        return id;
     }
 
-    public ObservableList<TableUser> getDataUsers() {
-        return dataUsers;
-    }
-
-    public void addDataUser(TableUser dataUser) {
-        dataUsers.add(dataUser);
+    public void setId(int id) {
+        this.id = id;
     }
 }

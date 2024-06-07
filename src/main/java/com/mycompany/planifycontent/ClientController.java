@@ -14,16 +14,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 public class ClientController implements Initializable{
 
@@ -61,6 +71,20 @@ public class ClientController implements Initializable{
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
+    
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
     
     //popup tambah, edit, dan filter
     
@@ -100,16 +124,19 @@ public class ClientController implements Initializable{
     private TableView<TableClient> tableView;
 
     @FXML
-    private TableColumn<TableClient, Integer> noColumn;
+    private TableColumn<TableClient, Integer> no;
 
     @FXML
-    private TableColumn<TableClient, String> namaColumn;
+    private TableColumn<TableClient, String> nama;
 
     @FXML
-    private TableColumn<TableClient, String> noTelpColumn;
+    private TableColumn<TableClient, String> noTelp;
 
     @FXML
-    private TableColumn<TableClient, String> usahaColumn;
+    private TableColumn<TableClient, String> usaha;
+    
+    @FXML
+    private TableColumn<TableClient, String> aksiColumn;
     
     
      @FXML
@@ -126,19 +153,20 @@ public class ClientController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
         ClientDAO dataClientDAO = new ClientDAO(connection);
-        List<TableClient> clientData = dataClientDAO.getAllDataClients();
+        List<TableClient> clientData = dataClientDAO.getAllClients();
         ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
 
         tableView.setItems(observableClientData);
 
         // Initialize columns
-        noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-        namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-        usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+        no.setCellValueFactory(new PropertyValueFactory<>("no"));
+        nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        noTelp.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+        usaha.setCellValueFactory(new PropertyValueFactory<>("usaha"));
 
         // Set numbering for each item
         int index = 1;

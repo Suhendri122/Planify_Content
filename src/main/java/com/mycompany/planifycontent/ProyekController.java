@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -38,9 +38,9 @@ import javafx.util.Callback;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 
@@ -49,6 +49,9 @@ public class ProyekController implements Initializable {
     // Untuk tampung data list PIC dan client
     Map<Integer, String> users = new HashMap<Integer, String>();
     Map<Integer, String> clients = new HashMap<Integer, String>();
+
+    @FXML
+    private Button btnTambah;
 
     @FXML
     private TableView<TableProyek> tableView;
@@ -169,7 +172,7 @@ public class ProyekController implements Initializable {
         // tglMulaiDatePicker.setValue(LocalDate.now()); // set nilai default ke tanggal hari ini
         // tglSelesaiDatePicker.setValue(LocalDate.now()); // set nilai default ke tanggal hari ini
 
-        no.setCellValueFactory(new PropertyValueFactory<>("id"));
+        no.setCellValueFactory(new PropertyValueFactory<TableProyek, Integer>("id"));
         namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
         picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
         namaClient.setCellValueFactory(new PropertyValueFactory<>("namaClient"));
@@ -230,7 +233,7 @@ public class ProyekController implements Initializable {
                             btnDelete.setOnAction(event -> {
                                 TableProyek proyek = getTableView().getItems().get(getIndex());
 
-                                Alert alert = new Alert(AlertType.CONFIRMATION);
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                 alert.setTitle("Konfirmasi Penghapusan");
                                 alert.setHeaderText(null);
                                 alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
@@ -282,6 +285,7 @@ public class ProyekController implements Initializable {
             ProyekDAO proyekDAO = new ProyekDAO(connection);
             List<TableProyek> proyekList = proyekDAO.getAllProyek(pic, client, startDate, endDate);
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -289,27 +293,26 @@ public class ProyekController implements Initializable {
     }
     
    private void showEditPopup(TableProyek proyek) {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editProyek.fxml"));
-        Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editProyek.fxml"));
+            Parent root = loader.load();
 
-        EditProyekController controller = loader.getController();
-        controller.setProyek(proyek);
+            EditProyekController controller = loader.getController();
+            controller.setProyek(proyek);
 
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.setTitle("Edit Proyek");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-
-        // refreshTable(); // Refresh table view to show updated data
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-   }
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit Proyek");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
     
-    // Function buat masukkin nama user kedalam ChoiceBox
+            // refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getListMahasiswa() throws Exception{
         try{
             // Buat koneksi ke database user
@@ -393,17 +396,33 @@ public class ProyekController implements Initializable {
     private void bukaHalamanKonten(ActionEvent event) throws IOException {
         App.setRoot("konten");
     }
+    
+    
+    @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
 
     @FXML
-    private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataProyek.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Proyek");
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
+    public void bukaHalamanTambah() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahProyek.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

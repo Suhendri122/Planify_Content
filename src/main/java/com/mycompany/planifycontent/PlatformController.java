@@ -27,7 +27,19 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import com.mycompany.planifycontent.TablePlatform;
+import com.mycompany.planifycontent.database.PlatformDAO;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
+import javafx.scene.layout.AnchorPane;
+
 
 public class PlatformController implements Initializable {
 
