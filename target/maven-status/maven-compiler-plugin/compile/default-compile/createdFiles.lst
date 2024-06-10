@@ -1,3 +1,4 @@
+com\mycompany\planifycontent\PicProyekDetailsController.class
 com\mycompany\planifycontent\TableClient.class
 com\mycompany\planifycontent\KontenController.class
 com\mycompany\planifycontent\KontenController$1$1.class
@@ -11,6 +12,7 @@ com\mycompany\planifycontent\MediaController$1.class
 com\mycompany\planifycontent\EditProyekController.class
 com\mycompany\planifycontent\database\HistoriDAO.class
 com\mycompany\planifycontent\EditPlatformController.class
+com\mycompany\planifycontent\ProyekController.class
 com\mycompany\planifycontent\database\UserDAO.class
 com\mycompany\planifycontent\EditClientController.class
 com\mycompany\planifycontent\database\ProyekDAO.class
@@ -29,10 +31,12 @@ com\mycompany\planifycontent\KontenController$1.class
 com\mycompany\planifycontent\App.class
 com\mycompany\planifycontent\DashboardController.class
 com\mycompany\planifycontent\UserController$1$1.class
+module-info.class
 com\mycompany\planifycontent\PlatformController$1.class
 com\mycompany\planifycontent\ClientController$1.class
 com\mycompany\planifycontent\PlatformController.class
 com\mycompany\planifycontent\TableMedia.class
+com\mycompany\planifycontent\PropertyValueFactory.class
 com\mycompany\planifycontent\PlatformController$1$1.class
 com\mycompany\planifycontent\ProyekController$1.class
 com\mycompany\planifycontent\TableUser.class

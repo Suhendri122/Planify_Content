@@ -20,6 +20,12 @@ public class EditClientController implements Initializable {
 
     @FXML
     private TextField clientNameField;
+    
+    @FXML
+    private TextField clientNoTelpField;
+    
+    @FXML
+    private TextField clientUsahaField;
 
     private TableClient client;
 
@@ -33,14 +39,20 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
 
     public void setClient(TableClient client) {
         this.client = client;
+        fillForm();  
     }
 
-    @FXML
+@FXML
     private void saveChanges(ActionEvent event) {
         try {
             String newName = clientNameField.getText().trim();
-            if (!newName.isEmpty()) {
-                client.namaProperty().set(newName);
+            String newNoTelp = clientNoTelpField.getText().trim();
+            String newUsaha = clientUsahaField.getText().trim();
+
+            if (!newName.isEmpty() && !newNoTelp.isEmpty() && !newUsaha.isEmpty()) {
+                client.setNama(newName);
+                client.setNo_telp(newNoTelp);
+                client.setUsaha(newUsaha);
                 updateClient(client);
                 closeWindow();
             } else {
@@ -55,6 +67,8 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         private void fillForm() {
         if (client != null) {
                     clientNameField.setText(client.getNama());
+                    clientNoTelpField.setText(client.getNo_telp());
+                    clientUsahaField.setText(client.getUsaha());
         }
         
         }

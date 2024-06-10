@@ -155,26 +155,27 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                             });
 
                             btnDelete.setOnAction(event -> {
-                                TablePlatform platform = getTableView().getItems().get(getIndex());
+                            TablePlatform platform = getTableView().getItems().get(getIndex());
 
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                alert.setTitle("Konfirmasi Penghapusan");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Konfirmasi Penghapusan");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Apakah Anda yakin ingin menghapus platform ini?");
 
-                                alert.showAndWait().ifPresent(response -> {
-                                    if (response == ButtonType.OK) {
-                                        try {
-                                            Connection connection = DatabaseConnection.getConnection();
-                                            PlatformDAO platformDAO = new PlatformDAO(connection);
-                                            platformDAO.deletePlatform(platform.getNo()); // Menggunakan nomor platform untuk penghapusan
-                                            refreshTable();
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
+                            alert.showAndWait().ifPresent(response -> {
+                                if (response == ButtonType.OK) {
+                                    try {
+                                        Connection connection = DatabaseConnection.getConnection();
+                                        PlatformDAO platformDAO = new PlatformDAO(connection);
+                                        platformDAO.deletePlatform(platform.getNo()); // Menggunakan nomor platform untuk penghapusan
+                                        refreshTable();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
                                     }
-                                });
+                                }
                             });
+                        });
+
 
                         }
 

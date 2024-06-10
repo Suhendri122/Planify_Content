@@ -241,17 +241,17 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
 }
 
 public void refreshTable() {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            KontenDAO kontenDAO = new KontenDAO(connection);
-            List<TableKonten> kontenList = kontenDAO.getAllKontens();
-            ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
-            updateKontenIds(observableKontenList); // Reorder IDs before setting the items
-            tableView.setItems(observableKontenList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        KontenDAO kontenDAO = new KontenDAO(connection);
+        List<TableKonten> kontenList = kontenDAO.getAllKontens();
+        ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
+        tableView.setItems(observableKontenList);
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
+
 
     private void updateKontenIds(ObservableList<TableKonten> kontenList) {
         for (int i = 0; i < kontenList.size(); i++) {
@@ -278,5 +278,6 @@ public void refreshTable() {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
 }

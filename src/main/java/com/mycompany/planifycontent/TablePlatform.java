@@ -33,6 +33,10 @@ public class TablePlatform {
     public String getPlatform() {
         return platform.get();
     }
+    
+        public void setPlatform(String platform) {
+        this.platform.set(platform);
+    }
 
     public StringProperty platformProperty() {
         return platform;

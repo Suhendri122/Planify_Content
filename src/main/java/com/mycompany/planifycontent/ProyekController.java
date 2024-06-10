@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 
@@ -306,23 +309,23 @@ public class ProyekController implements Initializable {
 }
     
     
-    private void filterDataByTglSelesai(LocalDate tglSelesai) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getProyekByTglSelesai(tglSelesai);
-            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-            tableView.setItems(observableProyekList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } 
-    
-    @FXML
-    private void filterButtonOnAction(ActionEvent event) {
-        LocalDate tglSelesai = tglSelesaiDatePicker.getValue();
-        filterDataByTglSelesai(tglSelesai);
-    }
+//    private void filterDataByTglSelesai(LocalDate tglSelesai) {
+//        try {
+//            Connection connection = DatabaseConnection.getConnection();
+//            ProyekDAO proyekDAO = new ProyekDAO(connection);
+//            List<TableProyek> proyekList = proyekDAO.getProyekByTglSelesai(tglSelesai);
+//            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+//            tableView.setItems(observableProyekList);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    } 
+//    
+//    @FXML
+//    private void filterButtonOnAction(ActionEvent event) {
+//        LocalDate tglSelesai = tglSelesaiDatePicker.getValue();
+//        filterDataByTglSelesai(tglSelesai);
+//    }
     
     
    private void showEditPopup(TableProyek proyek) {
@@ -353,17 +356,17 @@ public class ProyekController implements Initializable {
             UserDAO dataUserDAO = new UserDAO(connection);
 
             // Simpan data ke dalam array untuk dikelola datanya
-            List<TableUser> userData = dataUserDAO.getAllDataUsers();
+            List<TableUser> userData = dataUserDAO.getAllUsers();
 
             // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
             for(TableUser user : userData){
                 Map<Integer, String> x = new HashMap<Integer, String>();
-                x.put(user.getNo(), user.getNama());
+                x.put(user.getNo(), user.getUser());
             
                 users.add(x);
                 
                 // Terapkan ke ChoiceBox
-                userBox.getItems().addAll(user.getNama());
+                userBox.getItems().addAll(user.getUser());
             }
         }
         catch(Exception e){
@@ -380,7 +383,7 @@ public class ProyekController implements Initializable {
             ClientDAO dataClientDAO = new ClientDAO(connection);
             
             // Simpan data ke dalam array untuk dikelola datanya
-            List<TableClient> clientData = dataClientDAO.getAllDataClients();
+            List<TableClient> clientData = dataClientDAO.getAllClients();
             ObservableList<String> users  = FXCollections.observableArrayList();
 
             // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox

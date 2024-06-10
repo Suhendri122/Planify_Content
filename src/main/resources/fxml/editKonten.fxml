@@ -45,12 +45,12 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="197.0" layoutY="373.0" mnemonicParsing="false" text="Batal" textFill="WHITE">
+      <Button fx:id="btnBatal" layoutX="197.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelEdit" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="262.0" layoutY="373.0" mnemonicParsing="false" text="Edit" textFill="WHITE">
+      <Button fx:id="btnEdit" layoutX="262.0" layoutY="373.0" mnemonicParsing="false" onAction="#saveChanges" text="Edit" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>

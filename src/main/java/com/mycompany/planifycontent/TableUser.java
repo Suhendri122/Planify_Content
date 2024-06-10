@@ -10,8 +10,7 @@ public class TableUser {
     private final SimpleStringProperty user;
     private final SimpleStringProperty email;
     private final StringProperty aksi;
-        private int id; // Tambahkan properti id
-
+    private int id; // Tambahkan properti id
 
     public TableUser(int no, String user, String email, String aksi) {
         this.no = new SimpleIntegerProperty(no);
@@ -27,7 +26,7 @@ public class TableUser {
     public void setNo(int no) {
         this.no.set(no);
     }
-    
+
     public IntegerProperty noProperty() {
         return no;
     }
@@ -40,6 +39,10 @@ public class TableUser {
         return user;
     }
 
+    public void setUser(String user) {
+        this.user.set(user);
+    }
+
     public String getEmail() {
         return email.get();
     }
@@ -47,7 +50,11 @@ public class TableUser {
     public StringProperty emailProperty() {
         return email;
     }
-    
+
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+
     public int getId() {
         return id;
     }

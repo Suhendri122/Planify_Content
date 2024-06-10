@@ -9,8 +9,7 @@ public class TableMedia {
     private final SimpleIntegerProperty no;
     private final SimpleStringProperty media;
     private final StringProperty aksi;
-        private int id; // Tambahkan properti id
-
+    private int id; // Tambahkan properti id
 
     public TableMedia(int no, String media, String aksi) {
         this.no = new SimpleIntegerProperty(no);
@@ -37,7 +36,7 @@ public class TableMedia {
     public StringProperty mediaProperty() {
         return media;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -45,7 +44,7 @@ public class TableMedia {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getAksi() {
         return aksi.get();
     }

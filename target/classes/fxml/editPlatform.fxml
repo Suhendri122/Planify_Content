@@ -13,16 +13,16 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="btnBatal" layoutX="192.0" layoutY="62.0" mnemonicParsing="false" text="Batal" textFill="WHITE">
+      <Button fx:id="btnBatal" layoutX="192.0" layoutY="62.0" mnemonicParsing="false" onAction="#cancelEdit" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="btnEdit" layoutX="263.0" layoutY="62.0" mnemonicParsing="false" text="Edit" textFill="WHITE">
+      <Button fx:id="btnEdit" layoutX="263.0" layoutY="62.0" mnemonicParsing="false" onAction="#saveChanges" text="Edit" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="txtPlatform" layoutX="140.0" layoutY="14.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="platformNameField" layoutX="140.0" layoutY="14.0" prefHeight="30.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

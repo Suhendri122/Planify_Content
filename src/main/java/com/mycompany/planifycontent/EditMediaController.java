@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import com.mycompany.planifycontent.database.MediaDAO;
 import com.mycompany.planifycontent.TableMedia;
 import java.time.LocalDate;
+import javafx.scene.control.Alert;
 
 public class EditMediaController implements Initializable {
 
@@ -23,16 +24,9 @@ public class EditMediaController implements Initializable {
 
     private TableMedia media;
 
-@Override
-public void initialize(URL url, ResourceBundle resourceBundle) {
-    if (media != null) {
-        mediaNameField.setText(media.getMedia());
-    }
-}
-
-
-    public void setMedia(TableMedia media) {
-        this.media = media;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        fillForm(); // Memanggil fillForm untuk mengisi data saat inisialisasi
     }
 
     @FXML
@@ -44,21 +38,25 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                 updateMedia(media);
                 closeWindow();
             } else {
-                // Handle empty input
+                showAlert("Input Error", "Media name cannot be empty.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database error
+            showAlert("Database Error", "Failed to update the media.");
         }
     }
-    
-        void fillForm() {
+
+    public void setMedia(TableMedia media) {
+        this.media = media;
+        fillForm(); // Mengisi data saat media diatur
+    }
+
+    private void fillForm() {
         if (media != null) {
-                    mediaNameField.setText(media.getMedia());
+            mediaNameField.setText(media.getMedia());
         }
-        
-        }
-        
+    }
+
     @FXML
     private void cancelEdit(ActionEvent event) {
         closeWindow();
@@ -73,5 +71,13 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     private void closeWindow() {
         Stage stage = (Stage) mediaNameField.getScene().getWindow();
         stage.close();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

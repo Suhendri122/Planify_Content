@@ -41,12 +41,25 @@ public class MediaDAO {
     }
 
     public void updateMediaNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE media SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
+        String selectQuery = "SELECT id FROM media ORDER BY id";
+        String updateQuery = "UPDATE media SET id = ? WHERE id = ?";
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+             ResultSet resultSet = selectStmt.executeQuery()) {
+
+            int newId = 1;
+            while (resultSet.next()) {
+                int oldId = resultSet.getInt("id");
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, newId);
+                    updateStmt.setInt(2, oldId);
+                    updateStmt.executeUpdate();
+                }
+                newId++;
+            }
         }
     }
+
 
     public void updateMedia(int id, String newName) throws SQLException {
         String query = "UPDATE media SET nama_media = ? WHERE id = ?";
