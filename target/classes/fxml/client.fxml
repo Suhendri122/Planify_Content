@@ -92,7 +92,7 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <!-- <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" /> -->
       <Text fill="#5b5b5b" layoutX="274.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
          <font>
             <Font name="Arial Bold" size="14.0" />

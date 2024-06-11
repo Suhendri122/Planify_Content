@@ -320,14 +320,14 @@ public class ProyekController implements Initializable {
             UserDAO dataUserDAO = new UserDAO(connection);
 
             // Simpan data ke dalam array untuk dikelola datanya
-            List<TableUser> userData = dataUserDAO.getAllDataUsers();
+            List<TableUser> userData = dataUserDAO.getAllUsers();
 
             // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
             for(TableUser user : userData){
-                users.put(user.getNo(), user.getNama());
+                users.put(user.getNo(), user.getUser());
                 
                 // Terapkan ke ChoiceBox
-                userBox.getItems().addAll(user.getNama());
+                userBox.getItems().addAll(user.getUser());
             }
         }
         catch(Exception e){
@@ -342,7 +342,7 @@ public class ProyekController implements Initializable {
             ClientDAO dataClientDAO = new ClientDAO(connection);
             
             // Simpan data ke dalam array untuk dikelola datanya
-            List<TableClient> clientData = dataClientDAO.getAllDataClients();
+            List<TableClient> clientData = dataClientDAO.getAllClients();
 
             // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
             for(TableClient client : clientData){

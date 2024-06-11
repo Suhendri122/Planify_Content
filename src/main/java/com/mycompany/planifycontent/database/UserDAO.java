@@ -1,12 +1,13 @@
 package com.mycompany.planifycontent.database;
 
-import com.mycompany.planifycontent.TableUser;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mycompany.planifycontent.TableUser;
 
 public class UserDAO {
     private final Connection connection;
@@ -66,8 +67,8 @@ public class UserDAO {
         }
     }
 
-    public List<TableUser> getAllDataUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    // public List<TableUser> getAllDataUsers() {
+    //     throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    // }
 
 }

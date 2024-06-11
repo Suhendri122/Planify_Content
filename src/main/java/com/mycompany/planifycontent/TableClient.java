@@ -4,8 +4,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class TableClient {
     private final SimpleIntegerProperty no;
@@ -59,12 +57,8 @@ public class TableClient {
     public StringProperty usahaProperty() {
         return usaha;
     }
-
-    public void setNama(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
-        public int getId() {
+    public int getId() {
         return id;
     }
 
