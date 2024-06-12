@@ -194,6 +194,9 @@ public class ClientController implements Initializable{
         // Handle error if failed to get connection or data
     }
         
+        namaclient.getItems().add(0, "Semua");
+        namausaha.getItems().add(0, "Semua");
+        
        // Remove the ChangeListener from the ChoiceBox selection model
     namaclient.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
         filterCariAction(null);
@@ -216,17 +219,37 @@ public class ClientController implements Initializable{
 private void filterCariAction(ActionEvent event) {
     String nama = namaclient.getSelectionModel().getSelectedItem();
     String usaha = namausaha.getSelectionModel().getSelectedItem();
+    
+    if ("Semua".equals(nama) && "Semua".equals(usaha)) {
+        // Clear filter and show all data
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            List<TableClient> allData = dataClientDAO.getAllClients();
+            ObservableList<TableClient> observableAllData = FXCollections.observableArrayList(allData);
+
+            tableView.setItems(observableAllData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle error if failed to get connection or data
+        }
+    } else {
+        // Filter data based on selected options
 
     try {
-        Connection connection = DatabaseConnection.getConnection();
-        ClientDAO dataClientDAO = new ClientDAO(connection);
-        List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(nama, usaha);
-        ObservableList<TableClient> observableFilteredData = FXCollections.observableArrayList(filteredData);
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(nama, usaha);
+            ObservableList<TableClient> observableFilteredData = FXCollections.observableArrayList(filteredData);
 
-        tableView.setItems(observableFilteredData);
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle error if failed to get connection or data
-    }
+            tableView.setItems(observableFilteredData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle error if failed to get connection or data
+        }
 }
+    
 }
+
+}
+

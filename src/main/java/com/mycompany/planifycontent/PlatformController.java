@@ -61,11 +61,11 @@ public class PlatformController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         platformData = FXCollections.observableArrayList();
         
-        if (tableView != null) {
+        if (tableView!= null) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
                 PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
-                List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
+                List<TablePlatform> platformList = dataPlatformDAO.getAllPlatforms(); // Changed to getAllPlatforms()
                 platformData.setAll(platformList);
 
                 tableView.setItems(platformData);
@@ -140,7 +140,7 @@ public class PlatformController implements Initializable {
                     Connection connection = DatabaseConnection.getConnection();
                     PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
                     dataPlatformDAO.tambahPlatform(platformName);
-                    List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
+                    List<TablePlatform> platformList = dataPlatformDAO.getAllPlatforms();
 
                     if (platformData != null) {
                         platformData.setAll(platformList);
@@ -161,6 +161,21 @@ public class PlatformController implements Initializable {
     @FXML
     private void popupBtnBatal(ActionEvent event) {
         closeWindow();
+    }
+    
+     @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // logout logic here
+        // For example, you can show a confirmation dialog before logging out
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+        alert.setContentText("Click OK to logout, or Cancel to stay logged in.");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            // Logout logic here, e.g. navigate to login page
+            App.setRoot("login");
+        }
     }
 
     private void closeWindow() {

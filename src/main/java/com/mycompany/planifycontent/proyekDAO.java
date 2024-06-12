@@ -15,5 +15,9 @@ class proyekDAO {
     static List<TableProyek> getProyekByPIC(String picProyek) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    static List<TableProyek> getAllProyek(String selectedUser, String selectedClient, String toString, String toString0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
