@@ -392,7 +392,7 @@ public class ProyekController implements Initializable {
                 Map<Integer, String> x = new HashMap<Integer, String>();
                 x.put(user.getNo(), user.getUser());
             
-                users.add(x);
+//                users.add(x);
                 users.put(user.getNo(), user.getUser());
                 
                 // Terapkan ke ChoiceBox
@@ -411,7 +411,7 @@ public class ProyekController implements Initializable {
             ClientDAO dataClientDAO = new ClientDAO(connection);
             
             // Simpan data ke dalam array untuk dikelola datanya
-            List<TableClient> clientData = dataClientDAO.getAllDataClients();
+            List<TableClient> clientData = dataClientDAO.getAllClients();
             ObservableList<String> users  = FXCollections.observableArrayList();
 
             // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox

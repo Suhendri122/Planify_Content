@@ -57,32 +57,6 @@ public class PlatformController implements Initializable {
 
     private ObservableList<TablePlatform> platformData;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        platformData = FXCollections.observableArrayList();
-        
-        if (tableView!= null) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
-                List<TablePlatform> platformList = dataPlatformDAO.getAllPlatforms(); // Changed to getAllPlatforms()
-                platformData.setAll(platformList);
-
-                tableView.setItems(platformData);
-
-                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-                platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
-
-                int index = 1;
-                for (TablePlatform item : platformData) {
-                    item.setNo(index++);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
@@ -130,15 +104,6 @@ public class PlatformController implements Initializable {
         stage.showAndWait();
         initialize(null, null); // Refresh data setelah pop-up ditutup
     }
-
-    @FXML
-    private TableView<TablePlatform> tableView;
-
-    @FXML
-    private TableColumn<TablePlatform, Integer> noColumn;
-
-    @FXML
-    private TableColumn<TablePlatform, String> platformColumn;
 
     @FXML
     private TableColumn<TablePlatform, String> aksiColumn;
@@ -263,10 +228,19 @@ public void refreshTable() {
             PlatformDAO platformDAO = new PlatformDAO(connection);
             List<TablePlatform> platformList = platformDAO.getAllPlatforms();
             ObservableList<TablePlatform> observablePlatformList = FXCollections.observableArrayList(platformList);
-            updatePlatformIds(observablePlatformList); // Reorder IDs before setting the items
+            updatePlatformlds(observablePlatformList); // Reorder IDs before setting the items
             tableView.setItems(observablePlatformList);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+}
+
+    private void updatePlatformlds(ObservableList<TablePlatform> mediaList) {
+        for (int i = 0; i < mediaList.size(); i++) {
+            mediaList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
+        }
+    }
+            
     private void handleTambah(ActionEvent event) {
         if (platformNameField != null) {
             String platformName = platformNameField.getText();
@@ -317,6 +291,26 @@ public void refreshTable() {
         if (platformNameField != null) {
             Stage stage = (Stage) platformNameField.getScene().getWindow();
             stage.close();
+        }
+    }
+    
+    private void showEditPopup(TablePlatform platform) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editPlatform.fxml"));
+            Parent root = loader.load();
+
+            EditPlatformController controller = loader.getController();
+            controller.setPlatform(platform);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit Platform");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
