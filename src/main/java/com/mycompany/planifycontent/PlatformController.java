@@ -25,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import com.mycompany.planifycontent.TablePlatform;
 import com.mycompany.planifycontent.database.PlatformDAO;
 import javafx.geometry.Insets;
@@ -41,6 +42,46 @@ import javafx.scene.layout.AnchorPane;
 
 
 public class PlatformController implements Initializable {
+
+    @FXML
+    private TableView<TablePlatform> tableView;
+
+    @FXML
+    private TableColumn<TablePlatform, Integer> noColumn;
+
+    @FXML
+    private TableColumn<TablePlatform, String> platformColumn;
+
+    @FXML
+    private TextField platformNameField;
+
+    private ObservableList<TablePlatform> platformData;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        platformData = FXCollections.observableArrayList();
+        
+        if (tableView!= null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
+                List<TablePlatform> platformList = dataPlatformDAO.getAllPlatforms(); // Changed to getAllPlatforms()
+                platformData.setAll(platformList);
+
+                tableView.setItems(platformData);
+
+                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+                platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
+
+                int index = 1;
+                for (TablePlatform item : platformData) {
+                    item.setNo(index++);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -77,17 +118,17 @@ public class PlatformController implements Initializable {
         App.setRoot("user");
     }
 
-        @FXML
-    private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Konfirmasi Logout");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin logout?");
-
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            App.setRoot("login");
-        }
+    @FXML
+    private void bukaHalamanTambah(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahPlatform.fxml"));
+        Parent root = fxmlLoader.load();    
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Tambah Data Platform");
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.showAndWait();
+        initialize(null, null); // Refresh data setelah pop-up ditutup
     }
 
     @FXML
@@ -226,36 +267,56 @@ public void refreshTable() {
             tableView.setItems(observablePlatformList);
         } catch (SQLException e) {
             e.printStackTrace();
+    private void handleTambah(ActionEvent event) {
+        if (platformNameField != null) {
+            String platformName = platformNameField.getText();
+            if (platformName != null && !platformName.isEmpty()) {
+                try {
+                    Connection connection = DatabaseConnection.getConnection();
+                    PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
+                    dataPlatformDAO.tambahPlatform(platformName);
+                    List<TablePlatform> platformList = dataPlatformDAO.getAllPlatforms();
+
+                    if (platformData != null) {
+                        platformData.setAll(platformList);
+
+                        int index = 1;
+                        for (TablePlatform item : platformData) {
+                            item.setNo(index++);
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            closeWindow();
         }
     }
 
-    private void updatePlatformIds(ObservableList<TablePlatform> platformList) {
-        for (int i = 0; i < platformList.size(); i++) {
-            platformList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
+    @FXML
+    private void popupBtnBatal(ActionEvent event) {
+        closeWindow();
+    }
+    
+     @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // logout logic here
+        // For example, you can show a confirmation dialog before logging out
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+        alert.setContentText("Click OK to logout, or Cancel to stay logged in.");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            // Logout logic here, e.g. navigate to login page
+            App.setRoot("login");
         }
     }
 
-    private void showEditPopup(TablePlatform platform) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editPlatform.fxml"));
-            Parent root = loader.load();
-
-            EditPlatformController controller = loader.getController();
-            controller.setPlatform(platform);
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setTitle("Edit Platform");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-            refreshTable(); // Refresh table view to show updated data
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void closeWindow() {
+        if (platformNameField != null) {
+            Stage stage = (Stage) platformNameField.getScene().getWindow();
+            stage.close();
         }
     }
-
 }
-
-

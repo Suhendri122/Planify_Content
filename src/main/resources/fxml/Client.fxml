@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -48,7 +48,7 @@
       <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#bukaHalamanUser" text="Data User" />
-            <MenuItem mnemonicParsing="false" disable="true" text="Data Client" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Data Client" />
          </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />
@@ -82,8 +82,7 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <TextField layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <Button layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
+      <Button fx:id="filtercari" layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" >
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -93,11 +92,13 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <!-- <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" /> -->
       <Text fill="#5b5b5b" layoutX="274.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
+      <ChoiceBox fx:id="namaclient" layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="namausaha" layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>

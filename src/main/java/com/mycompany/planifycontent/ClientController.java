@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -136,157 +137,119 @@ public class ClientController implements Initializable{
     
     @FXML
     private TableColumn<TableClient, String> aksiColumn;
+    
+    
+     @FXML
+    private ChoiceBox<String> namaclient;
+    
+    @FXML
+    private ChoiceBox<String> namausaha;
+    
+    @FXML
+    private Button filtercari;
+
+    private Stage mainStage;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            ClientDAO dataClientDAO = new ClientDAO(connection);
-            List<TableClient> clientData = dataClientDAO.getAllClients();
-            ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
+        ClientDAO dataClientDAO = new ClientDAO(connection);
+        List<TableClient> clientData = dataClientDAO.getAllClients();
+        ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
 
-            tableView.setItems(observableClientData);
+        tableView.setItems(observableClientData);
 
-            // Initialize columns
-            no.setCellValueFactory(new PropertyValueFactory<>("no"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            noTelp.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-            usaha.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+        // Initialize columns
+        no.setCellValueFactory(new PropertyValueFactory<>("no"));
+        nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        noTelp.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+        usaha.setCellValueFactory(new PropertyValueFactory<>("usaha"));
 
-            aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
-                @Override
-                public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
-                    return new TableCell<TableClient, String>() {
-                        final Button btnEdit = new Button();
-                        final Button btnDelete = new Button();
-                        final HBox hbox = new HBox(btnEdit, btnDelete);
-                        final AnchorPane anchorPane = new AnchorPane();
-
-                        {
-                            // Setup buttons
-                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
-                            ivEdit.setFitHeight(20);
-                            ivEdit.setFitWidth(20);
-                            btnEdit.setGraphic(ivEdit);
-
-                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
-                            ivDelete.setFitHeight(20);
-                            ivDelete.setFitWidth(20);
-                            btnDelete.setGraphic(ivDelete);
-             
-
-
-                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
-                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
-                            
-                            btnEdit.setPadding(new Insets(5));
-                            btnDelete.setPadding(new Insets(5));
-
-                            // Setup button actions
-                            btnEdit.setOnAction(event -> {
-                                TableClient client = getTableView().getItems().get(getIndex());
-                                showEditPopup(client);
-                            });
-
-                            btnDelete.setOnAction(event -> {
-                                TableClient client = getTableView().getItems().get(getIndex());
-
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                alert.setTitle("Konfirmasi Penghapusan");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
-
-                                alert.showAndWait().ifPresent(response -> {
-                                    if (response == ButtonType.OK) {
-                                        try {
-                                            Connection connection = DatabaseConnection.getConnection();
-                                            ClientDAO clientDAO = new ClientDAO(connection);
-                                            clientDAO.deleteClient(client.getNo()); 
-                                            refreshTable();
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                            });
-
-                        }
-
-                        @Override
-                        protected void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty) {
-                                setGraphic(null);
-                                setText(null);
-                            } else {
-                                anchorPane.getChildren().clear();
-                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
-
-                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
-                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
-
-                                btnEdit.setPadding(new Insets(5));
-                                btnDelete.setPadding(new Insets(5));
-
-                                setGraphic(anchorPane);
-                                setText(null);
-                            }
-                        }
-
-                    };
-                }
-            });
-
-            // Atur nomor untuk setiap item
-            int index = 1;
-            for (TableClient item : clientData) {
-                item.noProperty().set(index++);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+        // Set numbering for each item
+        int index = 1;
+        for (TableClient item : clientData) {
+            item.noProperty().set(index++);
         }
-    }
-}
+        
+        // Populate ChoiceBox items
+        ObservableList<String> namaItems = FXCollections.observableArrayList();
+        ObservableList<String> usahaItems = FXCollections.observableArrayList();
 
-public void refreshTable() {
+        for (TableClient client : clientData) {
+            if (!namaItems.contains(client.getNama())) {
+                namaItems.add(client.getNama());
+            }
+            if (!usahaItems.contains(client.getUsaha())) {
+                usahaItems.add(client.getUsaha());
+            }
+        }
+
+        namaclient.setItems(namaItems);
+        namausaha.setItems(usahaItems);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle error if failed to get connection or data
+    }
+        
+        namaclient.getItems().add(0, "Semua");
+        namausaha.getItems().add(0, "Semua");
+        
+       // Remove the ChangeListener from the ChoiceBox selection model
+    namaclient.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
+        filterCariAction(null);
+    });
+    
+    namausaha.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
+        filterCariAction(null);
+    });
+    
+    // Add an action listener to the "Cari" button
+    filtercari.setOnAction(event -> {
+        filterCariAction(event);
+    });
+        
+    }
+    }
+    
+    
+    @FXML
+private void filterCariAction(ActionEvent event) {
+    String nama = namaclient.getSelectionModel().getSelectedItem();
+    String usaha = namausaha.getSelectionModel().getSelectedItem();
+    
+    if ("Semua".equals(nama) && "Semua".equals(usaha)) {
+        // Clear filter and show all data
         try {
             Connection connection = DatabaseConnection.getConnection();
-            ClientDAO clientDAO = new ClientDAO(connection);
-            List<TableClient> clientList = clientDAO.getAllClients();
-            ObservableList<TableClient> observableClientList = FXCollections.observableArrayList(clientList);
-            updateClientIds(observableClientList); // Reorder IDs before setting the items
-            tableView.setItems(observableClientList);
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            List<TableClient> allData = dataClientDAO.getAllClients();
+            ObservableList<TableClient> observableAllData = FXCollections.observableArrayList(allData);
+
+            tableView.setItems(observableAllData);
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle error if failed to get connection or data
         }
-    }
+    } else {
+        // Filter data based on selected options
 
-    private void updateClientIds(ObservableList<TableClient> clientList) {
-        for (int i = 0; i < clientList.size(); i++) {
-            clientList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
-        }
-    }
+    try {
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO dataClientDAO = new ClientDAO(connection);
+            List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(nama, usaha);
+            ObservableList<TableClient> observableFilteredData = FXCollections.observableArrayList(filteredData);
 
-    private void showEditPopup(TableClient client) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editClient.fxml"));
-            Parent root = loader.load();
-
-            EditClientController controller = loader.getController();
-            controller.setClient(client);
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setTitle("Edit Client");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-            refreshTable(); // Refresh table view to show updated data
-        } catch (IOException e) {
+            tableView.setItems(observableFilteredData);
+        } catch (SQLException e) {
             e.printStackTrace();
+            // Handle error if failed to get connection or data
         }
-    }
 }
+    
+}
+
+}
+

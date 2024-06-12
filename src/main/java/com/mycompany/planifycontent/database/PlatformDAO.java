@@ -25,13 +25,20 @@ public class PlatformDAO {
                 int id = resultSet.getInt("id");
                 String nama = resultSet.getString("nama_platform");
                 TablePlatform platform = new TablePlatform(no++, nama, "");
-                platform.setId(id); // Set the ID
                 platforms.add(platform);
+                platform.setId(id);
             }
         }
         return platforms;
     }
 
+    public void tambahPlatform(String namaPlatform) throws SQLException {
+        String query = "INSERT INTO platform (nama_platform) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, namaPlatform);
+            preparedStatement.executeUpdate();
+        }
+    }
     public void deletePlatform(int id) throws SQLException {
     String query = "DELETE FROM platform WHERE id=?";
     try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -78,4 +85,7 @@ public void updatePlatform(int id, String newName) throws SQLException {
             stmt.executeUpdate();
         }
     }
+
+
+   
 }
