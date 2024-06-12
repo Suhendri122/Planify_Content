@@ -33,6 +33,10 @@ public class TableMedia {
         return media.get();
     }
 
+    public void setMedia(String media) {
+        this.media.set(media);
+    }
+
     public StringProperty mediaProperty() {
         return media;
     }

@@ -1,17 +1,7 @@
 package com.mycompany.planifycontent;
 
-import com.mycompany.planifycontent.database.ClientDAO;
-import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -33,6 +23,22 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.io.IOException;
+import com.mycompany.planifycontent.database.ClientDAO;
+import com.mycompany.planifycontent.database.DatabaseConnection;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 public class ClientController implements Initializable{
@@ -41,7 +47,7 @@ public class ClientController implements Initializable{
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
     }
-    
+
     @FXML
     private void bukaHalamanProyek(ActionEvent event) throws IOException {
         App.setRoot("proyek");
@@ -89,36 +95,98 @@ public class ClientController implements Initializable{
     //popup tambah, edit, dan filter
     
     @FXML
-    private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataClient.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Client"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+    private void bukaHalamanTambah(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahClient.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Create a new stage for the pop-up
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Tambah Data Client");
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.UTILITY);
+            stage.showAndWait();
+
+            // Refresh data after adding a new client
+            refreshTableData();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-    @FXML
-    private void bukaHalamanFilter(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filterDataClient.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Filter Data Client"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
-    }
-    
+
     @FXML
     private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
         stage.close();
     }
+
+    @FXML
+    private void tambahDataClient(ActionEvent event) {
+        if (clientData == null) {
+            System.out.println("clientData is null");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Data client tidak diinisialisasi dengan benar.");
+            alert.showAndWait();
+            return;
+        }
+
+        System.out.println("clientData size before addition: " + clientData.size());
+
+        try {
+            String nama = namaField.getText();
+            String noTelp = noTelpField.getText();
+            String usaha = usahaField.getText();
+
+            if (nama.isEmpty() || noTelp.isEmpty() || usaha.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Peringatan");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama, No. Telp, dan Usaha harus diisi.");
+                alert.showAndWait();
+                return;
+            }
+
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO clientDAO = new ClientDAO(connection);
+
+            TableClient newClient = new TableClient(clientData.size() + 1, nama, noTelp, usaha);
+            clientDAO.addClient(newClient); // Menambah data klien ke database
+            clientData.add(newClient); // Menambah data ke ObservableList
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informasi");
+            alert.setHeaderText(null);
+            alert.setContentText("Client berhasil ditambahkan!");
+            alert.showAndWait();
+
+            // Clear the fields after adding the client
+            namaField.clear();
+            noTelpField.clear();
+            usahaField.clear();
+
+            if (tableView != null) {
+                tableView.refresh();
+            } else {
+                System.out.println("tableView is null at the point of refresh");
+            }
+
+            System.out.println("clientData size after addition: " + clientData.size());
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.close();
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Terjadi kesalahan saat menambahkan client: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
     
         @FXML
     private TableView<TableClient> tableView;
@@ -156,11 +224,17 @@ public class ClientController implements Initializable{
     if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-        ClientDAO dataClientDAO = new ClientDAO(connection);
-        List<TableClient> clientData = dataClientDAO.getAllClients();
-        ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
+            ClientDAO clientDAO = new ClientDAO(connection);
 
-        tableView.setItems(observableClientData);
+            TableClient newClient = new TableClient(clientData.size() + 1, nama, noTelp, usaha);
+            clientDAO.addClient(newClient); // Menambah data klien ke database
+            clientData.add(newClient); // Menambah data ke ObservableList
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informasi");
+            alert.setHeaderText(null);
+            alert.setContentText("Client berhasil ditambahkan!");
+            alert.showAndWait();
 
         // Initialize columns
         no.setCellValueFactory(new PropertyValueFactory<>("no"));
@@ -245,7 +319,6 @@ private void filterCariAction(ActionEvent event) {
             tableView.setItems(observableFilteredData);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle error if failed to get connection or data
         }
 }
     

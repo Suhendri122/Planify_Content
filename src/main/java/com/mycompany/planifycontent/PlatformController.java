@@ -33,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -56,6 +57,32 @@ public class PlatformController implements Initializable {
     private TextField platformNameField;
 
     private ObservableList<TablePlatform> platformData;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        platformData = FXCollections.observableArrayList();
+
+        if (tableView != null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
+                List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
+                platformData.setAll(platformList);
+
+                tableView.setItems(platformData);
+
+                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+                platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
+
+                int index = 1;
+                for (TablePlatform item : platformData) {
+                    item.setNo(index++);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -260,8 +287,12 @@ public void refreshTable() {
                         }
                     }
                 } catch (SQLException e) {
+                    // Handle the SQL exception and display an error message
                     e.printStackTrace();
+                    showErrorMessage("Error adding platform", "An error occurred while adding the platform. Please try again.");
                 }
+            } else {
+                showErrorMessage("Peringatan", "Masukkan Nama Platfrom Terlebih Dahulu");
             }
             closeWindow();
         }

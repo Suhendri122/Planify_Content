@@ -25,12 +25,12 @@ public class TableClient {
         return no.get();
     }
 
-    public void setNo(int no) {
-        this.no.set(no);
-    }
-
     public IntegerProperty noProperty() {
         return no;
+    }
+
+    public void setNo(int no) {
+        this.no.set(no);
     }
 
     public String getNama() {
@@ -53,8 +53,12 @@ public class TableClient {
         this.no_telp.set(no_telp);
     }
 
-    public StringProperty no_telpProperty() {
-        return no_telp;
+    public StringProperty noTelpProperty() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp.set(noTelp);
     }
 
     public String getUsaha() {
