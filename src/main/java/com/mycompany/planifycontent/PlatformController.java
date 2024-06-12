@@ -28,6 +28,7 @@ import javafx.stage.StageStyle;
 
 import com.mycompany.planifycontent.TablePlatform;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 
 public class PlatformController implements Initializable {
 
@@ -48,7 +49,7 @@ public class PlatformController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         platformData = FXCollections.observableArrayList();
-        
+
         if (tableView != null) {
             try {
                 Connection connection = DatabaseConnection.getConnection();
@@ -139,8 +140,12 @@ public class PlatformController implements Initializable {
                         }
                     }
                 } catch (SQLException e) {
+                    // Handle the SQL exception and display an error message
                     e.printStackTrace();
+                    showErrorMessage("Error adding platform", "An error occurred while adding the platform. Please try again.");
                 }
+            } else {
+                showErrorMessage("Peringatan", "Masukkan Nama Platfrom Terlebih Dahulu");
             }
             closeWindow();
         }
@@ -156,5 +161,14 @@ public class PlatformController implements Initializable {
             Stage stage = (Stage) platformNameField.getScene().getWindow();
             stage.close();
         }
+    }
+
+    private void showErrorMessage(String title, String message) {
+        // You can use an Alert to display error messages to the user
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

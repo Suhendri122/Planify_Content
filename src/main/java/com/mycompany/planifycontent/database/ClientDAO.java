@@ -1,6 +1,7 @@
 package com.mycompany.planifycontent.database;
 
 import com.mycompany.planifycontent.TableClient;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class ClientDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             int no = 1;
             while (resultSet.next()) {
-            String nama = resultSet.getString("nama");
+                String nama = resultSet.getString("nama");
                 String no_telp = resultSet.getString("no_telp");
                 String usaha = resultSet.getString("usaha");
                 TableClient clientItem = new TableClient(no++, nama, no_telp, usaha);
@@ -30,5 +31,15 @@ public class ClientDAO {
             }
         }
         return clients;
+    }
+
+    public void addClient(TableClient client) throws SQLException {
+        String query = "INSERT INTO Client (nama, no_telp, usaha) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, client.getNama());
+            preparedStatement.setString(2, client.getNoTelp());
+            preparedStatement.setString(3, client.getUsaha());
+            preparedStatement.executeUpdate();
+        }
     }
 }

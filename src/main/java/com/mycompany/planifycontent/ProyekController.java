@@ -253,7 +253,7 @@ public class ProyekController implements Initializable {
 
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataProyek.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahProyek.fxml"));
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);

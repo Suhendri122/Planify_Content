@@ -4,13 +4,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class TableMedia {
     private final SimpleIntegerProperty no;
     private final SimpleStringProperty media;
-
 
     public TableMedia(int no, String media) {
         this.no = new SimpleIntegerProperty(no);
@@ -31,6 +28,10 @@ public class TableMedia {
 
     public String getMedia() {
         return media.get();
+    }
+
+    public void setMedia(String media) {
+        this.media.set(media);
     }
 
     public StringProperty mediaProperty() {

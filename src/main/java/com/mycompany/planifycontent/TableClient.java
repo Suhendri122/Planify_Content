@@ -8,29 +8,33 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TableClient {
-    private final SimpleIntegerProperty no;
-    private final SimpleStringProperty nama;
-    private final SimpleStringProperty no_telp;
-    private final SimpleStringProperty usaha;
+    private final ObservableList<TableClient> dataClients = FXCollections.observableArrayList();
 
+    private final IntegerProperty no = new SimpleIntegerProperty();
+    private final StringProperty nama = new SimpleStringProperty();
+    private final StringProperty noTelp = new SimpleStringProperty();
+    private final StringProperty usaha = new SimpleStringProperty();
 
-    public TableClient(int no, String nama, String no_telp, String usaha) {
-        this.no = new SimpleIntegerProperty(no);
-        this.nama = new SimpleStringProperty(nama);
-        this.no_telp = new SimpleStringProperty(no_telp);
-        this.usaha = new SimpleStringProperty(usaha);
+    public TableClient() {
+    }
+
+    public TableClient(int no, String nama, String noTelp, String usaha) {
+        this.no.set(no);
+        this.nama.set(nama);
+        this.noTelp.set(noTelp);
+        this.usaha.set(usaha);
     }
 
     public int getNo() {
         return no.get();
     }
 
-    public void setNo(int no) {
-        this.no.set(no);
-    }
-
     public IntegerProperty noProperty() {
         return no;
+    }
+
+    public void setNo(int no) {
+        this.no.set(no);
     }
 
     public String getNama() {
@@ -40,20 +44,40 @@ public class TableClient {
     public StringProperty namaProperty() {
         return nama;
     }
-    
-    public String getNo_telp() {
-        return no_telp.get();
+
+    public void setNama(String nama) {
+        this.nama.set(nama);
     }
 
-    public StringProperty no_telpProperty() {
-        return no_telp;
+    public String getNoTelp() {
+        return noTelp.get();
     }
-    
+
+    public StringProperty noTelpProperty() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp.set(noTelp);
+    }
+
     public String getUsaha() {
         return usaha.get();
     }
 
     public StringProperty usahaProperty() {
         return usaha;
+    }
+
+    public void setUsaha(String usaha) {
+        this.usaha.set(usaha);
+    }
+
+    public ObservableList<TableClient> getDataClients() {
+        return dataClients;
+    }
+
+    public void addDataClient(TableClient dataClient) {
+        dataClients.add(dataClient);
     }
 }

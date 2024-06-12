@@ -1,7 +1,6 @@
 package com.mycompany.planifycontent.database;
 
 import com.mycompany.planifycontent.TableMedia;
-import com.mycompany.planifycontent.TablePlatform;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,20 +16,26 @@ public class MediaDAO {
     }
 
     public List<TableMedia> getAllDataMedia() throws SQLException {
-    List<TableMedia> media = new ArrayList<>();
-    String query = "SELECT id, nama_media FROM media";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int no = 1;
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String nama = resultSet.getString("nama_media");
-            TableMedia mediaItem = new TableMedia(no++, nama);
-            media.add(mediaItem);
+        List<TableMedia> mediaList = new ArrayList<>();
+        String query = "SELECT id, nama_media FROM media";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int no = 1;
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nama = resultSet.getString("nama_media");
+                TableMedia media = new TableMedia(no++, nama);
+                mediaList.add(media);
+            }
+        }
+        return mediaList;
+    }
 
+    public void tambahMedia(String namaMedia) throws SQLException {
+        String query = "INSERT INTO media (nama_media) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, namaMedia);
+            preparedStatement.executeUpdate();
         }
     }
-    return media;
-}
-
 }
