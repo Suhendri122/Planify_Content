@@ -4,11 +4,9 @@ import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.ProyekDAO;
 import com.mycompany.planifycontent.database.UserDAO;
 import com.mycompany.planifycontent.database.ClientDAO;
-
-
+import com.mycompany.planifycontent.TableProyek;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -18,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +23,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -39,76 +35,75 @@ import javafx.util.Callback;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class ProyekController implements Initializable {
-
-    // Untuk tampung data list PIC dan client
     Map<Integer, String> users = new HashMap<Integer, String>();
     Map<Integer, String> clients = new HashMap<Integer, String>();
-
+    
     @FXML
     private Button btnTambah;
-
     @FXML
     private TableView<TableProyek> tableView;
-
     @FXML
     private TableColumn<TableProyek, Integer> no;
-
     @FXML
     private TableColumn<TableProyek, String> namaProyek;
-
     @FXML
     private TableColumn<TableProyek, String> picProyek;
-
     @FXML
     private TableColumn<TableProyek, String> namaClient;
-
     @FXML
     private TableColumn<TableProyek, String> noTelepon;
-
     @FXML
-    private TableColumn<TableProyek, String> harga;
-
+    private TableColumn<TableProyek, Double> harga;
     @FXML
     private TableColumn<TableProyek, String> tglMulai;
-
     @FXML
     private TableColumn<TableProyek, String> tglSelesai;
-
     @FXML
     private TableColumn<TableProyek, String> aksi;
     
-    // Buat koneksi ke ChoiceBox 'user' di proyek.fxml
     @FXML
     private ChoiceBox<String> userBox;
-    
     @FXML
     private ChoiceBox<String> clientBox;
-    
     @FXML
     private ChoiceBox<String> picProyekBox;
-    
     @FXML
     private DatePicker tglMulaiDatePicker;
-    
     @FXML
     private DatePicker tglSelesaiDatePicker;
-
     @FXML
     private Button filterButton;
+    @FXML
+    private TextField txtNamaProyek;
+    @FXML
+    private ChoiceBox<String> choicePicProyek;
+    @FXML
+    private ChoiceBox<String> choiceNamaClient;
+    @FXML
+    private TextField txtNoTelepon;
+    @FXML
+    private TextField txtHarga;
+    @FXML
+    private DatePicker dpTglMulai;
+    @FXML
+    private DatePicker dpTglSelesai;
 
+    private ProyekDAO proyekDAO;
     private Stage mainStage;
+    private TableProyek proyek;
 
-    // Set pilihan PIC dan client ke "Semua" secara default
-    private String pic = "0";
-    private String client = "0";
+    String pic = "0";  // Semua PIC
+    String client = "0";  // Semua Client
+    String startDate = "0";  // Tanggal mulai tidak di-filter
+    String endDate = "0";  // Tanggal selesai tidak di-filter
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
@@ -117,186 +112,199 @@ public class ProyekController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-         // Tambahkan pilihan "Semua" untuk select semua jenis data
-        userBox.getItems().add("Semua");
-        clientBox.getItems().add("Semua");
-
-        userBox.setValue("Semua");
-        clientBox.setValue("Semua");
-
-        users.put(0, "Semua");
-        clients.put(0, "Semua");
-
-        try{
-            // Masukkan function buat ambil data mahasiswa di database
-            getListMahasiswa();
-        }
-        catch(Exception e){
-            System.out.println("error");
-        }
-        
-        
-        try{
-            // Masukkan function buat ambil data mahasiswa di database
-            getListKonsumen();
-        }
-        catch(Exception e){
-            System.out.println("error");
-        }
-        
-        userBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                for(Map.Entry<Integer, String> u : users.entrySet()){
-                    // Update filter pilihan PIC
-                    if(u.getValue().equals(newValue)){
-                        pic = u.getKey().toString();
-                    }
+        if (tableView != null){
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ProyekDAO proyekDAO = new ProyekDAO(connection);
+                List<TableProyek> proyekDataList = proyekDAO.getAllProyek(pic, client, startDate, endDate);
+                ObservableList<TableProyek> observableProyekData = FXCollections.observableArrayList(proyekDataList);
+                
+                int index = 1;
+                for (TableProyek item : proyekDataList) {
+                    item.setId(index++);
                 }
-            }
-        });
+            
+                tableView.setItems(observableProyekData);
         
-        clientBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue!= null) {
-                for(Map.Entry<Integer, String> c : clients.entrySet()){
-                    // Update filter pilihan client
-                    if(c.getValue().equals(newValue)){
-                        client = c.getKey().toString();
-                    }
-                }
-            }
-        });
+                no.setCellValueFactory(new PropertyValueFactory<TableProyek, Integer>("id"));
+                namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
+                picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
+                namaClient.setCellValueFactory(new PropertyValueFactory<>("namaClient"));
+                noTelepon.setCellValueFactory(new PropertyValueFactory<>("noTelepon"));
+                harga.setCellValueFactory(new PropertyValueFactory<>("hargaFormatted"));
+                tglMulai.setCellValueFactory(new PropertyValueFactory<>("tglMulaiFormatted"));
+                tglSelesai.setCellValueFactory(new PropertyValueFactory<>("tglSelesaiFormatted"));
 
-        // Tiap kali tombol filter (cari) ditekan, refresh tabel dengan filter yang ada
-        filterButton.setOnAction((e -> {
-            refreshTable();
-        }));
-
-        // tglMulaiDatePicker.setValue(LocalDate.now()); // set nilai default ke tanggal hari ini
-        // tglSelesaiDatePicker.setValue(LocalDate.now()); // set nilai default ke tanggal hari ini
-
-        no.setCellValueFactory(new PropertyValueFactory<TableProyek, Integer>("id"));
-        namaProyek.setCellValueFactory(new PropertyValueFactory<>("namaProyek"));
-        picProyek.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
-        namaClient.setCellValueFactory(new PropertyValueFactory<>("namaClient"));
-        noTelepon.setCellValueFactory(new PropertyValueFactory<>("noTelepon"));
-        harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
-        tglMulai.setCellValueFactory(new PropertyValueFactory<>("tglMulai"));
-        tglSelesai.setCellValueFactory(new PropertyValueFactory<>("tglSelesai"));
-
-        aksi.setCellFactory(new Callback<TableColumn<TableProyek, String>, TableCell<TableProyek, String>>() {
-            @Override
-            public TableCell<TableProyek, String> call(final TableColumn<TableProyek, String> param) {
-                return new TableCell<TableProyek, String>() {
-                    final Button btnDetail = new Button();
-                    final Button btnEdit = new Button();
-                    final Button btnDelete = new Button();
-                    final AnchorPane anchorPane = new AnchorPane();
-
+                aksi.setCellFactory(new Callback<TableColumn<TableProyek, String>, TableCell<TableProyek, String>>() {
                     @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            // Load images for buttons
-                            ImageView ivDetail = new ImageView(new Image(getClass().getResourceAsStream("/assets/detail.png")));
-                            ivDetail.setFitHeight(20);
-                            ivDetail.setFitWidth(20);
-                            btnDetail.setGraphic(ivDetail);
+                    public TableCell<TableProyek, String> call(final TableColumn<TableProyek, String> param) {
+                        return new TableCell<TableProyek, String>() {
+                            final Button btnDetail = new Button();
+                            final Button btnEdit = new Button();
+                            final Button btnDelete = new Button();
+                            final AnchorPane anchorPane = new AnchorPane();
 
-                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
-                            ivEdit.setFitHeight(20);
-                            ivEdit.setFitWidth(20);
-                            btnEdit.setGraphic(ivEdit);
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    ImageView ivDetail = new ImageView(new Image(getClass().getResourceAsStream("/assets/detail.png")));
+                                    ivDetail.setFitHeight(20);
+                                    ivDetail.setFitWidth(20);
+                                    btnDetail.setGraphic(ivDetail);
 
-                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
-                            ivDelete.setFitHeight(20);
-                            ivDelete.setFitWidth(20);
-                            btnDelete.setGraphic(ivDelete);
+                                    ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                                    ivEdit.setFitHeight(20);
+                                    ivEdit.setFitWidth(20);
+                                    btnEdit.setGraphic(ivEdit);
 
-                            btnDetail.setOnAction(event -> {
-                                TableProyek proyek = getTableView().getItems().get(getIndex());
-                                try {
-                                    bukaHalamanKonten(event);
+                                    ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                                    ivDelete.setFitHeight(20);
+                                    ivDelete.setFitWidth(20);
+                                    btnDelete.setGraphic(ivDelete);
 
-                                    KontenController kontenController = App.getLoader().getController();
-                                    kontenController.setProyek(proyek);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-
-                            btnEdit.setOnAction(event -> {
-                                TableProyek proyek = getTableView().getItems().get(getIndex());
-                                showEditPopup(proyek);
-                            });
-
-                            btnDelete.setOnAction(event -> {
-                                TableProyek proyek = getTableView().getItems().get(getIndex());
-
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                alert.setTitle("Konfirmasi Penghapusan");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
-
-                                alert.showAndWait().ifPresent(response -> {
-                                    if (response == ButtonType.OK) {
+                                    btnDetail.setOnAction(event -> {
+                                        TableProyek proyek = getTableView().getItems().get(getIndex());
                                         try {
-                                            Connection connection = DatabaseConnection.getConnection();
-                                            ProyekDAO proyekDAO = new ProyekDAO(connection);
-                                            proyekDAO.deleteProyek(proyek.getId());
-                                            refreshTable();
-                                        } catch (SQLException e) {
+                                            bukaHalamanKonten(event);
+
+                                            KontenController kontenController = App.getLoader().getController();
+                                            kontenController.setProyek(proyek);
+                                        } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-                                    }
-                                });
-                            });
+                                    });
 
-                            anchorPane.getChildren().clear();
+                                    btnEdit.setOnAction(event -> {
+                                        TableProyek proyek = getTableView().getItems().get(getIndex());
+                                        showEditPopup(proyek);
+                                        refreshTable();
+                                        
+                                    });
 
-                            anchorPane.getChildren().addAll(btnDetail, btnEdit, btnDelete);
+                                    btnDelete.setOnAction(event -> {
+                                        TableProyek proyek = getTableView().getItems().get(getIndex());
 
-                            AnchorPane.setLeftAnchor(btnDetail, 0.0);
-                            AnchorPane.setLeftAnchor(btnEdit, 40.0);
-                            AnchorPane.setLeftAnchor(btnDelete, 80.0);
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                        alert.setTitle("Konfirmasi Penghapusan");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
+                                        alert.showAndWait().ifPresent(response -> {
+                                            if (response == ButtonType.OK) {
+                                                try {
+                                                    Connection connection = DatabaseConnection.getConnection();
+                                                    ProyekDAO proyekDAO = new ProyekDAO(connection);
+                                                    proyekDAO.deleteProyek(proyek.getId());
+                                                    refreshTable();
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    });
 
-                            btnDetail.setPadding(new Insets(5));
-                            btnEdit.setPadding(new Insets(5));
-                            btnDelete.setPadding(new Insets(5));
+                                    anchorPane.getChildren().clear();
+                                    anchorPane.getChildren().addAll(btnDetail, btnEdit, btnDelete);
 
-                            setGraphic(anchorPane);
-                            setText(null);
+                                    AnchorPane.setLeftAnchor(btnDetail, 0.0);
+                                    AnchorPane.setLeftAnchor(btnEdit, 40.0);
+                                    AnchorPane.setLeftAnchor(btnDelete, 80.0);
+
+                                    btnDetail.setPadding(new Insets(5));
+                                    btnEdit.setPadding(new Insets(5));
+                                    btnDelete.setPadding(new Insets(5));
+
+                                    setGraphic(anchorPane);
+                                    setText(null);
+                                }
+                            }
+                        };
+                    }
+                });
+                refreshTable();
+                
+            List<String> users = proyekDAO.getAllUsers();
+            List<String> clients = proyekDAO.getAllClients();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+            userBox.getItems().add("Semua");
+            clientBox.getItems().add("Semua");
+
+            userBox.setValue("Semua");
+            clientBox.setValue("Semua");
+
+            users.put(0, "Semua");
+            clients.put(0, "Semua");
+
+            try{
+                getListMahasiswa();
+            }
+            catch(Exception e){
+                System.out.println("error");
+            }
+
+
+            try{
+                getListKonsumen();
+            }
+            catch(Exception e){
+                System.out.println("error");
+            }
+
+            userBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    for(Map.Entry<Integer, String> u : users.entrySet()){
+                        if(u.getValue().equals(newValue)){
+                            pic = u.getKey().toString();
                         }
                     }
-                };
-            }
-        });
+                }
+            });
 
-        refreshTable();
-    }
+            clientBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue!= null) {
+                    for(Map.Entry<Integer, String> c : clients.entrySet()){
+                        if(c.getValue().equals(newValue)){
+                            client = c.getKey().toString();
+                        }
+                    }
+                }
+            });
 
-    public void refreshTable() {
-        try {
-            // Cek jika datepicker null = string kosong, jika tidak maka kembalikan tanggal dalam bentuk string
-            String startDate = tglMulaiDatePicker.getValue() == null ? "" : tglMulaiDatePicker.getValue().toString();
-            String endDate = tglSelesaiDatePicker.getValue() == null ? "" : tglSelesaiDatePicker.getValue().toString();
+            filterButton.setOnAction((e -> {
+                refreshTable();
+            }));
             
+        }
+}
+
+    private void refreshTable() {
+        if (tableView == null) {
+            System.out.println("Error: tableView is null in refreshTable()");
+            return;
+        }
+        
+        try {
             Connection connection = DatabaseConnection.getConnection();
             ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getAllProyek(pic, client, startDate, endDate);
+            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", ""); // Sesuaikan dengan kebutuhan Anda
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-
+            updateProyekIds(observableProyekList); // Reorder IDs before setting the items
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     
     private void updateProyekIds(ObservableList<TableProyek> proyekList) {
         for (int i = 0; i < proyekList.size(); i++) {
-            proyekList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
+            proyekList.get(i).setId(i + 1);
         }
     }
 
@@ -322,7 +330,6 @@ public class ProyekController implements Initializable {
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    
 }
     
     private void filterDataByTglMulai(LocalDate tglMulai) {
@@ -336,26 +343,6 @@ public class ProyekController implements Initializable {
         e.printStackTrace();
     }
 }
-    
-    
-//    private void filterDataByTglSelesai(LocalDate tglSelesai) {
-//        try {
-//            Connection connection = DatabaseConnection.getConnection();
-//            ProyekDAO proyekDAO = new ProyekDAO(connection);
-//            List<TableProyek> proyekList = proyekDAO.getProyekByTglSelesai(tglSelesai);
-//            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-//            tableView.setItems(observableProyekList);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    } 
-//    
-//    @FXML
-//    private void filterButtonOnAction(ActionEvent event) {
-//        LocalDate tglSelesai = tglSelesaiDatePicker.getValue();
-//        filterDataByTglSelesai(tglSelesai);
-//    }
-    
     
    private void showEditPopup(TableProyek proyek) {
         try {
@@ -371,8 +358,6 @@ public class ProyekController implements Initializable {
             stage.setTitle("Edit Proyek");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-    
-            // refreshTable(); // Refresh table view to show updated data
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -380,22 +365,16 @@ public class ProyekController implements Initializable {
 
     private void getListMahasiswa() throws Exception{
         try{
-            // Buat koneksi ke database user
             Connection connection = DatabaseConnection.getConnection();
             UserDAO dataUserDAO = new UserDAO(connection);
-
-            // Simpan data ke dalam array untuk dikelola datanya
             List<TableUser> userData = dataUserDAO.getAllUsers();
 
-            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
             for(TableUser user : userData){
                 Map<Integer, String> x = new HashMap<Integer, String>();
                 x.put(user.getNo(), user.getUser());
             
-//                users.add(x);
                 users.put(user.getNo(), user.getUser());
-                
-                // Terapkan ke ChoiceBox
+
                 userBox.getItems().addAll(user.getUser());
             }
         }
@@ -406,19 +385,14 @@ public class ProyekController implements Initializable {
     
     private void getListKonsumen() throws Exception{
         try{
-            // Buat koneksi ke database user
             Connection connection = DatabaseConnection.getConnection();
             ClientDAO dataClientDAO = new ClientDAO(connection);
-            
-            // Simpan data ke dalam array untuk dikelola datanya
+
             List<TableClient> clientData = dataClientDAO.getAllClients();
             ObservableList<String> users  = FXCollections.observableArrayList();
 
-            // Masukkin data yang mau ditambahkan ke array untuk ditaruh ke ChoiceBox
             for(TableClient client : clientData){
                 clients.put(client.getNo(), client.getNama());
-                
-                // Terapkan ke ChoiceBox
                 clientBox.getItems().add(client.getNama());
             }
         }
@@ -446,28 +420,22 @@ public class ProyekController implements Initializable {
     private void bukaHalamanPlatform(ActionEvent event) throws IOException {
         App.setRoot("platform");
     }
-
     @FXML
     private void bukaHalamanMedia(ActionEvent event) throws IOException {
         App.setRoot("media");
     }
-
     @FXML
     private void bukaHalamanClient(ActionEvent event) throws IOException {
         App.setRoot("client");
     }
-
     @FXML
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-
     @FXML
     private void bukaHalamanKonten(ActionEvent event) throws IOException {
-        App.setRoot("konten");
+        App.setRoot("konten") ;
     }
-    
-    
     @FXML
     private void logout(ActionEvent event) throws IOException {
         // Membuat dialog konfirmasi
@@ -480,23 +448,33 @@ public class ProyekController implements Initializable {
             App.setRoot("login");
         }
     }
-
-
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahProyek.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Proyek");
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
-    }
+        try {
+            // Memuat FXML untuk Tambah Proyek
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahProyek.fxml"));
+            Parent root = loader.load();
 
-    @FXML
-    private void popupBtnBatal(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+            // Mengambil controller dari loader
+            TambahProyekController controller = loader.getController();
+            controller.setProyek(proyek); // Mengeset proyek jika diperlukan
+
+            // Membuat Stage baru untuk menampilkan form Tambah Proyek
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Tambah Proyek");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            refreshTable();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
+    public void setProyek(TableProyek proyek) {
+        this.proyek = proyek;
+        }
+
 }

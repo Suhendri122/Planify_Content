@@ -33,19 +33,21 @@ public class PlatformDAO {
     }
 
     public void tambahPlatform(String namaPlatform) throws SQLException {
-        String query = "INSERT INTO platform (nama_platform) VALUES (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, namaPlatform);
-            preparedStatement.executeUpdate();
-        }
+    String query = "INSERT INTO platform (nama_platform) VALUES (?)";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, namaPlatform);
+        preparedStatement.executeUpdate();
     }
-    public void deletePlatform(int id) throws SQLException {
+    updatePlatformNumbers(); // Ensure the IDs are updated to be sequential after insertion
+}
+
+public void deletePlatform(int id) throws SQLException {
     String query = "DELETE FROM platform WHERE id=?";
     try (PreparedStatement stmt = connection.prepareStatement(query)) {
         stmt.setInt(1, id);
         stmt.executeUpdate();
     }
-    updatePlatformNumbers(); // Update platform numbers after deletion
+    updatePlatformNumbers(); // Ensure the IDs are updated to be sequential after deletion
 }
 
 public void updatePlatformNumbers() throws SQLException {
@@ -67,6 +69,7 @@ public void updatePlatformNumbers() throws SQLException {
         }
     }
 }
+
 
 public void updatePlatform(int id, String newName) throws SQLException {
     String query = "UPDATE platform SET nama_platform = ? WHERE id = ?";

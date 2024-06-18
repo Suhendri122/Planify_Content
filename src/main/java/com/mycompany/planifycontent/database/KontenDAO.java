@@ -125,7 +125,6 @@ public void deleteKonten(int id) throws SQLException {
         stmt.setInt(1, id);
         stmt.executeUpdate();
     }
-    // Setelah menghapus entri, perbarui nomor entri
     updateKontenNumbers();
 }
 

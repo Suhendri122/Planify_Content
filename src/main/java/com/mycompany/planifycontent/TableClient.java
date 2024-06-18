@@ -52,15 +52,7 @@ public class TableClient {
     public void setNo_telp(String no_telp) {
         this.no_telp.set(no_telp);
     }
-
-    public StringProperty noTelpProperty() {
-        return noTelp;
-    }
-
-    public void setNoTelp(String noTelp) {
-        this.noTelp.set(noTelp);
-    }
-
+    
     public String getUsaha() {
         return usaha.get();
     }

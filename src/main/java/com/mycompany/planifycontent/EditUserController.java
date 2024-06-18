@@ -36,11 +36,9 @@ public class EditUserController implements Initializable {
 
     private void fillForm() {
         if (user != null) {
-            System.out.println("Filling form with user: " + user.getUser());
             nameField.setText(user.getUser());
             emailField.setText(user.getEmail());
         } else {
-            System.out.println("User is null");
         }
     }
 

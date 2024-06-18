@@ -58,32 +58,6 @@ public class PlatformController implements Initializable {
 
     private ObservableList<TablePlatform> platformData;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        platformData = FXCollections.observableArrayList();
-
-        if (tableView != null) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                PlatformDAO dataPlatformDAO = new PlatformDAO(connection);
-                List<TablePlatform> platformList = dataPlatformDAO.getAllDataPlatforms();
-                platformData.setAll(platformList);
-
-                tableView.setItems(platformData);
-
-                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-                platformColumn.setCellValueFactory(new PropertyValueFactory<>("platform"));
-
-                int index = 1;
-                for (TablePlatform item : platformData) {
-                    item.setNo(index++);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
@@ -119,8 +93,9 @@ public class PlatformController implements Initializable {
         App.setRoot("user");
     }
 
-    @FXML
-    private void bukaHalamanTambah(ActionEvent event) throws IOException {
+@FXML
+private void bukaHalamanTambah(ActionEvent event) {
+    try {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahPlatform.fxml"));
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
@@ -130,7 +105,13 @@ public class PlatformController implements Initializable {
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait();
         initialize(null, null); // Refresh data setelah pop-up ditutup
+    } catch (IOException e) {
+        e.printStackTrace();
+        // Tampilkan pesan kesalahan
+        System.out.println("Error loading FXML: " + e.getMessage());
     }
+}
+
 
     @FXML
     private TableColumn<TablePlatform, String> aksiColumn;
@@ -267,7 +248,7 @@ public void refreshTable() {
             mediaList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
         }
     }
-            
+            @FXML
     private void handleTambah(ActionEvent event) {
         if (platformNameField != null) {
             String platformName = platformNameField.getText();
@@ -285,14 +266,15 @@ public void refreshTable() {
                         for (TablePlatform item : platformData) {
                             item.setNo(index++);
                         }
+                        refreshTable();
                     }
                 } catch (SQLException e) {
                     // Handle the SQL exception and display an error message
                     e.printStackTrace();
-                    showErrorMessage("Error adding platform", "An error occurred while adding the platform. Please try again.");
+                    showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
                 }
             } else {
-                showErrorMessage("Peringatan", "Masukkan Nama Platfrom Terlebih Dahulu");
+            showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
             }
             closeWindow();
         }
@@ -324,6 +306,14 @@ public void refreshTable() {
             stage.close();
         }
     }
+        private void showErrorMessage(String title, String message) {
+        // You can use an Alert to display error messages to the user
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     
     private void showEditPopup(TablePlatform platform) {
         try {
@@ -344,4 +334,6 @@ public void refreshTable() {
             e.printStackTrace();
         }
     }
+    
+    
 }

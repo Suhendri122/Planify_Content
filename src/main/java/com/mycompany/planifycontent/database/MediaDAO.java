@@ -31,14 +31,14 @@ public class MediaDAO {
     return medias;
 }
 
-    public void deleteMedia(int id) throws SQLException {
-        String query = "DELETE FROM media WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-        updateMediaNumbers(); // Update platform numbers after deletion
+public void deleteMedia(int id) throws SQLException {
+    String query = "DELETE FROM media WHERE id=?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
     }
+    updateMediaNumbers(); // Update media numbers after deletion
+}
 
     public void updateMediaNumbers() throws SQLException {
         String selectQuery = "SELECT id FROM media ORDER BY id";
@@ -86,7 +86,7 @@ public class MediaDAO {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String nama = resultSet.getString("nama_media");
-                TableMedia media = new TableMedia(no++, nama);
+                TableMedia media = new TableMedia(no++, nama, "");
                 mediaList.add(media);
             }
         }
@@ -99,5 +99,6 @@ public class MediaDAO {
             preparedStatement.setString(1, namaMedia);
             preparedStatement.executeUpdate();
         }
+        updateMediaNumbers();
     }
 }

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -28,9 +29,10 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("/style.css").toExternalForm());
         stage.setTitle("Planify Content");
         
-//        Image icon = new Image("/assets/logo.png");
-//        stage.getIcons().add(icon);
-    
+        Image icon = new Image("/assets/logo.png");
+        stage.getIcons().add(icon);
+        
+        stage.resizableProperty() .setValue (false);
         window.setScene(scene);
         window.show();
     }

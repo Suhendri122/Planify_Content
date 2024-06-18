@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -64,25 +63,21 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
-         <content>
-            <TableView fx:id="tableView" prefHeight="340.0" prefWidth="685.0">
-               <columns>
-                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="nama" prefWidth="200.0" text="Nama" />
-                  <TableColumn fx:id="noTelp" prefWidth="150.0" text="No Telp." />
-                  <TableColumn fx:id="usaha" prefWidth="200.0" text="Usaha" />
-                  <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
-               </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
+      <TableView fx:id="tableView" layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
+         <columns>
+            <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+            <TableColumn fx:id="namaColumn" prefWidth="200.0" text="Nama" />
+            <TableColumn fx:id="noTelpColumn" prefWidth="150.0" text="No Telp." />
+            <TableColumn fx:id="usahaColumn" prefWidth="200.0" text="Usaha" />
+            <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
+         </columns>
+      </TableView>
       <Text fill="#5b5b5b" layoutX="20.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="filtercari" layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" >
+      <Button fx:id="filtercari" layoutX="506.0" layoutY="137.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>

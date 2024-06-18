@@ -104,9 +104,7 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="485.0">
-         <content>
-            <TableView fx:id="tableView" prefHeight="420.0" prefWidth="485.0">
+            <TableView fx:id="tableView" layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="485.0">
                <columns>
                   <TableColumn fx:id="no" prefWidth="35.0" text="No" />
                   <TableColumn fx:id="user" prefWidth="150.0" text="Nama" />
@@ -122,7 +120,5 @@
                   
                </columns>
             </TableView>
-         </content>
-      </ScrollPane>
    </children>
 </AnchorPane>

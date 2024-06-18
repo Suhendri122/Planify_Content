@@ -109,7 +109,6 @@ public class KontenController implements Initializable {
     private TableColumn<TableKonten, String> picKonten;
     @FXML
     private TableColumn<TableKonten, String> status;
-    
     @FXML
     private TableColumn<TableKonten, String> aksiColumn;
 
@@ -143,7 +142,6 @@ public class KontenController implements Initializable {
         picKonten.setCellValueFactory(new PropertyValueFactory<>("namaUser"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         
-
 aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCell<TableKonten, String>>() {
                 @Override
                 public TableCell<TableKonten, String> call(TableColumn<TableKonten, String> param) {
@@ -165,8 +163,6 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
                             ivDelete.setFitWidth(20);
                             btnDelete.setGraphic(ivDelete);
              
-
-
                             AnchorPane.setLeftAnchor(btnEdit, 0.0);
                             AnchorPane.setLeftAnchor(btnDelete, 40.0);
                             
@@ -200,7 +196,6 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
                                     }
                                 });
                             });
-
                         }
 
                         @Override
@@ -251,7 +246,6 @@ public void refreshTable() {
         e.printStackTrace();
     }
 }
-
 
     private void updateKontenIds(ObservableList<TableKonten> kontenList) {
         for (int i = 0; i < kontenList.size(); i++) {

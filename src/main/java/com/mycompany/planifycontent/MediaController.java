@@ -27,8 +27,17 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import com.mycompany.planifycontent.TableMedia;
+import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 public class MediaController implements Initializable {
 
@@ -40,37 +49,124 @@ public class MediaController implements Initializable {
 
     @FXML
     private TableColumn<TableMedia, String> mediaColumn;
+    
+        @FXML
+    private TableColumn<TableMedia, String> aksiColumn;
 
     @FXML
     private TextField mediaNameField;
 
     private ObservableList<TableMedia> mediaData;
 
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mediaData = FXCollections.observableArrayList();
+    if (tableView != null) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            MediaDAO MediaDAO = new MediaDAO(connection);
+            List<TableMedia> mediaData = MediaDAO.getAllMedia();
+            ObservableList<TableMedia> observableMediaData = FXCollections.observableArrayList(mediaData);
 
-        if (tableView != null) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                MediaDAO mediaDAO = new MediaDAO(connection);
-                List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
-                mediaData.setAll(mediaList);
+            tableView.setItems(observableMediaData);
 
-                tableView.setItems(mediaData);
+            // Inisialisasi kolom-kolom lain
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
+            
+            // Inisialisasi kolom aksi
+            aksiColumn.setCellFactory(new Callback<TableColumn<TableMedia, String>, TableCell<TableMedia, String>>() {
+                @Override
+                public TableCell<TableMedia, String> call(TableColumn<TableMedia, String> param) {
+                    return new TableCell<TableMedia, String>() {
+                        final Button btnEdit = new Button();
+                        final Button btnDelete = new Button();
+                        final HBox hbox = new HBox(btnEdit, btnDelete);
+                        final AnchorPane anchorPane = new AnchorPane();
 
-                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-                mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
+                        {
+                            // Setup buttons
+                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                            ivEdit.setFitHeight(20);
+                            ivEdit.setFitWidth(20);
+                            btnEdit.setGraphic(ivEdit);
 
-                int index = 1;
-                for (TableMedia item : mediaData) {
-                    item.setNo(index++);
+                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                            ivDelete.setFitHeight(20);
+                            ivDelete.setFitWidth(20);
+                            btnDelete.setGraphic(ivDelete);
+             
+
+
+                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
+                            
+                            btnEdit.setPadding(new Insets(5));
+                            btnDelete.setPadding(new Insets(5));
+
+                            // Setup button actions
+                            btnEdit.setOnAction(event -> {
+                                TableMedia media = getTableView().getItems().get(getIndex());
+                                showEditPopup(media);
+                            });
+
+                            btnDelete.setOnAction(event -> {
+                            TableMedia media = getTableView().getItems().get(getIndex());
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Konfirmasi Penghapusan");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Apakah Anda yakin ingin menghapus media ini?");
+
+                            alert.showAndWait().ifPresent(response -> {
+                                if (response == ButtonType.OK) {
+                                    try (Connection connection = DatabaseConnection.getConnection()) {
+                                        MediaDAO mediaDAO = new MediaDAO(connection);
+                                        mediaDAO.deleteMedia(media.getNo());
+                                        refreshTable(); // Refresh table after deleting media
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        });
+
+
+                        }
+
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                anchorPane.getChildren().clear();
+                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                btnEdit.setPadding(new Insets(5));
+                                btnDelete.setPadding(new Insets(5));
+
+                                setGraphic(anchorPane);
+                                setText(null);
+                            }
+                        }
+
+                    };
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            });
+
+            // Atur nomor untuk setiap item
+            int index = 1;
+            for (TableMedia item : mediaData) {
+                item.noProperty().set(index++);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
+}
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
@@ -138,35 +234,40 @@ public class MediaController implements Initializable {
     }
 
     @FXML
-    private void handleTambah(ActionEvent event) {
-        if (mediaNameField != null) {
-            String mediaName = mediaNameField.getText();
-            if (mediaName != null && !mediaName.isEmpty()) {
-                try {
-                    Connection connection = DatabaseConnection.getConnection();
-                    MediaDAO mediaDAO = new MediaDAO(connection);
-                    mediaDAO.tambahMedia(mediaName);
-                    List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
+private void handleTambah(ActionEvent event) {
+    if (mediaNameField != null) {
+        String mediaName = mediaNameField.getText();
+        if (mediaName != null && !mediaName.isEmpty()) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                MediaDAO mediaDAO = new MediaDAO(connection);
+                mediaDAO.tambahMedia(mediaName);
+                List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
 
-                    if (mediaData != null) {
-                        mediaData.setAll(mediaList);
+                if (mediaData != null) {
+                    mediaData.setAll(mediaList);
 
-                        int index = 1;
-                        for (TableMedia item : mediaData) {
-                            item.setNo(index++);
-                        }
+                    // Set ulang nomor untuk setiap item
+                    int index = 1;
+                    for (TableMedia item : mediaData) {
+                        item.setNo(index++);
                     }
-                } catch (SQLException e) {
-                    // Handle the SQL exception and display an error message
-                    e.printStackTrace();
-                    showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
+
+                    // Refresh tabel setelah memperbarui data
+                    refreshTable();
                 }
-            } else {
-                showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
+            } catch (SQLException e) {
+                // Handle the SQL exception and display an error message
+                e.printStackTrace();
+                showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
             }
-            closeWindow();
+        } else {
+            showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
         }
+        closeWindow();
     }
+}
+
 
     @FXML
     private void popupBtnBatal(ActionEvent event) {
@@ -187,5 +288,47 @@ public class MediaController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+public void refreshTable() {
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        MediaDAO mediaDAO = new MediaDAO(connection);
+        List<TableMedia> mediaList = mediaDAO.getAllMedia();
+        ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
+        updateMediaIds(observableMediaList); // Reorder IDs before setting the items
+        tableView.setItems(observableMediaList);
+        tableView.getSelectionModel().clearSelection(); // Clear existing selection
+        tableView.refresh(); // Refresh the TableView to ensure it updates
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+private void updateMediaIds(ObservableList<TableMedia> mediaList) {
+    int index = 1;
+    for (TableMedia media : mediaList) {
+        media.setNo(index++); // Update the media ID to ensure they are sequential
+    }
+    tableView.refresh(); // Refresh the TableView to ensure it updates
+}
+
+        private void showEditPopup(TableMedia media) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editMedia.fxml"));
+            Parent root = loader.load();
+
+            EditMediaController controller = loader.getController();
+            controller.setMedia(media);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit Media");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

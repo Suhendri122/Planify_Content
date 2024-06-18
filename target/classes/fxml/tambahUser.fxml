@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.UserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.UserController">
    <children>
       <Label layoutX="15.0" layoutY="15.0" prefHeight="30.0" prefWidth="115.0" text="Nama" textFill="#358c9c">
          <font>
@@ -18,17 +18,23 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnBatal" fx:id="btnBatal" layoutX="156.0" layoutY="111.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
+      <Label layoutX="15.0" layoutY="105.0" prefHeight="30.0" text="Password" textFill="#358c9c">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnBatal" layoutX="191.0" layoutY="151.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button id="btnTambah" fx:id="btnTambah" layoutX="234.0" layoutY="111.0" mnemonicParsing="false" onAction="#tambahDataUser" text="Tambah" textFill="WHITE">
+      <Button fx:id="btnEdit" layoutX="262.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleTambah" text="Edit" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="namaField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
       <TextField fx:id="emailField" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="passwordField" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="nameField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
    </children>
 </AnchorPane>
