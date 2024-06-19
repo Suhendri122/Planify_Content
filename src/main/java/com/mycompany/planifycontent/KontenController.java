@@ -11,10 +11,14 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -24,9 +28,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,6 +81,12 @@ public class KontenController implements Initializable {
         App.setRoot("client");
     }
     
+    
+    @FXML
+private void handleTambahButtonAction(ActionEvent event) {
+    showAddPopup();
+}
+    
         @FXML
     private void logout(ActionEvent event) throws IOException {
         // Membuat dialog konfirmasi
@@ -111,9 +124,24 @@ public class KontenController implements Initializable {
     private TableColumn<TableKonten, String> status;
     
     @FXML
+    private ChoiceBox<String> picKontenChoiceBox;
+    @FXML
+    private ChoiceBox<String> statusChoiceBox;
+    @FXML
+    private DatePicker tglPostDatePicker;
+    @FXML
+    private DatePicker deadlineDatePicker;
+    @FXML
+    private Button searchButton;
+    
+
+    private UserDAO userDAO;
+    private KontenDAO kontenDAO;
+    
+    @FXML
     private TableColumn<TableKonten, String> aksiColumn;
 
-    private ObservableList<TableKonten> kontenData = FXCollections.observableArrayList();
+    private ObservableList<TableKonten> kontenData;
     
     private TableProyek proyek; // Deklarasi variabel proyek
 
@@ -126,25 +154,44 @@ public class KontenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
             if (tableView != null) {
         try {
+            
             Connection connection = DatabaseConnection.getConnection();
-            KontenDAO KontenDAO = new KontenDAO(connection);
-            List<TableKonten> kontenData = KontenDAO.getAllKontens();
+            userDAO = new UserDAO(connection);
+            kontenDAO = new KontenDAO(connection);
+            
+            
+            List<TableKonten> kontenList = kontenDAO.getAllKontens(picKontenChoiceBox.getValue(), statusChoiceBox.getValue(), tglPostDatePicker.getValue(), deadlineDatePicker.getValue() );
+            kontenData = FXCollections.observableArrayList(kontenList);
             ObservableList<TableKonten> observableKontenData = FXCollections.observableArrayList(kontenData);
+            
+            // Add "Semua" item to picKontenChoiceBox
+            picKontenChoiceBox.getItems().add("Semua");
+
+            // Add "Semua" item to statusChoiceBox
+            statusChoiceBox.getItems().add("Semua");
+            
+            List<String> userNames = userDAO.getAllUserNames();
+            picKontenChoiceBox.getItems().addAll(userNames);
+            
+             List<String> statuses = Arrays.asList("Belum", "Sedang Berlangsung", "Selesai"); // hardcoded list of statuses
+            statusChoiceBox.getItems().addAll(statuses);
+            
+            searchButton.setOnAction(event -> filterData());
 
             tableView.setItems(observableKontenData);
             
-        no.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tema.setCellValueFactory(new PropertyValueFactory<>("tema"));
-        media.setCellValueFactory(new PropertyValueFactory<>("namaMedia"));
-        platform.setCellValueFactory(new PropertyValueFactory<>("namaPlatform"));
-        link.setCellValueFactory(new PropertyValueFactory<>("linkDesain"));
-        deadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
-        tglPost.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
-        picKonten.setCellValueFactory(new PropertyValueFactory<>("namaUser"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+            no.setCellValueFactory(new PropertyValueFactory<>("id"));
+            tema.setCellValueFactory(new PropertyValueFactory<>("tema"));
+            media.setCellValueFactory(new PropertyValueFactory<>("namaMedia"));
+            platform.setCellValueFactory(new PropertyValueFactory<>("namaPlatform"));
+            link.setCellValueFactory(new PropertyValueFactory<>("linkDesain"));
+            deadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+            tglPost.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
+            picKonten.setCellValueFactory(new PropertyValueFactory<>("namaUser"));
+            status.setCellValueFactory(new PropertyValueFactory<>("status"));
         
 
-aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCell<TableKonten, String>>() {
+                aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCell<TableKonten, String>>() {
                 @Override
                 public TableCell<TableKonten, String> call(TableColumn<TableKonten, String> param) {
                     return new TableCell<TableKonten, String>() {
@@ -235,18 +282,17 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
 }
 
-public void refreshTable() {
+    public void refreshTable() {
         try {
             Connection connection = DatabaseConnection.getConnection();
-            KontenDAO kontenDAO = new KontenDAO(connection);
-            List<TableKonten> kontenList = kontenDAO.getAllKontens();
+            kontenDAO = new KontenDAO(connection);
+            List<TableKonten> kontenList = kontenDAO.getAllKontens(picKontenChoiceBox.getValue(), statusChoiceBox.getValue(), tglPostDatePicker.getValue(), deadlineDatePicker.getValue());
             ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
-            updateKontenIds(observableKontenList); // Reorder IDs before setting the items
+            updateKontenIds(observableKontenList);  // Reorder IDs before setting the items
             tableView.setItems(observableKontenList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -258,6 +304,25 @@ public void refreshTable() {
             kontenList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
         }
     }
+    
+    private void showAddPopup() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambah_data.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setTitle("Tambah Data");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
+        // Refresh the table view after adding data
+        refreshTable();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
     private void showEditPopup(TableKonten konten) {
         try {
@@ -279,4 +344,34 @@ public void refreshTable() {
             e.printStackTrace();
         }
     }
+    
+  @FXML
+private void handleSearchButtonAction(ActionEvent event) {
+    filterData();
+}
+
+
+    
+ @FXML
+private void filterData() {
+    String picKontenFilterValue = picKontenChoiceBox.getSelectionModel().getSelectedItem();
+    String statusFilterValue = statusChoiceBox.getSelectionModel().getSelectedItem();
+    LocalDate tglPostFilterValue = tglPostDatePicker.getValue();
+    LocalDate deadlineFilterValue = deadlineDatePicker.getValue();
+
+    ObservableList<TableKonten> tableViewList = tableView.getItems();
+    tableViewList.clear();
+
+    try {
+        Connection connection = DatabaseConnection.getConnection();
+        KontenDAO kontenDAO = new KontenDAO(connection);
+        List<TableKonten> kontenList = kontenDAO.getAllKontens(picKontenFilterValue, statusFilterValue, tglPostFilterValue, deadlineFilterValue);
+        tableViewList.addAll(kontenList);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
+    
+    
 }

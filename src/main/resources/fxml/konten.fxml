@@ -9,7 +9,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -94,8 +93,7 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <TextField layoutX="115.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <Button layoutX="551.0" layoutY="135.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari">
+      <Button fx:id="searchButton" layoutX="551.0" layoutY="135.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" onAction="#handleSearchButtonAction">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -115,8 +113,9 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <DatePicker layoutX="380.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <DatePicker layoutX="380.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox layoutX="116.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <DatePicker fx:id="tglPostDatePicker" layoutX="380.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <DatePicker fx:id="deadlineDatePicker" layoutX="380.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="statusChoiceBox"  layoutX="116.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="picKontenChoiceBox" layoutX="115.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>
