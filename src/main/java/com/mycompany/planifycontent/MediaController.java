@@ -1,6 +1,6 @@
 package com.mycompany.planifycontent;
 
-import com.mycompany.planifycontent.database.DashboardDAO;
+import com.mycompany.planifycontent.database.MediaDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -25,12 +25,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import com.mycompany.planifycontent.TableMedia;
-import com.mycompany.planifycontent.database.MediaDAO;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -41,98 +39,26 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
+public class MediaController implements Initializable {
 
-
-public class MediaController implements Initializable{
-    
-    @FXML
-    private void bukaHalamanDashboard(ActionEvent event) throws IOException {
-        App.setRoot("dashboard");
-    }
-    
-    @FXML
-    private void bukaHalamanProyek(ActionEvent event) throws IOException {
-        App.setRoot("proyek");
-    }
-
-    @FXML
-    private void bukaHalamanHistori(ActionEvent event) throws IOException {
-        App.setRoot("histori");
-    }
-
-    @FXML
-    private void bukaHalamanPlatform(ActionEvent event) throws IOException {
-        App.setRoot("platform");
-    }
-
-    @FXML
-    private void bukaHalamanMedia(ActionEvent event) throws IOException {
-        App.setRoot("media");
-    }
-
-    @FXML
-    private void bukaHalamanClient(ActionEvent event) throws IOException {
-        App.setRoot("client");
-    }
-
-    @FXML
-    private void bukaHalamanUser(ActionEvent event) throws IOException {
-        App.setRoot("user");
-    }
-    
-        @FXML
-    private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Konfirmasi Logout");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin logout?");
-
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            App.setRoot("login");
-        }
-    }
-
-    
-    
-    //popup tambah, edit, dan filter
-    
-    @FXML
-    private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataMedia.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Media");
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
-    }
-
-    
-    @FXML
-    private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
-        stage.close();
-    }
-    
-    
     @FXML
     private TableView<TableMedia> tableView;
-     
-     @FXML
+
+    @FXML
     private TableColumn<TableMedia, Integer> noColumn;
 
     @FXML
     private TableColumn<TableMedia, String> mediaColumn;
     
-    @FXML
+        @FXML
     private TableColumn<TableMedia, String> aksiColumn;
-     
-    @Override
-public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    @FXML
+    private TextField mediaNameField;
+
+    private ObservableList<TableMedia> mediaData;
+
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
@@ -183,26 +109,25 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                             });
 
                             btnDelete.setOnAction(event -> {
-                                TableMedia media = getTableView().getItems().get(getIndex());
+                            TableMedia media = getTableView().getItems().get(getIndex());
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Konfirmasi Penghapusan");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Apakah Anda yakin ingin menghapus media ini?");
 
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                alert.setTitle("Konfirmasi Penghapusan");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Apakah Anda yakin ingin menghapus proyek ini?");
-
-                                alert.showAndWait().ifPresent(response -> {
-                                    if (response == ButtonType.OK) {
-                                        try {
-                                            Connection connection = DatabaseConnection.getConnection();
-                                            MediaDAO mediaDAO = new MediaDAO(connection);
-                                            mediaDAO.deleteMedia(media.getNo());
-                                            refreshTable();
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
+                            alert.showAndWait().ifPresent(response -> {
+                                if (response == ButtonType.OK) {
+                                    try (Connection connection = DatabaseConnection.getConnection()) {
+                                        MediaDAO mediaDAO = new MediaDAO(connection);
+                                        mediaDAO.deleteMedia(media.getNo());
+                                        refreshTable(); // Refresh table after deleting media
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
                                     }
-                                });
+                                }
                             });
+                        });
+
 
                         }
 
@@ -243,26 +168,151 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }
 
+    @FXML
+    private void bukaHalamanDashboard(ActionEvent event) throws IOException {
+        App.setRoot("dashboard");
+    }
+
+    @FXML
+    private void bukaHalamanProyek(ActionEvent event) throws IOException {
+        App.setRoot("proyek");
+    }
+
+    @FXML
+    private void bukaHalamanHistori(ActionEvent event) throws IOException {
+        App.setRoot("histori");
+    }
+
+    @FXML
+    private void bukaHalamanPlatform(ActionEvent event) throws IOException {
+        App.setRoot("platform");
+    }
+
+    @FXML
+    private void bukaHalamanMedia(ActionEvent event) throws IOException {
+        App.setRoot("media");
+    }
+
+    @FXML
+    private void bukaHalamanClient(ActionEvent event) throws IOException {
+        App.setRoot("client");
+    }
+
+    @FXML
+    private void bukaHalamanUser(ActionEvent event) throws IOException {
+        App.setRoot("user");
+    }
+    
+        @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
+    
+    
+    //popup tambah, edit, dan filter
+    
+    @FXML
+    private void bukaHalamanTambah(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahMedia.fxml"));
+        Parent root = fxmlLoader.load();    
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Tambah Data Media");
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.showAndWait();
+        initialize(null, null); // Refresh data setelah pop-up ditutup
+    }
+
+    @FXML
+private void handleTambah(ActionEvent event) {
+    if (mediaNameField != null) {
+        String mediaName = mediaNameField.getText();
+        if (mediaName != null && !mediaName.isEmpty()) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                MediaDAO mediaDAO = new MediaDAO(connection);
+                mediaDAO.tambahMedia(mediaName);
+                List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
+
+                if (mediaData != null) {
+                    mediaData.setAll(mediaList);
+
+                    // Set ulang nomor untuk setiap item
+                    int index = 1;
+                    for (TableMedia item : mediaData) {
+                        item.setNo(index++);
+                    }
+
+                    // Refresh tabel setelah memperbarui data
+                    refreshTable();
+                }
+            } catch (SQLException e) {
+                // Handle the SQL exception and display an error message
+                e.printStackTrace();
+                showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
+            }
+        } else {
+            showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
+        }
+        closeWindow();
+    }
+}
+
+
+    @FXML
+    private void popupBtnBatal(ActionEvent event) {
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        if (mediaNameField != null) {
+            Stage stage = (Stage) mediaNameField.getScene().getWindow();
+            stage.close();
+        }
+    }
+
+    private void showErrorMessage(String title, String message) {
+        // You can use an Alert to display error messages to the user
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
 public void refreshTable() {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            MediaDAO mediaDAO = new MediaDAO(connection);
-            List<TableMedia> mediaList = mediaDAO.getAllMedia();
-            ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
-            updateMediaIds(observableMediaList); // Reorder IDs before setting the items
-            tableView.setItems(observableMediaList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        MediaDAO mediaDAO = new MediaDAO(connection);
+        List<TableMedia> mediaList = mediaDAO.getAllMedia();
+        ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
+        updateMediaIds(observableMediaList); // Reorder IDs before setting the items
+        tableView.setItems(observableMediaList);
+        tableView.getSelectionModel().clearSelection(); // Clear existing selection
+        tableView.refresh(); // Refresh the TableView to ensure it updates
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
-    private void updateMediaIds(ObservableList<TableMedia> mediaList) {
-        for (int i = 0; i < mediaList.size(); i++) {
-            mediaList.get(i).setId(i + 1); // Reorder IDs to be sequential starting from 1
-        }
+private void updateMediaIds(ObservableList<TableMedia> mediaList) {
+    int index = 1;
+    for (TableMedia media : mediaList) {
+        media.setNo(index++); // Update the media ID to ensure they are sequential
     }
+    tableView.refresh(); // Refresh the TableView to ensure it updates
+}
 
-    private void showEditPopup(TableMedia media) {
+        private void showEditPopup(TableMedia media) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editMedia.fxml"));
             Parent root = loader.load();
@@ -281,5 +331,4 @@ public void refreshTable() {
             e.printStackTrace();
         }
     }
-
 }

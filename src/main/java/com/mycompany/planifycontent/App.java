@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -28,9 +29,10 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("/style.css").toExternalForm());
         stage.setTitle("Planify Content");
         
-//        Image icon = new Image("/assets/logo.png");
-//        stage.getIcons().add(icon);
-    
+        Image icon = new Image(App.class.getResource("/assets/logo.png").toExternalForm());
+        stage.getIcons().add(icon);
+        
+        stage.resizableProperty().setValue(false);
         window.setScene(scene);
         window.show();
     }
@@ -42,7 +44,7 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml"));
         Parent root = fxmlLoader.load();
-        loader = fxmlLoader; // Mengatur objek FXMLLoader ke variabel loader
+        loader = fxmlLoader; 
         return root;
     }
     

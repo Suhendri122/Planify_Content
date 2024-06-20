@@ -60,7 +60,7 @@ public class ProyekDAO {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            int no =1;
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int userId = resultSet.getInt("user_id");
@@ -69,7 +69,7 @@ public class ProyekDAO {
                 String picProyek = resultSet.getString("pic_proyek");
                 String namaClient = resultSet.getString("nama");
                 String noTelepon = resultSet.getString("no_telp");
-                String harga = resultSet.getString("harga");
+                double harga = Double.parseDouble(resultSet.getString("harga"));
                 String tglMulai = resultSet.getString("tgl_mulai");
                 String tglSelesai = resultSet.getString("tgl_selesai");
 
@@ -82,66 +82,71 @@ public class ProyekDAO {
     }
     
     public List<TableProyek> getProyekByPIC(String picProyek) throws SQLException {
-        List<TableProyek> proyekList = new ArrayList<>();
+    List<TableProyek> proyekList = new ArrayList<>();
+    String query = "SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
+                   "FROM proyek p " +
+                   "INNER JOIN user u ON p.user_id = u.id " +
+                   "INNER JOIN client c ON p.client_id = c.id " +
+                   "WHERE u.nama = ?";
 
-        Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
-                "FROM proyek p " +
-                "INNER JOIN user u ON p.user_id = u.id " +
-                "INNER JOIN client c ON p.client_id = c.id " +
-                "WHERE u.nama =?");
-
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setString(1, picProyek);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                int clientId = resultSet.getInt("client_id");
+                String namaProyek = resultSet.getString("nama_proyek");
+                String picProyekName = resultSet.getString("pic_proyek");
+                String namaClient = resultSet.getString("nama_client");
+                String noTelepon = resultSet.getString("no_telp");
+                double harga = Double.parseDouble(resultSet.getString("harga"));
+                String tglMulai = resultSet.getString("tgl_mulai");
+                String tglSelesai = resultSet.getString("tgl_selesai");
 
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            int userId = resultSet.getInt("user_id");
-            int clientId = resultSet.getInt("client_id");
-            String namaProyek = resultSet.getString("nama_proyek");
-            String picProyekName = resultSet.getString("pic_proyek");
-            String namaClient = resultSet.getString("nama_client");
-            String noTelepon = resultSet.getString("no_telp");
-            String harga = resultSet.getString("harga");
-            String tglMulai = resultSet.getString("tgl_mulai");
-            String tglSelesai = resultSet.getString("tgl_selesai");
-
-            TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, "");
-            proyekList.add(proyek);
+                TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, null);
+                proyekList.add(proyek);
+            }
         }
+    }
 
-        return proyekList;
-    }
-    
-    public List<TableProyek> getProyekByClient(String clientName) throws SQLException {
-    Connection connection = DatabaseConnection.getConnection();
-    PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
-            "FROM proyek p " +
-            "INNER JOIN user u ON p.user_id = u.id " +
-            "INNER JOIN client c ON p.client_id = c.id " +
-            "WHERE c.nama =?");
-    preparedStatement.setString(1, clientName);
-    ResultSet resultSet = preparedStatement.executeQuery();
-    List<TableProyek> proyekList = new ArrayList<>();
-    while (resultSet.next()) {
-        int id = resultSet.getInt("id");
-        int userId = resultSet.getInt("user_id");
-        int clientId = resultSet.getInt("client_id");
-        String namaProyek = resultSet.getString("nama_proyek");
-        String picProyekName = resultSet.getString("pic_proyek");
-        String namaClient = resultSet.getString("nama_client");
-        String noTelepon = resultSet.getString("no_telp");
-        String harga = resultSet.getString("harga");
-        String tglMulai = resultSet.getString("tgl_mulai");
-        String tglSelesai = resultSet.getString("tgl_selesai");
-        TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, "");
-        proyekList.add(proyek);
-    }
     return proyekList;
 }
-    
-    
+
+public List<TableProyek> getProyekByClient(String clientName) throws SQLException {
+    List<TableProyek> proyekList = new ArrayList<>();
+    String query = "SELECT p.id, p.user_id, p.client_id, p.nama_proyek, u.nama AS pic_proyek, c.nama AS nama_client, c.no_telp, p.harga, p.tgl_mulai, p.tgl_selesai " +
+                   "FROM proyek p " +
+                   "INNER JOIN user u ON p.user_id = u.id " +
+                   "INNER JOIN client c ON p.client_id = c.id " +
+                   "WHERE c.nama = ?";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, clientName);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                int clientId = resultSet.getInt("client_id");
+                String namaProyek = resultSet.getString("nama_proyek");
+                String picProyekName = resultSet.getString("pic_proyek");
+                String namaClient = resultSet.getString("nama_client");
+                String noTelepon = resultSet.getString("no_telp");
+                double harga = Double.parseDouble(resultSet.getString("harga"));
+                String tglMulai = resultSet.getString("tgl_mulai");
+                String tglSelesai = resultSet.getString("tgl_selesai");
+
+                TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai, tglSelesai, null);
+                proyekList.add(proyek);
+            }
+        }
+    }
+
+    return proyekList;
+}
+
     
     public List<String> getAllUsers() throws SQLException {
         List<String> users = new ArrayList<>();
@@ -162,9 +167,8 @@ public class ProyekDAO {
         List<String> clientList = new ArrayList<>();
         String query = "SELECT nama FROM client";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 String namaClient = resultSet.getString("nama");
                 clientList.add(namaClient);
@@ -173,43 +177,61 @@ public class ProyekDAO {
 
         return clientList;
     }
-    
-    
+
     public List<TableProyek> getProyekByTglMulai(LocalDate tglMulai) throws SQLException {
-    Connection connection = DatabaseConnection.getConnection();
-    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM proyek WHERE tgl_mulai = ?");
-    preparedStatement.setDate(1, Date.valueOf(tglMulai));
-    ResultSet resultSet = preparedStatement.executeQuery();
-    List<TableProyek> proyekList = new ArrayList<>();
-    while (resultSet.next()) {
-        // buat objek TableProyek dan tambahkan ke daftar
+        List<TableProyek> proyekList = new ArrayList<>();
+        String query = "SELECT * FROM proyek WHERE tgl_mulai = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDate(1, Date.valueOf(tglMulai));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    int userId = resultSet.getInt("user_id");
+                    int clientId = resultSet.getInt("client_id");
+                    String namaProyek = resultSet.getString("nama_proyek");
+                    String picProyekName = resultSet.getString("user_id");
+                    String namaClient = resultSet.getString("client_id");
+                    String noTelepon = resultSet.getString("user_id");
+                    double harga = Double.parseDouble(resultSet.getString("harga"));
+                    String tglSelesai = resultSet.getString("tgl_selesai");
+
+                    TableProyek proyek = new TableProyek(id, userId, clientId, namaProyek, picProyekName, namaClient, noTelepon, harga, tglMulai.toString(), tglSelesai, null);
+                    proyekList.add(proyek);
+                }
+            }
+        }
+
+        return proyekList;
     }
-    return proyekList;
-}
-    
+
     public String getPhoneNumberByClientName(String clientName) throws SQLException {
         String phoneNumber = null;
         String query = "SELECT no_telp FROM client WHERE nama = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, clientName);
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                phoneNumber = resultSet.getString("no_telp");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    phoneNumber = resultSet.getString("no_telp");
+                }
             }
         }
 
         return phoneNumber;
     }
 
+
     public int getUserIdByName(String userName) throws SQLException {
         String query = "SELECT id FROM user WHERE nama = ? LIMIT 1";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("id");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
             }
         }
         throw new SQLException("User not found");
@@ -219,9 +241,10 @@ public class ProyekDAO {
         String query = "SELECT id FROM client WHERE nama = ? LIMIT 1";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, clientName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("id");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
             }
         }
         throw new SQLException("Client not found");
@@ -235,13 +258,14 @@ public class ProyekDAO {
             stmt.setString(1, proyek.getNamaProyek());
             stmt.setInt(2, proyek.getUserId());
             stmt.setInt(3, proyek.getClientId());
-            stmt.setString(4, proyek.getHarga());
+            stmt.setDouble(4, proyek.getHarga());
             stmt.setDate(5, java.sql.Date.valueOf(proyek.getTglMulai()));
             stmt.setDate(6, java.sql.Date.valueOf(proyek.getTglSelesai()));
-            stmt.setInt(7, proyek.getId());
+            stmt.setInt(7, proyek.getNo());
             stmt.executeUpdate();
         }
     }
+
 
     public void deleteProyek(int id) throws SQLException {
         String query = "DELETE FROM proyek WHERE id=?";
@@ -253,10 +277,31 @@ public class ProyekDAO {
     }
 
     public void updateProyekNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE proyek SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
-        }
+    String resetQuery = "SET @row_number = 0";
+    String updateQuery = "UPDATE proyek SET id = (@row_number:=@row_number + 1) ORDER BY id";
+    
+    try (PreparedStatement resetStmt = connection.prepareStatement(resetQuery);
+         PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+        
+        resetStmt.execute(); // Execute the reset query
+        
+        updateStmt.executeUpdate(); // Execute the update query
     }
+}
+
+    
+    public void addProyek(TableProyek proyek) throws SQLException {
+    String query = "INSERT INTO proyek (nama_proyek, user_id, client_id, harga, tgl_mulai, tgl_selesai) VALUES (?, ?, ?, ?, ?, ?)";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setString(1, proyek.getNamaProyek());
+        stmt.setInt(2, proyek.getUserId());
+        stmt.setInt(3, proyek.getClientId());
+        stmt.setDouble(4, proyek.getHarga());
+        stmt.setDate(5, java.sql.Date.valueOf(proyek.getTglMulai()));
+        stmt.setDate(6, java.sql.Date.valueOf(proyek.getTglSelesai()));
+        stmt.executeUpdate();
+    }
+    updateProyekNumbers();
+}
+
 }

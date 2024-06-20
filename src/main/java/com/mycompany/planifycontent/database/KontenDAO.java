@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KontenDAO {
-    private final Connection connection;
+    public final Connection connection;
 
     public KontenDAO(Connection connection) {
         this.connection = connection;
@@ -74,23 +74,82 @@ public class KontenDAO {
     }
     return kontenList;
 }
-
-    public void deleteKonten(int id) throws SQLException {
-        String query = "DELETE FROM konten WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-        updateKontenNumbers();
-    }
-
-    public void updateKontenNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE konten SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
+    
+    
+    public List<String> getAllUsers() throws SQLException {
+        String query = "SELECT nama FROM user";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<String> users = new ArrayList<>();
+            while (resultSet.next()) {
+                users.add(resultSet.getString("nama"));
+            }
+            return users;
         }
     }
+    
+    
+    public List<String> getAllMedia() throws SQLException {
+        String query = "SELECT nama_media FROM media";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<String> media = new ArrayList<>();
+            while (resultSet.next()) {
+                media.add(resultSet.getString("nama_media"));
+            }
+            return media;
+        }
+    }
+    
+    public List<String> getAllPlatforms() throws SQLException {
+        String query = "SELECT nama_platform FROM platform";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<String> platforms = new ArrayList<>();
+            while (resultSet.next()) {
+                platforms.add(resultSet.getString("nama_platform"));
+            }
+            return platforms;
+        }
+    }
+
+    public List<String> getAllStatuses() throws SQLException {
+        String query = "SELECT status FROM konten_status"; // Assuming you have a table called konten_status
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<String> statuses = new ArrayList<>();
+            while (resultSet.next()) {
+                statuses.add(resultSet.getString("status"));
+            }
+            return statuses;
+        }
+    }
+
+public void deleteKonten(int id, String picKonten, String status, LocalDate tglPost, LocalDate deadline) throws SQLException {
+    String query = "DELETE FROM konten WHERE id=?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    }
+    updateKontenNumbers(picKonten, status, tglPost, deadline);
+}
+
+public void updateKontenNumbers(String picKonten, String status, LocalDate tglPost, LocalDate deadline) throws SQLException {
+    List<TableKonten> kontenList = getAllKontens(picKonten, status, tglPost, deadline);
+    String sql = "UPDATE konten SET id = ? WHERE id = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        for (int i = 0; i < kontenList.size(); i++) {
+            ps.setInt(1, i + 1); // Set nomor ID baru
+            ps.setInt(2, kontenList.get(i).getId()); // Cari ID lama
+            ps.executeUpdate();
+        }
+    }
+}
+
+
+
+
+
 
     public void updateKonten(int id, String namaUser, String namaMedia, String namaPlatform, String linkDesain, String tema, String deadline, String tglPost, String status) throws SQLException {
         String query = "UPDATE konten SET user_id = (SELECT id FROM user WHERE nama = ?), media_id = (SELECT id FROM media WHERE nama_media = ?), platform_id = (SELECT id FROM platform WHERE nama_platform = ?), link_desain = ?, tema = ?, deadline = ?, tgl_post = ?, status = ? WHERE id = ?";
@@ -123,6 +182,8 @@ public class KontenDAO {
             stmt.executeUpdate();
         }
     }
+    
+    
     
     public List<String> getAllUserNames() throws SQLException {
         List<String> userNameList = new ArrayList<>();

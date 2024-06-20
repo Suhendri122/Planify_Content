@@ -13,7 +13,6 @@ public class TableClient {
     private final StringProperty aksi;
     private int id;
 
-
     public TableClient(int no, String nama, String no_telp, String usaha, String aksi) {
         this.no = new SimpleIntegerProperty(no);
         this.nama = new SimpleStringProperty(nama);
@@ -26,43 +25,63 @@ public class TableClient {
         return no.get();
     }
 
-    public void setNo(int no) {
-        this.no.set(no);
-    }
-
     public IntegerProperty noProperty() {
         return no;
+    }
+
+    public void setNo(int no) {
+        this.no.set(no);
     }
 
     public String getNama() {
         return nama.get();
     }
 
+    public void setNama(String nama) {
+        this.nama.set(nama);
+    }
+
     public StringProperty namaProperty() {
         return nama;
     }
-    
+
     public String getNo_telp() {
         return no_telp.get();
     }
 
-    public StringProperty no_telpProperty() {
-        return no_telp;
+    public void setNo_telp(String no_telp) {
+        this.no_telp.set(no_telp);
     }
     
     public String getUsaha() {
         return usaha.get();
     }
 
+    public void setUsaha(String usaha) {
+        this.usaha.set(usaha);
+    }
+
     public StringProperty usahaProperty() {
         return usaha;
     }
-    
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAksi() {
+        return aksi.get();
+    }
+
+    public void setAksi(String aksi) {
+        this.aksi.set(aksi);
+    }
+
+    public StringProperty aksiProperty() {
+        return aksi;
     }
 }

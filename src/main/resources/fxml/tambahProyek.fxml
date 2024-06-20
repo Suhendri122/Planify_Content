@@ -8,57 +8,57 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.ProyekController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.TambahProyekController">
    <children>
       <Label layoutX="15.0" layoutY="16.0" prefHeight="30.0" prefWidth="115.0" text="Nama Proyek" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtNamaProyek" layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="61.0" prefHeight="30.0" prefWidth="115.0" text="PIC Proyek" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="140.0" layoutY="61.0" prefHeight="30.0" prefWidth="170.0" />
-      <Label layoutX="15.0" layoutY="106.0" prefHeight="30.0" text="Nama Konsumen" textFill="#358c9c">
+      <ChoiceBox fx:id="choicePicProyek" layoutX="140.0" layoutY="61.0" prefHeight="30.0" prefWidth="170.0" />
+      <Label layoutX="15.0" layoutY="106.0" prefHeight="30.0" text="Nama Client" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="166.0" layoutY="106.0" prefHeight="30.0" prefWidth="144.0" />
+      <ChoiceBox fx:id="choiceNamaClient" layoutX="166.0" layoutY="106.0" prefHeight="30.0" prefWidth="144.0" />
       <Label layoutX="15.0" layoutY="151.0" prefHeight="30.0" text="No Telepon" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtNoTelepon" disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="196.0" prefHeight="30.0" text="Harga" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtHarga" layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="286.0" prefHeight="30.0" text="Tgl Selesai" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
 
-      <DatePicker layoutX="140.0" layoutY="241.0" prefHeight="30.0" prefWidth="170.0" />
+      <DatePicker fx:id="dpTglMulai" layoutX="140.0" layoutY="241.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="241.0" prefHeight="30.0" text="Tgl Mulai" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <DatePicker layoutX="140.0" layoutY="286.0" prefHeight="30.0" prefWidth="170.0" />
-      <Button id="btnBatal" fx:id="btnBatal" layoutX="167.0" layoutY="331.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
+      <DatePicker fx:id="dpTglSelesai" layoutX="140.0" layoutY="286.0" prefHeight="30.0" prefWidth="170.0" />
+      <Button id="btnBatal" fx:id="cancelTambah" layoutX="167.0" layoutY="331.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button id="btnTambah" fx:id="btnTambah" layoutX="236.0" layoutY="331.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" fx:id="saveProyek" layoutX="236.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>

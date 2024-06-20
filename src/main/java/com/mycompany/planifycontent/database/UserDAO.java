@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mycompany.planifycontent.TableUser;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class UserDAO {
     private final Connection connection;
@@ -28,6 +32,7 @@ public class UserDAO {
                 String email = resultSet.getString("email");
                 TableUser user = new TableUser(no++, nama, email, "");
                 users.add(user);
+                user.setId(id);
             }
         }
         return users;
@@ -43,10 +48,22 @@ public class UserDAO {
     }
 
     public void updateUserNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE platform SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
+        String selectQuery = "SELECT id FROM user ORDER BY id";
+        String updateQuery = "UPDATE user SET id = ? WHERE id = ?";
+        
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+             ResultSet resultSet = selectStmt.executeQuery()) {
+             
+            int newId = 1;
+            while (resultSet.next()) {
+                int oldId = resultSet.getInt("id");
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, newId);
+                    updateStmt.setInt(2, oldId);
+                    updateStmt.executeUpdate();
+                }
+                newId++;
+            }
         }
     }
 
@@ -65,6 +82,7 @@ public class UserDAO {
             stmt.setString(1, name);
             stmt.executeUpdate();
         }
+        updateUserNumbers();
     }
 
     public List<String> getAllUserNames() throws SQLException {
@@ -79,4 +97,37 @@ public class UserDAO {
     return userNames;
 }
 
+    public int tambahUser(String nama, String email, String password) throws SQLException {
+        String query = "INSERT INTO user (nama, email, password) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, nama);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, hashPasswordMD5(password)); // Hash password before storing
+            preparedStatement.executeUpdate();
+            updateUserNumbers();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Return the generated user ID
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+        }
+    }
+
+    private String hashPasswordMD5(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(password.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -31,22 +31,35 @@ public class MediaDAO {
     return medias;
 }
 
-    public void deleteMedia(int id) throws SQLException {
-        String query = "DELETE FROM media WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-        updateMediaNumbers(); // Update platform numbers after deletion
+public void deleteMedia(int id) throws SQLException {
+    String query = "DELETE FROM media WHERE id=?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
     }
+    updateMediaNumbers(); // Update media numbers after deletion
+}
 
     public void updateMediaNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE media SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
+        String selectQuery = "SELECT id FROM media ORDER BY id";
+        String updateQuery = "UPDATE media SET id = ? WHERE id = ?";
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+             ResultSet resultSet = selectStmt.executeQuery()) {
+
+            int newId = 1;
+            while (resultSet.next()) {
+                int oldId = resultSet.getInt("id");
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, newId);
+                    updateStmt.setInt(2, oldId);
+                    updateStmt.executeUpdate();
+                }
+                newId++;
+            }
         }
     }
+
 
     public void updateMedia(int id, String newName) throws SQLException {
         String query = "UPDATE media SET nama_media = ? WHERE id = ?";
@@ -63,5 +76,29 @@ public class MediaDAO {
             stmt.setString(1, name);
             stmt.executeUpdate();
         }
+    }
+    public List<TableMedia> getAllDataMedia() throws SQLException {
+        List<TableMedia> mediaList = new ArrayList<>();
+        String query = "SELECT id, nama_media FROM media";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int no = 1;
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nama = resultSet.getString("nama_media");
+                TableMedia media = new TableMedia(no++, nama, "");
+                mediaList.add(media);
+            }
+        }
+        return mediaList;
+    }
+
+    public void tambahMedia(String namaMedia) throws SQLException {
+        String query = "INSERT INTO media (nama_media) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, namaMedia);
+            preparedStatement.executeUpdate();
+        }
+        updateMediaNumbers();
     }
 }

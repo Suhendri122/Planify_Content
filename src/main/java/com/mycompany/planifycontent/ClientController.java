@@ -1,24 +1,13 @@
 package com.mycompany.planifycontent;
 
-import com.mycompany.planifycontent.database.ClientDAO;
-import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ButtonType;
@@ -33,15 +22,65 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
-public class ClientController implements Initializable{
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.io.IOException;
+import com.mycompany.planifycontent.database.ClientDAO;
+import com.mycompany.planifycontent.database.DatabaseConnection;
+import java.util.List;
+
+public class ClientController implements Initializable {
+
+    @FXML
+    private TableView<TableClient> tableView;
+
+    @FXML
+    private TableColumn<TableClient, Integer> noColumn;
+
+    @FXML
+    private TableColumn<TableClient, String> namaColumn;
+
+    @FXML
+    private TableColumn<TableClient, String> noTelpColumn;
+
+    @FXML
+    private TableColumn<TableClient, String> usahaColumn;
+
+    @FXML
+    private TableColumn<TableClient, String> aksiColumn;
+
+    @FXML
+    private ChoiceBox<String> namaclient;
+
+    @FXML
+    private ChoiceBox<String> namausaha;
+
+    @FXML
+    private Button filtercari;
+
+    @FXML
+    private TextField namaField;
+
+    @FXML
+    private TextField noTelpField;
+
+    @FXML
+    private TextField usahaField;
+
+    private ObservableList<TableClient> clientData = FXCollections.observableArrayList();
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
     }
-    
+
     @FXML
     private void bukaHalamanProyek(ActionEvent event) throws IOException {
         App.setRoot("proyek");
@@ -71,185 +110,270 @@ public class ClientController implements Initializable{
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-    
-        @FXML
+
+    @FXML
+    private void bukaHalamanTambah(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahClient.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Tambah Data Client");
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.UTILITY);
+            stage.showAndWait();
+            initialize(null, null); // Refresh data setelah pop-up ditutup
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Tampilkan pesan kesalahan
+            System.out.println("Error loading FXML: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (tableView != null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ClientDAO clientDAO = new ClientDAO(connection);
+                List<TableClient> clientDataList = clientDAO.getAllClients();
+                ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientDataList);
+
+                tableView.setItems(observableClientData);
+
+                // Inisialisasi kolom-kolom
+                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+                namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+                noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+                usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+
+                // Inisialisasi kolom aksi
+                aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
+                    @Override
+                    public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
+                        return new TableCell<TableClient, String>() {
+                            final Button btnEdit = new Button();
+                            final Button btnDelete = new Button();
+                            final HBox hbox = new HBox(btnEdit, btnDelete);
+                            final AnchorPane anchorPane = new AnchorPane();
+
+                            {
+                                // Setup buttons
+                                ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                                ivEdit.setFitHeight(20);
+                                ivEdit.setFitWidth(20);
+                                btnEdit.setGraphic(ivEdit);
+
+                                ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                                ivDelete.setFitHeight(20);
+                                ivDelete.setFitWidth(20);
+                                btnDelete.setGraphic(ivDelete);
+
+                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                btnEdit.setPadding(new Insets(5));
+                                btnDelete.setPadding(new Insets(5));
+
+                                // Setup button actions
+                                btnEdit.setOnAction(event -> {
+                                    TableClient client = getTableView().getItems().get(getIndex());
+                                    showEditPopup(client);
+                                });
+
+                                btnDelete.setOnAction(event -> {
+                                    TableClient client = getTableView().getItems().get(getIndex());
+
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Konfirmasi Penghapusan");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Apakah Anda yakin ingin menghapus client ini?");
+
+                                    alert.showAndWait().ifPresent(response -> {
+                                        if (response == ButtonType.OK) {
+                                            try {
+                                                Connection connection = DatabaseConnection.getConnection();
+                                                ClientDAO clientDAO = new ClientDAO(connection);
+                                                clientDAO.deleteClient(client.getId()); // Menggunakan nomor client untuk penghapusan
+                                                refreshTable(); // Memperbarui tampilan tabel setelah menghapus data
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                });
+
+                            }
+
+                            @Override
+                            protected void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    anchorPane.getChildren().clear();
+                                    anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                    AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                    AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                    btnEdit.setPadding(new Insets(5));
+                                    btnDelete.setPadding(new Insets(5));
+
+                                    setGraphic(anchorPane);
+                                    setText(null);
+                                }
+                            }
+                        };
+                    }
+                });
+
+                // Atur nomor untuk setiap item
+                int index = 1;
+                for (TableClient item : clientDataList) {
+                    item.noProperty().set(index++);
+                }
+
+                // Panggil refreshTable() di sini setelah semua inisialisasi selesai
+                refreshTable();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle kesalahan jika gagal mendapatkan koneksi atau data
+            }
+        }
+    }
+
+
+    public void refreshTable() {
+        if (tableView == null) {
+            System.out.println("Error: tableView is null in refreshTable()");
+            return;
+        }
+
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO clientDAO = new ClientDAO(connection);
+            List<TableClient> clientList = clientDAO.getAllClients();
+            ObservableList<TableClient> observableClientList = FXCollections.observableArrayList(clientList);
+            updateClientIds(observableClientList); // Reorder IDs before setting the items
+            tableView.setItems(observableClientList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateClientIds(ObservableList<TableClient> clientList) {
+        for (int i = 0; i < clientList.size(); i++) {
+            clientList.get(i).setNo(i + 1); // Reorder IDs to be sequential starting from 1
+        }
+    }
+
+    @FXML
+    private void handleTambah(ActionEvent event) {
+        if (namaField != null && noTelpField != null && usahaField != null) {
+            String nama = namaField.getText();
+            String noTelp = noTelpField.getText();
+            String usaha = usahaField.getText();
+            if (!nama.isEmpty() && !noTelp.isEmpty() && !usaha.isEmpty()) {
+                try {
+                    Connection connection = DatabaseConnection.getConnection();
+                    ClientDAO clientDAO = new ClientDAO(connection);
+                    TableClient newClient = new TableClient(0, nama, noTelp, usaha, "");
+                    clientDAO.addClient(newClient); // Menambahkan client baru ke database
+                    List<TableClient> clientList = clientDAO.getAllClients();
+                    
+                                        if (clientData != null) {
+                        clientData.setAll(clientList);
+
+                        int index = 1;
+                        for (TableClient item : clientData) {
+                            item.setNo(index++);
+                        }
+                        refreshTable();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    showErrorMessage("Error adding client", "An error occurred while adding the client. Please try again.");
+                }
+            } else {
+                showErrorMessage("Peringatan", "Harap isi semua field terlebih dahulu.");
+            }
+            closeWindow();
+        }
+    }
+
+    @FXML
+    private void popupBtnBatal(ActionEvent event) {
+        closeWindow();
+    }
+
+    @FXML
     private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Konfirmasi Logout");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin logout?");
+        // logout logic here
+        // For example, you can show a confirmation dialog before logging out
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+        alert.setContentText("Click OK to logout, or Cancel to stay logged in.");
 
         if (alert.showAndWait().get() == ButtonType.OK) {
+            // Logout logic here, e.g. navigate to login page
             App.setRoot("login");
         }
     }
 
-    
-    //popup tambah, edit, dan filter
-    
-    @FXML
-    private void bukaHalamanTambah(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tambahDataClient.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Client"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+    private void closeWindow() {
+        if (namaField != null && noTelpField != null && usahaField != null) {
+            Stage stage = (Stage) namaField.getScene().getWindow();
+            stage.close();
+        }
     }
-    
-    @FXML
-    private void bukaHalamanFilter(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/filterDataClient.fxml"));
-        Parent root = fxmlLoader.load();    
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Filter Data Client"); // Mengatur judul window popup
-        stage.setScene(new Scene(root));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait(); // Menampilkan popup dan menunggu sampai popup ditutup
+
+    private void showErrorMessage(String title, String message) {
+        // You can use an Alert to display error messages to the user
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-    
-    @FXML
-    private void popupBtnBatal(ActionEvent event) {
-        // Mendapatkan stage dari event
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        // Menutup stage (popup)
-        stage.close();
+
+    private void showEditPopup(TableClient client) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editClient.fxml"));
+            Parent root = loader.load();
+
+            EditClientController controller = loader.getController();
+            controller.setClient(client);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Edit Client");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            refreshTable(); // Refresh table view to show updated data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-        @FXML
-    private TableView<TableClient> tableView;
 
     @FXML
-    private TableColumn<TableClient, Integer> no;
+    private void handleFilterCari(ActionEvent event) {
+        String nama = namaField.getText();
+        String usaha = usahaField.getText();
 
-    @FXML
-    private TableColumn<TableClient, String> nama;
-
-    @FXML
-    private TableColumn<TableClient, String> noTelp;
-
-    @FXML
-    private TableColumn<TableClient, String> usaha;
-    
-    @FXML
-    private TableColumn<TableClient, String> aksiColumn;
-    
-    
-     @FXML
-    private ChoiceBox<String> namaclient;
-    
-    @FXML
-    private ChoiceBox<String> namausaha;
-    
-    @FXML
-    private Button filtercari;
-
-    private Stage mainStage;
-    
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    if (tableView != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
-        ClientDAO dataClientDAO = new ClientDAO(connection);
-        List<TableClient> clientData = dataClientDAO.getAllClients();
-        ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientData);
-
-        tableView.setItems(observableClientData);
-
-        // Initialize columns
-        no.setCellValueFactory(new PropertyValueFactory<>("no"));
-        nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        noTelp.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-        usaha.setCellValueFactory(new PropertyValueFactory<>("usaha"));
-
-        // Set numbering for each item
-        int index = 1;
-        for (TableClient item : clientData) {
-            item.noProperty().set(index++);
-        }
-        
-        // Populate ChoiceBox items
-        ObservableList<String> namaItems = FXCollections.observableArrayList();
-        ObservableList<String> usahaItems = FXCollections.observableArrayList();
-
-        for (TableClient client : clientData) {
-            if (!namaItems.contains(client.getNama())) {
-                namaItems.add(client.getNama());
-            }
-            if (!usahaItems.contains(client.getUsaha())) {
-                usahaItems.add(client.getUsaha());
-            }
-        }
-
-        namaclient.setItems(namaItems);
-        namausaha.setItems(usahaItems);
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle error if failed to get connection or data
-    }
-        
-        namaclient.getItems().add(0, "Semua");
-        namausaha.getItems().add(0, "Semua");
-        
-       // Remove the ChangeListener from the ChoiceBox selection model
-    namaclient.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
-        filterCariAction(null);
-    });
-    
-    namausaha.getSelectionModel().selectedItemProperty().removeListener((obs, oldValue, newValue) -> {
-        filterCariAction(null);
-    });
-    
-    // Add an action listener to the "Cari" button
-    filtercari.setOnAction(event -> {
-        filterCariAction(event);
-    });
-        
-    }
-    }
-    
-    
-    @FXML
-private void filterCariAction(ActionEvent event) {
-    String nama = namaclient.getSelectionModel().getSelectedItem();
-    String usaha = namausaha.getSelectionModel().getSelectedItem();
-    
-    if ("Semua".equals(nama) && "Semua".equals(usaha)) {
-        // Clear filter and show all data
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            ClientDAO dataClientDAO = new ClientDAO(connection);
-            List<TableClient> allData = dataClientDAO.getAllClients();
-            ObservableList<TableClient> observableAllData = FXCollections.observableArrayList(allData);
-
-            tableView.setItems(observableAllData);
+            ClientDAO clientDAO = new ClientDAO(connection);
+            List<TableClient> filteredClients = clientDAO.getDataClientsByFilter(nama, usaha);
+            ObservableList<TableClient> observableFilteredClients = FXCollections.observableArrayList(filteredClients);
+            tableView.setItems(observableFilteredClients);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle error if failed to get connection or data
+            // Handle SQL exception if necessary
         }
-    } else {
-        // Filter data based on selected options
-
-    try {
-            Connection connection = DatabaseConnection.getConnection();
-            ClientDAO dataClientDAO = new ClientDAO(connection);
-            List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(nama, usaha);
-            ObservableList<TableClient> observableFilteredData = FXCollections.observableArrayList(filteredData);
-
-            tableView.setItems(observableFilteredData);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle error if failed to get connection or data
-        }
+    }
 }
-    
-}
-
-}
-

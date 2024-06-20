@@ -137,7 +137,6 @@ private void handleTambahButtonAction(ActionEvent event) {
 
     private UserDAO userDAO;
     private KontenDAO kontenDAO;
-    
     @FXML
     private TableColumn<TableKonten, String> aksiColumn;
 
@@ -190,7 +189,6 @@ private void handleTambahButtonAction(ActionEvent event) {
             picKonten.setCellValueFactory(new PropertyValueFactory<>("namaUser"));
             status.setCellValueFactory(new PropertyValueFactory<>("status"));
         
-
                 aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCell<TableKonten, String>>() {
                 @Override
                 public TableCell<TableKonten, String> call(TableColumn<TableKonten, String> param) {
@@ -212,8 +210,6 @@ private void handleTambahButtonAction(ActionEvent event) {
                             ivDelete.setFitWidth(20);
                             btnDelete.setGraphic(ivDelete);
              
-
-
                             AnchorPane.setLeftAnchor(btnEdit, 0.0);
                             AnchorPane.setLeftAnchor(btnDelete, 40.0);
                             
@@ -239,7 +235,7 @@ private void handleTambahButtonAction(ActionEvent event) {
                                         try {
                                             Connection connection = DatabaseConnection.getConnection();
                                             KontenDAO kontenDAO = new KontenDAO(connection);
-                                            kontenDAO.deleteKonten(konten.getNo()); 
+                                            kontenDAO.deleteKonten(konten.getNo(), picKontenChoiceBox.getValue(), statusChoiceBox.getValue(), tglPostDatePicker.getValue(), deadlineDatePicker.getValue()); 
                                             refreshTable();
                                         } catch (SQLException e) {
                                             e.printStackTrace();
@@ -247,7 +243,6 @@ private void handleTambahButtonAction(ActionEvent event) {
                                     }
                                 });
                             });
-
                         }
 
                         @Override
@@ -343,6 +338,7 @@ private void handleTambahButtonAction(ActionEvent event) {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
     
   @FXML

@@ -1,38 +1,28 @@
 package com.mycompany.planifycontent;
 
-import com.mycompany.planifycontent.database.PlatformDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
+import com.mycompany.planifycontent.database.PlatformDAO;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.mycompany.planifycontent.TablePlatform;
-import java.time.LocalDate;
 
 public class EditPlatformController implements Initializable {
 
     @FXML
     private TextField platformNameField;
-
     private TablePlatform platform;
 
-@Override
-public void initialize(URL url, ResourceBundle resourceBundle) {
-    if (platform != null) {
-        platformNameField.setText(platform.getPlatform());
-    }
-}
-
-
-    public void setPlatform(TablePlatform platform) {
-        this.platform = platform;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        fillForm(); // Fill the form with initial data
     }
 
     @FXML
@@ -40,25 +30,29 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             String newName = platformNameField.getText().trim();
             if (!newName.isEmpty()) {
-                platform.platformProperty().set(newName);
-                updatePlatform(platform);
+                platform.setPlatform(newName); // Update the local object
+                updatePlatform(platform); // Update the database
                 closeWindow();
             } else {
-                // Handle empty input
+                showAlert("Input Error", "Platform name cannot be empty.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database error
+            showAlert("Database Error", "Failed to update the platform.");
         }
     }
-    
-        private void fillForm() {
+
+    public void setPlatform(TablePlatform platform) {
+        this.platform = platform;
+        fillForm(); // Fill the form with the selected platform data
+    }
+
+    private void fillForm() {
         if (platform != null) {
-                    platformNameField.setText(platform.getPlatform());
+            platformNameField.setText(platform.getPlatform());
         }
-        
-        }
-        
+    }
+
     @FXML
     private void cancelEdit(ActionEvent event) {
         closeWindow();
@@ -67,11 +61,19 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     private void updatePlatform(TablePlatform platform) throws SQLException {
         Connection connection = DatabaseConnection.getConnection();
         PlatformDAO platformDAO = new PlatformDAO(connection);
-        platformDAO.updatePlatform(platform.getNo(), platform.getPlatform());
+        platformDAO.updatePlatform(platform.getId(), platform.getPlatform());
     }
 
     private void closeWindow() {
         Stage stage = (Stage) platformNameField.getScene().getWindow();
         stage.close();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

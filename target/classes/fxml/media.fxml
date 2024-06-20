@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,7 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="996.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.MediaController">
    <children>
-<ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="570.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bg2.png" />
          </image>
@@ -35,16 +36,16 @@
          </font>
       </Button>
       <MenuButton id="btnmenu" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" text="Master Data" textFill="WHITE">
-        <items>
-          <MenuItem mnemonicParsing="false" onAction="#bukaHalamanPlatform" text="Data Platform" />
-          <MenuItem disable="true" mnemonicParsing="false" text="Data Media" />
-        </items>
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#bukaHalamanPlatform" text="Data Platform" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Data Media" />
+         </items>
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
       <MenuButton id="btnmenu" layoutX="440.0" layoutY="7.0" mnemonicParsing="false" text="Manajemen Data" textFill="WHITE">
-         <items>
+                 <items>
             <MenuItem mnemonicParsing="false" onAction="#bukaHalamanUser" text="Data User" />
             <MenuItem mnemonicParsing="false" onAction="#bukaHalamanClient" text="Data Client" />
          </items>
@@ -80,3 +81,4 @@
       </ScrollPane>
    </children>
 </AnchorPane>
+

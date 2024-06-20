@@ -16,53 +16,70 @@ public class PlatformDAO {
     }
 
     public List<TablePlatform> getAllPlatforms() throws SQLException {
-            List<TablePlatform> platforms = new ArrayList<>();
-            String query = "SELECT id, nama_platform FROM platform";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                ResultSet resultSet = preparedStatement.executeQuery();
-                int no = 1;
-                while (resultSet.next()) {
-                    int id = resultSet.getInt("id");
-                    String nama = resultSet.getString("nama_platform");
-                    TablePlatform platform = new TablePlatform(no++, nama, "");
-                    platforms.add(platform);
-                }
+        List<TablePlatform> platforms = new ArrayList<>();
+        String query = "SELECT id, nama_platform FROM platform";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int no = 1;
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nama = resultSet.getString("nama_platform");
+                TablePlatform platform = new TablePlatform(no++, nama, "");
+                platforms.add(platform);
+                platform.setId(id);
             }
-            return platforms;
         }
+        return platforms;
+    }
 
     public void tambahPlatform(String namaPlatform) throws SQLException {
-        String query = "INSERT INTO platform (nama_platform) VALUES (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, namaPlatform);
-            preparedStatement.executeUpdate();
-        }
+    String query = "INSERT INTO platform (nama_platform) VALUES (?)";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, namaPlatform);
+        preparedStatement.executeUpdate();
     }
-    public void deletePlatform(int id) throws SQLException {
-        String query = "DELETE FROM platform WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-        updatePlatformNumbers(); // Update platform numbers after deletion
-    }
+    updatePlatformNumbers(); // Ensure the IDs are updated to be sequential after insertion
+}
 
-    public void updatePlatformNumbers() throws SQLException {
-        String query = "SET @row_number = 0; " +
-                       "UPDATE platform SET id = (@row_number:=@row_number + 1) ORDER BY id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.executeUpdate();
-        }
+public void deletePlatform(int id) throws SQLException {
+    String query = "DELETE FROM platform WHERE id=?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
     }
+    updatePlatformNumbers(); // Ensure the IDs are updated to be sequential after deletion
+}
 
-    public void updatePlatform(int id, String newName) throws SQLException {
-        String query = "UPDATE platform SET nama_platform = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, newName);
-            stmt.setInt(2, id);
-            stmt.executeUpdate();
+public void updatePlatformNumbers() throws SQLException {
+    String selectQuery = "SELECT id FROM platform ORDER BY id";
+    String updateQuery = "UPDATE platform SET id = ? WHERE id = ?";
+    
+    try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+         ResultSet resultSet = selectStmt.executeQuery()) {
+         
+        int newId = 1;
+        while (resultSet.next()) {
+            int oldId = resultSet.getInt("id");
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                updateStmt.setInt(1, newId);
+                updateStmt.setInt(2, oldId);
+                updateStmt.executeUpdate();
+            }
+            newId++;
         }
     }
+}
+
+
+public void updatePlatform(int id, String newName) throws SQLException {
+    String query = "UPDATE platform SET nama_platform = ? WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setString(1, newName);
+        stmt.setInt(2, id);
+        stmt.executeUpdate();
+    }
+}
+
 
     public void insertPlatform(String name) throws SQLException {
         String query = "INSERT INTO platform (nama_platform) VALUES (?)";
