@@ -118,6 +118,8 @@ public class HistoriController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        dariTgl.setValue(LocalDate.now());
+        sampaiTgl.setValue(LocalDate.now());
         try {
             
             connection = DatabaseConnection.getConnection();

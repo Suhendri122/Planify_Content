@@ -130,16 +130,46 @@ public class ClientController implements Initializable {
         }
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (tableView != null) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                ClientDAO clientDAO = new ClientDAO(connection);
-                List<TableClient> clientDataList = clientDAO.getAllClients();
-                ObservableList<TableClient> observableClientData = FXCollections.observableArrayList(clientDataList);
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO clientDAO = new ClientDAO(connection);
 
-                tableView.setItems(observableClientData);
+            ObservableList<String> namaItems = FXCollections.observableArrayList();
+            ObservableList<String> usahaItems = FXCollections.observableArrayList();
+
+            List<TableClient> clientList = clientDAO.getAllClients();
+            for (TableClient client : clientList) {
+                if (!namaItems.contains(client.getNama())) {
+                    namaItems.add(client.getNama());
+                }
+                if (!usahaItems.contains(client.getUsaha())) {
+                    usahaItems.add(client.getUsaha());
+                }
+            }
+
+            namaclient.setItems(namaItems);
+            namausaha.setItems(usahaItems);
+
+            // Add default value "Semua"
+            namaclient.getItems().add(0, "Semua");
+            namausaha.getItems().add(0, "Semua");
+
+            // Set default value to "Semua"
+            namaclient.setValue("Semua");
+            namausaha.setValue("Semua");
+            
+            // Add an action listener to the "Cari" button
+            filtercari.setOnAction(event -> {
+                filterCariAction(event);
+            });
+
+            if (tableView != null) {
+                clientData = FXCollections.observableArrayList(clientList);
+
+                tableView.setItems(clientData);
 
                 // Inisialisasi kolom-kolom
                 noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
@@ -231,21 +261,48 @@ public class ClientController implements Initializable {
 
                 // Atur nomor untuk setiap item
                 int index = 1;
-                for (TableClient item : clientDataList) {
+                for (TableClient item : clientList) {
                     item.noProperty().set(index++);
                 }
 
                 // Panggil refreshTable() di sini setelah semua inisialisasi selesai
                 refreshTable();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle kesalahan jika gagal mendapatkan koneksi atau data
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
 
+    @FXML
+    private void filterCariAction(ActionEvent event) {
+        String nama = namaclient.getSelectionModel().getSelectedItem();
+        String usaha = namausaha.getSelectionModel().getSelectedItem();
 
+        if ("Semua".equals(nama) && "Semua".equals(usaha)) {
+            // Clear filter and show all data
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ClientDAO dataClientDAO = new ClientDAO(connection);
+                List<TableClient> allData = dataClientDAO.getAllClients();
+                tableView.setItems(FXCollections.observableArrayList(allData));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ClientDAO dataClientDAO = new ClientDAO(connection);
+                List<TableClient> filteredData = dataClientDAO.getDataClientsByFilter(
+                        "Semua".equals(nama) ? null : nama,
+                        "Semua".equals(usaha) ? null : usaha
+                );
+                tableView.setItems(FXCollections.observableArrayList(filteredData));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void refreshTable() {
         if (tableView == null) {
             System.out.println("Error: tableView is null in refreshTable()");

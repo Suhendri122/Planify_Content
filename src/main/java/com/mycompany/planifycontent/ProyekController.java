@@ -112,6 +112,9 @@ public class ProyekController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tglMulaiDatePicker.setValue(LocalDate.now());
+        tglSelesaiDatePicker.setValue(LocalDate.now());
+        
         if (tableView != null){
             try {
                 Connection connection = DatabaseConnection.getConnection();
@@ -277,7 +280,7 @@ public class ProyekController implements Initializable {
             });
 
             filterButton.setOnAction((e -> {
-                refreshTable();
+                refreshFilter();
             }));
             
         }
@@ -300,6 +303,31 @@ public class ProyekController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    public void refreshFilter() {
+        try {
+            String startDate = tglMulaiDatePicker.getValue() == null ? "" : tglMulaiDatePicker.getValue().toString();
+            String endDate = tglSelesaiDatePicker.getValue() == null ? "" : tglSelesaiDatePicker.getValue().toString();
+
+            if ("Semua".equals(userBox.getValue())) {
+                pic = "0";  // Semua PIC
+            }
+
+            if ("Semua".equals(clientBox.getValue())) {
+                client = "0";  // Semua Client
+            }
+
+            Connection connection = DatabaseConnection.getConnection();
+            ProyekDAO proyekDAO = new ProyekDAO(connection);
+            List<TableProyek> proyekList = proyekDAO.getAllProyek(pic, client, startDate, endDate);
+            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+
+            updateProyekIds(observableProyekList);  // Reorder IDs before setting the items
+            tableView.setItems(observableProyekList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     
     private void updateProyekIds(ObservableList<TableProyek> proyekList) {
@@ -315,34 +343,38 @@ public class ProyekController implements Initializable {
         List<TableProyek> proyekList = proyekDAO.getProyekByPIC(picProyek);
         ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
         tableView.setItems(observableProyekList);
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     private void filterDataByClient(String clientName) {
-    try {
-        Connection connection = DatabaseConnection.getConnection();
-        ProyekDAO proyekDAO = new ProyekDAO(connection);
-        List<TableProyek> proyekList = proyekDAO.getProyekByClient(clientName);
-        ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-        tableView.setItems(observableProyekList);
-    } catch (SQLException e) {
-        e.printStackTrace();
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ProyekDAO proyekDAO = new ProyekDAO(connection);
+            List<TableProyek> proyekList = proyekDAO.getProyekByClient(clientName);
+            ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+            tableView.setItems(observableProyekList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
     
     private void filterDataByTglMulai(LocalDate tglMulai) {
-    try {
-        Connection connection = DatabaseConnection.getConnection();
-        ProyekDAO proyekDAO = new ProyekDAO(connection);
-        List<TableProyek> proyekList = proyekDAO.getProyekByTglMulai(tglMulai);
-        ObservableList<TableProyek> observableProyekList = FXCollections.observableList(proyekList); // Konversi daftar ke ObservableList
-        tableView.setItems(observableProyekList);
-    } catch (SQLException e) {
-        e.printStackTrace();
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ProyekDAO proyekDAO = new ProyekDAO(connection);
+            List<TableProyek> proyekList = proyekDAO.getProyekByTglMulai(tglMulai);
+            ObservableList<TableProyek> observableProyekList = FXCollections.observableList(proyekList); // Konversi daftar ke ObservableList
+            tableView.setItems(observableProyekList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
+    
+    
+    
+    
     
    private void showEditPopup(TableProyek proyek) {
         try {

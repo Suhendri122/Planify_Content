@@ -58,6 +58,9 @@ public class TambahProyekController {
             choicePicProyek.setItems(FXCollections.observableArrayList(users));
             choiceNamaClient.setItems(FXCollections.observableArrayList(clients));
             proyekData = FXCollections.observableArrayList();
+            
+            dpTglMulai.setValue(LocalDate.now());
+            dpTglSelesai.setValue(LocalDate.now());
         } catch (SQLException e) {
             e.printStackTrace();
         }

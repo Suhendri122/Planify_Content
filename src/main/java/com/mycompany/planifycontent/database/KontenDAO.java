@@ -2,9 +2,11 @@ package com.mycompany.planifycontent.database;
 
 import com.mycompany.planifycontent.TableKonten;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,65 @@ public class KontenDAO {
     }
     return kontenList;
 }
+    
+    public List<TableKonten> getAllKontens(String picKonten, String status, LocalDate tglPost, LocalDate deadline) throws SQLException {
+    List<TableKonten> kontenList = new ArrayList<>();
+    String query = "SELECT konten.id, user.nama AS nama_user, media.nama_media, platform.nama_platform, konten.link_desain, konten.tema, konten.deadline, konten.tgl_post, konten.status " +
+                   "FROM konten " +
+                   "INNER JOIN user ON konten.user_id = user.id " +
+                   "INNER JOIN media ON konten.media_id = media.id " +
+                   "INNER JOIN platform ON konten.platform_id = platform.id " +
+                   "WHERE 1=1";
+
+    if (picKonten!= null &&!picKonten.isEmpty()) {
+        query += " AND user.nama =?";
+    }
+    if (status!= null &&!status.isEmpty()) {
+        query += " AND konten.status =?";
+    }
+    if (tglPost!= null) {
+        query += " AND konten.tgl_post =?";
+    }
+    if (deadline!= null) {
+        query += " AND konten.deadline =?";
+    }
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        int parameterIndex = 1;
+        if (picKonten!= null &&!picKonten.isEmpty()) {
+            preparedStatement.setString(parameterIndex++, picKonten);
+        }
+        if (status!= null &&!status.isEmpty()) {
+            preparedStatement.setString(parameterIndex++, status);
+        }
+        if (tglPost!= null) {
+            preparedStatement.setDate(parameterIndex++, Date.valueOf(tglPost));
+        }
+        if (deadline!= null) {
+            preparedStatement.setDate(parameterIndex++, Date.valueOf(deadline));
+        }
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String namaUser = resultSet.getString("nama_user");
+                String namaMedia = resultSet.getString("nama_media");
+                String namaPlatform = resultSet.getString("nama_platform");
+                String linkDesain = resultSet.getString("link_desain");
+                String tema = resultSet.getString("tema");
+                String deadlineStr = resultSet.getString("deadline");
+                String tglPostStr = resultSet.getString("tgl_post");
+                String statusStr = resultSet.getString("status");
+                String aksi = ""; // Default value for aksi
+
+                TableKonten konten = new TableKonten(id, namaUser, namaMedia, namaPlatform, linkDesain, tema, deadlineStr, tglPostStr, statusStr, aksi);
+                kontenList.add(konten);
+            }
+        }
+    }
+    return kontenList;
+}
+    
 
 public String getMediaNameById(int mediaId) throws SQLException {
     String query = "SELECT nama_media FROM media WHERE id = ?";

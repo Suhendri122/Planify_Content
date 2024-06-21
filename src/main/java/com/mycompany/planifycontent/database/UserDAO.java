@@ -38,6 +38,18 @@ public class UserDAO {
         return users;
     }
     
+    public List<String> getAllUserNames() throws SQLException {
+        List<String> userNames = new ArrayList<>();
+        String query = "SELECT nama FROM user";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                userNames.add(resultSet.getString("nama"));
+            }
+        }
+        return userNames;
+    }
+    
     public void deleteUser(int id) throws SQLException {
         String query = "DELETE FROM user WHERE id=?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
