@@ -61,7 +61,7 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" layoutX="904.0" layoutY="185.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="904.0" layoutY="185.0" mnemonicParsing="false" text="Tambah" onAction="#bukaHalamanTambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>

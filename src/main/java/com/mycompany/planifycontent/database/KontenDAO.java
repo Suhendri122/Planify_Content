@@ -119,30 +119,27 @@ public String getMediaNameById(int mediaId) throws SQLException {
         return statuses;
     }
 
-public void deleteKonten(int id) throws SQLException {
-    String query = "DELETE FROM konten WHERE id=?";
-    try (PreparedStatement stmt = connection.prepareStatement(query)) {
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
+    public void deleteKonten(int id) throws SQLException {
+        String query = "DELETE FROM konten WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+        updateKontenNumbers();
     }
-    updateKontenNumbers();
-}
 
-public void updateKontenNumbers() throws SQLException {
-    String sql = "UPDATE konten SET id = ? WHERE id = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        List<TableKonten> kontenList = getAllKontens();
-        for (int i = 0; i < kontenList.size(); i++) {
-            ps.setInt(1, i + 1); // Set nomor ID baru
-            ps.setInt(2, kontenList.get(i).getId()); // Cari ID lama
-            ps.executeUpdate();
+    public void updateKontenNumbers() throws SQLException {
+        String resetQuery = "SET @row_number = 0";
+        String updateQuery = "UPDATE konten SET id = (@row_number:=@row_number + 1) ORDER BY id";
+
+        try (PreparedStatement resetStmt = connection.prepareStatement(resetQuery);
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+
+            resetStmt.execute(); // Execute the reset query
+
+            updateStmt.executeUpdate(); // Execute the update query
         }
     }
-}
-
-
-
-
 
 
     public void updateKonten(int id, String namaUser, String namaMedia, String namaPlatform, String linkDesain, String tema, String deadline, String tglPost, String status) throws SQLException {
@@ -159,6 +156,7 @@ public void updateKontenNumbers() throws SQLException {
             stmt.setInt(9, id);
             stmt.executeUpdate();
         }
+        updateKontenNumbers();
     }
 
 
@@ -175,6 +173,7 @@ public void updateKontenNumbers() throws SQLException {
             stmt.setString(8, status);
             stmt.executeUpdate();
         }
+        updateKontenNumbers();
     }
     
     

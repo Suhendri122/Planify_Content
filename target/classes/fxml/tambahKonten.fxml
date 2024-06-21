@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="325.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.planifycontent.TambahKontenController">
    <children>
       <Label layoutX="15.0" layoutY="15.0" prefHeight="30.0" prefWidth="115.0" text="Tema" textFill="#358c9c">
          <font>
@@ -45,28 +45,28 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="197.0" layoutY="373.0" mnemonicParsing="false" text="Batal" textFill="WHITE">
+      <Button id="btnBatal" layoutX="170.0" layoutY="371.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="262.0" layoutY="373.0" mnemonicParsing="false" text="Edit" textFill="WHITE">
+      <Button id="btnEdit" layoutX="235.0" layoutY="371.0" mnemonicParsing="false" onAction="#handleTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <DatePicker layoutX="140.0" layoutY="195.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
-      <DatePicker layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
+      <DatePicker fx:id="dpTglPost" layoutX="140.0" layoutY="195.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="mediaChoice" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="platformChoice" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
+      <DatePicker fx:id="dpDeadline" layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="temaField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="linkField" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="331.0" prefHeight="30.0" text="Status" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="140.0" layoutY="285.0" prefHeight="30.0" prefWidth="170.0" />
-      <ChoiceBox layoutX="140.0" layoutY="331.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="picKontenField" layoutX="140.0" layoutY="285.0" prefHeight="30.0" prefWidth="170.0" />
+      <ChoiceBox fx:id="statusField" layoutX="140.0" layoutY="331.0" prefHeight="30.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

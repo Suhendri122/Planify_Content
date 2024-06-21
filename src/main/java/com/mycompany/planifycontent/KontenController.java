@@ -114,7 +114,8 @@ public class KontenController implements Initializable {
 
     private ObservableList<TableKonten> kontenData = FXCollections.observableArrayList();
     
-    private TableProyek proyek; // Deklarasi variabel proyek
+    private TableProyek proyek;
+    private TableKonten konten;
 
     // Metode untuk mengatur objek proyek
     public void setProyek(TableProyek proyek) {
@@ -130,6 +131,10 @@ public class KontenController implements Initializable {
             List<TableKonten> kontenData = KontenDAO.getAllKontens();
             ObservableList<TableKonten> observableKontenData = FXCollections.observableArrayList(kontenData);
 
+            int index = 1;
+            for (TableKonten item : kontenData) {
+                    item.setId(index++);
+                }
             tableView.setItems(observableKontenData);
             
         no.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -222,12 +227,7 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
                     };
                 }
             });
-
-            // Atur nomor untuk setiap item
-            int index = 1;
-            for (TableKonten item : kontenData) {
-                item.noProperty().set(index++);
-            }
+            refreshTable();
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle kesalahan jika gagal mendapatkan koneksi atau data
@@ -236,11 +236,17 @@ aksiColumn.setCellFactory(new Callback<TableColumn<TableKonten, String>, TableCe
 }
 
 public void refreshTable() {
+    if (tableView == null) {
+        System.out.println("Error: tableView is null in refreshTable()");
+        return;
+    }
+    
     try {
         Connection connection = DatabaseConnection.getConnection();
         KontenDAO kontenDAO = new KontenDAO(connection);
         List<TableKonten> kontenList = kontenDAO.getAllKontens();
         ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
+        updateKontenIds(observableKontenList);
         tableView.setItems(observableKontenList);
     } catch (SQLException e) {
         e.printStackTrace();
@@ -267,11 +273,38 @@ public void refreshTable() {
             stage.setTitle("Edit Konten");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-
-            refreshTable(); // Refresh table view to show updated data
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
+    
+    @FXML
+    private void bukaHalamanTambah(ActionEvent event) throws IOException {
+        try {
+            // Memuat FXML untuk Tambah Proyek
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahKonten.fxml"));
+            Parent root = loader.load();
+
+            // Mengambil controller dari loader
+            TambahKontenController controller = loader.getController();
+            controller.setKonten(konten); // Mengeset proyek jika diperlukan
+
+            // Membuat Stage baru untuk menampilkan form Tambah Proyek
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setTitle("Tambah Konten");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            refreshTable();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+        public void setKonten(TableKonten konten) {
+        this.konten = konten;
+        }
 }
