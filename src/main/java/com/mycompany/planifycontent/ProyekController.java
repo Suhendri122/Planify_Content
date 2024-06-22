@@ -138,6 +138,7 @@ public class ProyekController implements Initializable {
                 tglMulai.setCellValueFactory(new PropertyValueFactory<>("tglMulaiFormatted"));
                 tglSelesai.setCellValueFactory(new PropertyValueFactory<>("tglSelesaiFormatted"));
 
+
                 aksi.setCellFactory(new Callback<TableColumn<TableProyek, String>, TableCell<TableProyek, String>>() {
                     @Override
                     public TableCell<TableProyek, String> call(final TableColumn<TableProyek, String> param) {

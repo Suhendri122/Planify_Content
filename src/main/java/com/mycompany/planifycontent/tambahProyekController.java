@@ -119,67 +119,59 @@ public class TambahProyekController {
         stage.close();
     }
     
-    @FXML
-    private void handleTambah(ActionEvent event) {
-        String namaProyek = txtNamaProyek.getText().trim();
-        String picProyek = choicePicProyek.getValue();
-        String namaClient = choiceNamaClient.getValue();
-        double harga = Double.parseDouble(txtHarga.getText().trim());
-        LocalDate tglMulai = dpTglMulai.getValue();
-        LocalDate tglSelesai = dpTglSelesai.getValue();
+@FXML
+private void handleTambah(ActionEvent event) {
+    String namaProyek = txtNamaProyek.getText().trim();
+    String picProyek = choicePicProyek.getValue();
+    String namaClient = choiceNamaClient.getValue();
+    String hargaText = txtHarga.getText().trim();
+    LocalDate tglMulai = dpTglMulai.getValue();
+    LocalDate tglSelesai = dpTglSelesai.getValue();
 
-        // Periksa isi txtNamaProyek
-        if (namaProyek.isEmpty()) {
-            showErrorMessage("Peringatan", "Masukkan Nama Proyek Terlebih Dahulu");
-            return;
-        }
-
-        // Periksa isi choicePicProyek
-        if (picProyek == null || picProyek.isEmpty()) {
-            showErrorMessage("Peringatan", "Pilih PIC Proyek Terlebih Dahulu");
-            return;
-        }
-
-        // Periksa isi choiceNamaClient
-        if (namaClient == null || namaClient.isEmpty()) {
-            showErrorMessage("Peringatan", "Pilih Nama Client Terlebih Dahulu");
-            return;
-        }
-
-        // Periksa tanggal mulai dan selesai
-        if (tglMulai == null || tglSelesai == null) {
-            showErrorMessage("Peringatan", "Pilih Tanggal Mulai dan Tanggal Selesai Proyek");
-            return;
-        }
-
-        try {
-            // Ambil nomor telepon dari database jika tidak kosong
-            String noTelepon = "";
-            if (!namaClient.isEmpty()) {
-                noTelepon = proyekDAO.getPhoneNumberByClientName(namaClient);
-            }
-
-            // Get user id and client id
-            int userId = proyekDAO.getUserIdByName(picProyek);
-            int clientId = proyekDAO.getClientIdByName(namaClient);
-
-            // Buat objek TableProyek
-            TableProyek proyekBaru = new TableProyek(0, userId, clientId, namaProyek, picProyek, namaClient, noTelepon, harga, tglMulai.toString(), tglSelesai.toString(), null);
-
-            // Tambahkan proyek ke database
-            proyekDAO.addProyek(proyekBaru);
-
-            // Tutup jendela setelah penambahan berhasil
-            Stage stage = (Stage) txtNamaProyek.getScene().getWindow();
-            stage.close();
-            
-            refreshTable();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showErrorMessage("Error adding project", "An error occurred while adding the project. Please try again.");
-        }
+    // Periksa semua kolom apakah ada yang kosong atau null
+    if (namaProyek.isEmpty() || picProyek == null || namaClient == null || hargaText.isEmpty() || tglMulai == null || tglSelesai == null) {
+        showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
+        return;
     }
+
+    double harga = 0.0;
+    try {
+        harga = Double.parseDouble(hargaText);
+    } catch (NumberFormatException e) {
+        showErrorMessage("Peringatan", "Masukkan Harga dalam Format Angka yang Benar!");
+        return;
+    }
+
+    try {
+        // Ambil nomor telepon dari database jika tidak kosong
+        String noTelepon = "";
+        if (!namaClient.isEmpty()) {
+            noTelepon = proyekDAO.getPhoneNumberByClientName(namaClient);
+        }
+
+        // Get user id and client id
+        int userId = proyekDAO.getUserIdByName(picProyek);
+        int clientId = proyekDAO.getClientIdByName(namaClient);
+
+        // Buat objek TableProyek
+        TableProyek proyekBaru = new TableProyek(0, userId, clientId, namaProyek, picProyek, namaClient, noTelepon, harga, tglMulai.toString(), tglSelesai.toString(), null);
+
+        // Tambahkan proyek ke database
+        proyekDAO.addProyek(proyekBaru);
+
+        // Tutup jendela setelah penambahan berhasil
+        Stage stage = (Stage) txtNamaProyek.getScene().getWindow();
+        stage.close();
+
+        // Refresh tabel setelah berhasil menambahkan proyek
+        refreshTable();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        showErrorMessage("Error adding project", "Terjadi kesalahan saat menambahkan proyek. Silakan coba lagi.");
+    }
+}
+
 
 
     private void showErrorMessage(String title, String message) {

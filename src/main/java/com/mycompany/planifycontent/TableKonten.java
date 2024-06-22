@@ -1,5 +1,7 @@
 package com.mycompany.planifycontent;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -167,4 +169,23 @@ public class TableKonten {
     public void setProyekId(int proyekId) {
         this.proyekId = proyekId;
     }
+    
+    public String getDeadlineFormatted() {
+        LocalDate date = LocalDate.parse(this.deadline.getValue());
+        return date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    }
+
+    public String getTglPostFormatted() {
+        LocalDate date = LocalDate.parse(this.tglPost.getValue());
+        return date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    }
+    
+    public StringProperty deadlineFormattedProperty() {
+        return new SimpleStringProperty(getDeadlineFormatted());
+    }
+
+    public StringProperty tglPostFormattedProperty() {
+        return new SimpleStringProperty(getTglPostFormatted());
+    }
+
 }

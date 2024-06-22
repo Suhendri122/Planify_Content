@@ -13,7 +13,7 @@
             <Font name="System Bold" size="16.0" /> 
          </font>
       </Label>
-      <TextField fx:id="platformNameField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="platformNameField" promptText="Masukkan nama platform" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
       <Button id="btnBatal" fx:id="btnBatal" layoutX="163.0" layoutY="62.0" mnemonicParsing="false" onAction="#popupBtnBatal" text="Batal" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />

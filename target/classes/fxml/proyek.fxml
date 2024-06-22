@@ -79,19 +79,19 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <DatePicker fx:id="tglMulaiDatePicker" layoutX="388.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <DatePicker fx:id="tglSelesaiDatePicker" layoutX="388.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
-      <Button id="btnFilter" fx:id="filterButton" layoutX="559.0" layoutY="182.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
+      <DatePicker fx:id="tglMulaiDatePicker" layoutX="380.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
+      <DatePicker fx:id="tglSelesaiDatePicker" layoutX="380.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <Button id="btnFilter" fx:id="filterButton" layoutX="551.0" layoutY="184.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Button>
-      <Button id="btnTambah" fx:id="btnTambah" layoutX="905.0" layoutY="182.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" prefHeight="30.0" prefWidth="74.0" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" fx:id="btnTambah" layoutX="905.0" layoutY="184.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" prefHeight="30.0" prefWidth="74.0" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Button>
-      <TableView id="tableView" fx:id="tableView" layoutX="20.0" layoutY="226.0" prefHeight="245.0" prefWidth="960.0">
+      <TableView id="tableView" fx:id="tableView" layoutX="20.0" layoutY="226.0" prefHeight="325.0" prefWidth="960.0">
         <columns>
           <TableColumn fx:id="no" prefWidth="33.0" text="No" />
           <TableColumn fx:id="namaProyek" prefWidth="140.0" text="Nama Proyek" />
@@ -117,6 +117,6 @@
          </font>
       </Button>
       <ChoiceBox fx:id="userBox" layoutX="123.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox fx:id="clientBox" layoutX="123.0" layoutY="182.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="clientBox" layoutX="123.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>

@@ -1,6 +1,5 @@
 com\mycompany\planifycontent\PicProyekDetailsController.class
 com\mycompany\planifycontent\TableClient.class
-com\mycompany\planifycontent\filterButton.class
 com\mycompany\planifycontent\KontenController.class
 com\mycompany\planifycontent\KontenController$1$1.class
 com\mycompany\planifycontent\database\KontenDAO.class
@@ -17,7 +16,6 @@ com\mycompany\planifycontent\database\HistoriDAO.class
 com\mycompany\planifycontent\EditPlatformController.class
 com\mycompany\planifycontent\ProyekController.class
 com\mycompany\planifycontent\database\UserDAO.class
-com\mycompany\planifycontent\proyekDAO.class
 com\mycompany\planifycontent\EditClientController.class
 com\mycompany\planifycontent\database\ProyekDAO.class
 com\mycompany\planifycontent\HistoriController.class
@@ -47,7 +45,6 @@ com\mycompany\planifycontent\PlatformController$1$1.class
 com\mycompany\planifycontent\ProyekController$1.class
 com\mycompany\planifycontent\TableUser.class
 com\mycompany\planifycontent\database\DatabaseConnection.class
-com\mycompany\planifycontent\filteredData.class
 com\mycompany\planifycontent\LoginController.class
 com\mycompany\planifycontent\TambahKontenController.class
 com\mycompany\planifycontent\UserController.class

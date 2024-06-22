@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -57,7 +56,7 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" onAction="#bukaHalamanTambah" layoutX="300.0" layoutY="85.0" mnemonicParsing="false" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="300.0" layoutY="85.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
@@ -67,16 +66,12 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="355.0">
-         <content>
-        <TableView fx:id="tableView" prefHeight="420.0" prefWidth="355.0">
-            <columns>
-                <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
-                <TableColumn fx:id="platformColumn" prefWidth="220.0" text="Platform" />
-                <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
-            </columns>
-        </TableView>
-         </content>
-      </ScrollPane>
+  <TableView fx:id="tableView" layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="355.0">
+      <columns>
+          <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+          <TableColumn fx:id="platformColumn" prefWidth="220.0" text="Platform" />
+          <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" resizable="false" text="Aksi" />
+      </columns>
+  </TableView>
    </children>
 </AnchorPane>

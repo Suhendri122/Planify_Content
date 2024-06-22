@@ -226,7 +226,7 @@ public class MediaController implements Initializable {
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data Media");
+        stage.setTitle("Tambah Media");
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait();

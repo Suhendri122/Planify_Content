@@ -53,17 +53,17 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </MenuButton>
-      <Label layoutX="20.0" layoutY="100.0" prefWidth="122.0" text="Data Client" textFill="#358c9c">
+      <Label layoutX="20.0" layoutY="100.0" text="Data Client" textFill="#358c9c">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button id="btnTambah" layoutX="630.0" layoutY="160.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
+      <Button id="btnTambah" layoutX="630.0" layoutY="137.0" mnemonicParsing="false" onAction="#bukaHalamanTambah" text="Tambah" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TableView fx:id="tableView" layoutX="20.0" layoutY="205.0" prefHeight="340.0" prefWidth="685.0">
+      <TableView fx:id="tableView" layoutX="20.0" layoutY="187.0" prefHeight="358.0" prefWidth="686.0">
          <columns>
             <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
             <TableColumn fx:id="namaColumn" prefWidth="200.0" text="Nama" />
@@ -72,12 +72,12 @@
             <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
          </columns>
       </TableView>
-      <Text fill="#5b5b5b" layoutX="20.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama">
+      <Text fill="#5b5b5b" layoutX="20.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Button id="btnFilter" fx:id="filtercari" layoutX="506.0" layoutY="137.0" mnemonicParsing="false" onAction="#filterCariAction" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
+      <Button id="btnFilter" fx:id="filtercari" layoutX="478.0" layoutY="137.0" mnemonicParsing="false" onAction="#filterCariAction" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -88,12 +88,12 @@
          </font>
       </Button>
       <!-- <TextField layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" /> -->
-      <Text fill="#5b5b5b" layoutX="274.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
+      <Text fill="#5b5b5b" layoutX="250.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usaha">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
       <ChoiceBox fx:id="namaclient" layoutX="82.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox fx:id="namausaha" layoutX="342.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="namausaha" layoutX="315.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>

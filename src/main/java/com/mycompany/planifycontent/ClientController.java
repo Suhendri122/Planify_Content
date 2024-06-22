@@ -132,7 +132,120 @@ public class ClientController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    // Initialize TableView and TableColumns if they exist
+    if (tableView != null) {
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            ClientDAO clientDAO = new ClientDAO(connection);
+
+            List<TableClient> clientList = clientDAO.getAllClients();
+            clientData = FXCollections.observableArrayList(clientList);
+            tableView.setItems(clientData);
+
+            // Inisialisasi kolom-kolom
+            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+            noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+            usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+
+            // Inisialisasi kolom aksi
+            aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
+                @Override
+                public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
+                    return new TableCell<TableClient, String>() {
+                        final Button btnEdit = new Button();
+                        final Button btnDelete = new Button();
+                        final HBox hbox = new HBox(btnEdit, btnDelete);
+                        final AnchorPane anchorPane = new AnchorPane();
+
+                        {
+                            // Setup buttons
+                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                            ivEdit.setFitHeight(20);
+                            ivEdit.setFitWidth(20);
+                            btnEdit.setGraphic(ivEdit);
+
+                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                            ivDelete.setFitHeight(20);
+                            ivDelete.setFitWidth(20);
+                            btnDelete.setGraphic(ivDelete);
+
+                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                            btnEdit.setPadding(new Insets(5));
+                            btnDelete.setPadding(new Insets(5));
+
+                            // Setup button actions
+                            btnEdit.setOnAction(event -> {
+                                TableClient client = getTableView().getItems().get(getIndex());
+                                showEditPopup(client);
+                            });
+
+                            btnDelete.setOnAction(event -> {
+                                TableClient client = getTableView().getItems().get(getIndex());
+
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Konfirmasi Penghapusan");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Apakah Anda yakin ingin menghapus client ini?");
+
+                                alert.showAndWait().ifPresent(response -> {
+                                    if (response == ButtonType.OK) {
+                                        try {
+                                            Connection connection = DatabaseConnection.getConnection();
+                                            ClientDAO clientDAO = new ClientDAO(connection);
+                                            clientDAO.deleteClient(client.getId()); // Menggunakan nomor client untuk penghapusan
+                                            refreshTable(); // Memperbarui tampilan tabel setelah menghapus data
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            });
+                        }
+
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                anchorPane.getChildren().clear();
+                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                btnEdit.setPadding(new Insets(5));
+                                btnDelete.setPadding(new Insets(5));
+
+                                setGraphic(anchorPane);
+                                setText(null);
+                            }
+                        }
+                    };
+                }
+            });
+
+            // Atur nomor untuk setiap item
+            int index = 1;
+            for (TableClient item : clientList) {
+                item.noProperty().set(index++);
+            }
+
+            // Panggil refreshTable() di sini setelah semua inisialisasi selesai
+            refreshTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+        }
+    }
+
+    // Initialize ChoiceBoxes if they exist
+    if (namaclient != null && namausaha != null) {
         try {
             Connection connection = DatabaseConnection.getConnection();
             ClientDAO clientDAO = new ClientDAO(connection);
@@ -160,119 +273,18 @@ public class ClientController implements Initializable {
             // Set default value to "Semua"
             namaclient.setValue("Semua");
             namausaha.setValue("Semua");
-            
+
             // Add an action listener to the "Cari" button
             filtercari.setOnAction(event -> {
                 filterCariAction(event);
             });
-
-            if (tableView != null) {
-                clientData = FXCollections.observableArrayList(clientList);
-
-                tableView.setItems(clientData);
-
-                // Inisialisasi kolom-kolom
-                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-                namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
-                noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-                usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
-
-                // Inisialisasi kolom aksi
-                aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
-                    @Override
-                    public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
-                        return new TableCell<TableClient, String>() {
-                            final Button btnEdit = new Button();
-                            final Button btnDelete = new Button();
-                            final HBox hbox = new HBox(btnEdit, btnDelete);
-                            final AnchorPane anchorPane = new AnchorPane();
-
-                            {
-                                // Setup buttons
-                                ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
-                                ivEdit.setFitHeight(20);
-                                ivEdit.setFitWidth(20);
-                                btnEdit.setGraphic(ivEdit);
-
-                                ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
-                                ivDelete.setFitHeight(20);
-                                ivDelete.setFitWidth(20);
-                                btnDelete.setGraphic(ivDelete);
-
-                                AnchorPane.setLeftAnchor(btnEdit, 0.0);
-                                AnchorPane.setLeftAnchor(btnDelete, 40.0);
-
-                                btnEdit.setPadding(new Insets(5));
-                                btnDelete.setPadding(new Insets(5));
-
-                                // Setup button actions
-                                btnEdit.setOnAction(event -> {
-                                    TableClient client = getTableView().getItems().get(getIndex());
-                                    showEditPopup(client);
-                                });
-
-                                btnDelete.setOnAction(event -> {
-                                    TableClient client = getTableView().getItems().get(getIndex());
-
-                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                    alert.setTitle("Konfirmasi Penghapusan");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("Apakah Anda yakin ingin menghapus client ini?");
-
-                                    alert.showAndWait().ifPresent(response -> {
-                                        if (response == ButtonType.OK) {
-                                            try {
-                                                Connection connection = DatabaseConnection.getConnection();
-                                                ClientDAO clientDAO = new ClientDAO(connection);
-                                                clientDAO.deleteClient(client.getId()); // Menggunakan nomor client untuk penghapusan
-                                                refreshTable(); // Memperbarui tampilan tabel setelah menghapus data
-                                            } catch (SQLException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                });
-
-                            }
-
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    anchorPane.getChildren().clear();
-                                    anchorPane.getChildren().addAll(btnEdit, btnDelete);
-
-                                    AnchorPane.setLeftAnchor(btnEdit, 0.0);
-                                    AnchorPane.setLeftAnchor(btnDelete, 40.0);
-
-                                    btnEdit.setPadding(new Insets(5));
-                                    btnDelete.setPadding(new Insets(5));
-
-                                    setGraphic(anchorPane);
-                                    setText(null);
-                                }
-                            }
-                        };
-                    }
-                });
-
-                // Atur nomor untuk setiap item
-                int index = 1;
-                for (TableClient item : clientList) {
-                    item.noProperty().set(index++);
-                }
-
-                // Panggil refreshTable() di sini setelah semua inisialisasi selesai
-                refreshTable();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
+}
+
 
     @FXML
     private void filterCariAction(ActionEvent event) {
@@ -355,7 +367,7 @@ public class ClientController implements Initializable {
                     showErrorMessage("Error adding client", "An error occurred while adding the client. Please try again.");
                 }
             } else {
-                showErrorMessage("Peringatan", "Harap isi semua field terlebih dahulu.");
+                showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
             }
             closeWindow();
         }
@@ -368,15 +380,13 @@ public class ClientController implements Initializable {
 
     @FXML
     private void logout(ActionEvent event) throws IOException {
-        // logout logic here
-        // For example, you can show a confirmation dialog before logging out
+        // Membuat dialog konfirmasi
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("Are you sure you want to logout?");
-        alert.setContentText("Click OK to logout, or Cancel to stay logged in.");
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
 
         if (alert.showAndWait().get() == ButtonType.OK) {
-            // Logout logic here, e.g. navigate to login page
             App.setRoot("login");
         }
     }

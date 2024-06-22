@@ -4,10 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -68,17 +66,12 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="355.0">
-         <content>
-            <TableView fx:id="tableView" prefHeight="420.0" prefWidth="355.0">
-               <columns>
-                  <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="mediaColumn" prefWidth="220.0" text="Media" />
-                  <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
-               </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
+      <TableView fx:id="tableView" layoutX="20.0" layoutY="130.0" prefHeight="420.0" prefWidth="355.0">
+         <columns>
+            <TableColumn fx:id="noColumn" prefWidth="35.0" text="No" />
+            <TableColumn fx:id="mediaColumn" prefWidth="220.0" text="Media" />
+            <TableColumn fx:id="aksiColumn" minWidth="0.0" prefWidth="100.0" text="Aksi" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
-

@@ -33,8 +33,8 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="namaField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="230.0" />
-      <TextField fx:id="noTelpField" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="230.0" />
-      <TextField fx:id="usahaField" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="230.0" />
+      <TextField fx:id="namaField" promptText="Masukkan nama client" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="230.0" focusTraversable="true"/>
+      <TextField fx:id="noTelpField" promptText="Masukkan no telepon" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="230.0" />
+      <TextField fx:id="usahaField" promptText="Masukkan nama usaha" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="230.0" />
    </children>
 </AnchorPane>

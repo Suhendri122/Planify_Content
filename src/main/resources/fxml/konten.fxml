@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -65,35 +64,31 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="20.0" layoutY="233.0" prefHeight="312.0" prefWidth="960.0">
-         <content>
-            <TableView fx:id="tableView" prefHeight="420.0" prefWidth="960.0">
-               <columns>
-                  <TableColumn fx:id="no" prefWidth="35.0" text="No" />
-                  <TableColumn fx:id="tema" prefWidth="100.0" text="Tema" />
-                  <TableColumn fx:id="media" prefWidth="100.0" text="Media" />
-                  <TableColumn fx:id="platform" prefWidth="120.0" text="Platform" />
-                  <TableColumn fx:id="link" prefWidth="65.0" text="Link" />
-                  <TableColumn fx:id="deadline" minWidth="0.0" prefWidth="110.0" text="Deadline" />
-                  <TableColumn fx:id="tglPost" prefWidth="110.0" text="Tgl. Post" />
-                  <TableColumn fx:id="picKonten" prefWidth="105.0" text="PIC Konten" />
-                  <TableColumn fx:id="status" prefWidth="115.0" text="Status" />
-                  <TableColumn fx:id="aksiColumn" prefWidth="100.0" text="Aksi" />
-               </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
-      <Text fill="#5b5b5b" layoutX="288.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deadline">
+      <TableView fx:id="tableView" layoutX="20.0" layoutY="230.0" prefHeight="325.0" prefWidth="960.0">
+         <columns>
+            <TableColumn fx:id="no" prefWidth="35.0" text="No" />
+            <TableColumn fx:id="tema" prefWidth="100.0" text="Tema" />
+            <TableColumn fx:id="media" prefWidth="100.0" text="Media" />
+            <TableColumn fx:id="platform" prefWidth="120.0" text="Platform" />
+            <TableColumn fx:id="link" prefWidth="65.0" text="Link" />
+            <TableColumn fx:id="deadline" minWidth="0.0" prefWidth="110.0" text="Deadline" />
+            <TableColumn fx:id="tglPost" prefWidth="110.0" text="Tgl. Post" />
+            <TableColumn fx:id="picKonten" prefWidth="105.0" text="PIC Konten" />
+            <TableColumn fx:id="status" prefWidth="115.0" text="Status" />
+            <TableColumn fx:id="aksiColumn" prefWidth="100.0" text="Aksi" />
+         </columns>
+      </TableView>
+      <Text fill="#5b5b5b" layoutX="296.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deadline">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Text fill="#5b5b5b" layoutX="20.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PIC Konten">
+      <Text fill="#5b5b5b" layoutX="20.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PIC Konten">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Button id="btnFilter" fx:id="searchButton" layoutX="551.0" layoutY="135.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
+      <Button id="btnFilter" fx:id="searchButton" layoutX="551.0" layoutY="184.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="47.0" text="Cari" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -103,19 +98,19 @@
             <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
-      <Text fill="#5b5b5b" layoutX="20.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status">
+      <Text fill="#5b5b5b" layoutX="20.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <Text fill="#5b5b5b" layoutX="288.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tgl. Post">
+      <Text fill="#5b5b5b" layoutX="296.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tgl. Post">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Text>
-      <DatePicker fx:id="tglPostDatePicker" layoutX="380.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <DatePicker fx:id="tglPostDatePicker" layoutX="380.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
       <DatePicker fx:id="deadlineDatePicker" layoutX="380.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox fx:id="statusChoiceBox" layoutX="116.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
-      <ChoiceBox fx:id="picKontenChoiceBox" layoutX="115.0" layoutY="137.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="statusChoiceBox" layoutX="123.0" layoutY="184.0" prefHeight="30.0" prefWidth="140.0" />
+      <ChoiceBox fx:id="picKontenChoiceBox" layoutX="123.0" layoutY="136.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
 </AnchorPane>

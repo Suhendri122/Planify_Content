@@ -59,8 +59,8 @@
       <ChoiceBox fx:id="mediaChoice" layoutX="140.0" layoutY="60.0" prefHeight="30.0" prefWidth="170.0" />
       <ChoiceBox fx:id="platformChoice" layoutX="140.0" layoutY="105.0" prefHeight="30.0" prefWidth="170.0" />
       <DatePicker fx:id="dpDeadline" layoutX="140.0" layoutY="240.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField fx:id="temaField" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
-      <TextField fx:id="linkField" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="temaField" promptText="Masukkan tema" layoutX="140.0" layoutY="15.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="linkField" promptText="Masukkan link" layoutX="140.0" layoutY="150.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="331.0" prefHeight="30.0" text="Status" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />

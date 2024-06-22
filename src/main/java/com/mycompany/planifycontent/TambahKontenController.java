@@ -117,7 +117,7 @@ public class TambahKontenController {
 
             // Validate input fields
             if (tema.isEmpty() || media == null || platform == null || link.isEmpty() || tglPost == null || picKonten == null || deadline == null || statusString == null) {
-                showErrorMessage("Peringatan", "Harap lengkapi semua kolom.");
+                showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
                 return;
             }
 

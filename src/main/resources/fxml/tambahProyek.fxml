@@ -15,7 +15,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtNamaProyek" layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtNamaProyek" promptText="Masukkan nama proyek" layoutX="140.0" layoutY="16.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="61.0" prefHeight="30.0" prefWidth="115.0" text="PIC Proyek" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -33,13 +33,13 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtNoTelepon" disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtNoTelepon" promptText="No telepon otomatis terisi" disable="true" layoutX="140.0" layoutY="151.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="196.0" prefHeight="30.0" text="Harga" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtHarga" layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
+      <TextField fx:id="txtHarga" promptText="Masukkan harga" layoutX="140.0" layoutY="196.0" prefHeight="30.0" prefWidth="170.0" />
       <Label layoutX="15.0" layoutY="286.0" prefHeight="30.0" text="Tgl Selesai" textFill="#358c9c">
          <font>
             <Font name="System Bold" size="16.0" />

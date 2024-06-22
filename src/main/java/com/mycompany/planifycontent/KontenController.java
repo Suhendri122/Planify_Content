@@ -131,7 +131,7 @@ public class KontenController implements Initializable {
     
     private TableProyek proyek;
     private TableKonten konten;
-    
+    private int proyekId;
     private UserDAO userDAO;
     private KontenDAO kontenDAO;
 
@@ -141,6 +141,11 @@ public class KontenController implements Initializable {
         // Lakukan tindakan yang diperlukan dengan objek proyek, misalnya menampilkan informasi proyek di antarmuka pengguna
     }
     
+    public void setProyekId(int proyekId) {
+        this.proyekId = proyekId;
+        loadTableData();
+    }
+        
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -180,36 +185,34 @@ public class KontenController implements Initializable {
 
     private void loadTableData() {
         try {
-            Connection connection = DatabaseConnection.getConnection();
-            KontenDAO kontenDAO = new KontenDAO(connection);
-            List<TableKonten> kontenDataList = kontenDAO.getAllKontens();
+            List<TableKonten> kontenDataList = kontenDAO.getAllKontens(); // Gunakan proyekId yang diatur
             ObservableList<TableKonten> observableKontenData = FXCollections.observableArrayList(kontenDataList);
 
-            // Memperbarui ID pada setiap item konten
-            updateKontenIds(observableKontenData);
-
-            // Mengatur data ke dalam tabel
+            // Set data into table
             tableView.setItems(observableKontenData);
 
-            // Mengatur cell value factory untuk setiap kolom tabel
-            no.setCellValueFactory(new PropertyValueFactory<>("id"));
+            // Set cell value factory for each table column
+            no.setCellValueFactory(new PropertyValueFactory<>("no"));
             tema.setCellValueFactory(new PropertyValueFactory<>("tema"));
             media.setCellValueFactory(new PropertyValueFactory<>("namaMedia"));
             platform.setCellValueFactory(new PropertyValueFactory<>("namaPlatform"));
             link.setCellValueFactory(new PropertyValueFactory<>("linkDesain"));
-            deadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
-            tglPost.setCellValueFactory(new PropertyValueFactory<>("tglPost"));
+            deadline.setCellValueFactory(new PropertyValueFactory<>("deadlineFormatted"));
+            tglPost.setCellValueFactory(new PropertyValueFactory<>("tglPostFormatted"));
+
+
             picKonten.setCellValueFactory(new PropertyValueFactory<>("namaUser"));
             status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-            // Mengatur aksi untuk kolom aksi
+            // Set actions for the action column
             setupActionColumn();
-
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+            // Handle the error if failed to get the connection or data
         }
     }
+
+
 
     private void updateKontenIds(ObservableList<TableKonten> kontenList) {
         for (int i = 0; i < kontenList.size(); i++) {
@@ -403,4 +406,5 @@ public void refreshTable() {
 
         tableView.setItems(tableViewList);
     }
+    
 }

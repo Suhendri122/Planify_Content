@@ -109,7 +109,7 @@ private void bukaHalamanTambah(ActionEvent event) {
         Parent root = fxmlLoader.load();    
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Tambah Data User");
+        stage.setTitle("Tambah User");
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait();
@@ -288,7 +288,7 @@ public void refreshTable() {
                     showErrorMessage("Error adding user", "An error occurred while adding the media. Please try again.");
                 }
             } else {
-                showErrorMessage("Peringatan", "Masukkan Nama dan Email User Terlebih Dahulu");
+                showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
             }
             closeWindow();
         }
@@ -299,18 +299,16 @@ public void refreshTable() {
         closeWindow();
     }
     
-     @FXML
+    @FXML
     private void logout(ActionEvent event) throws IOException {
-        // logout logic here
-        // For example, you can show a confirmation dialog before logging out
+        // Membuat dialog konfirmasi
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("Are you sure you want to logout?");
-        alert.setContentText("Click OK to logout, or Cancel to stay logged in.");
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
 
         if (alert.showAndWait().get() == ButtonType.OK) {
-            // Logout logic here, e.g. navigate to login page
-            App.setRoot("login");   
+            App.setRoot("login");
         }
     }
 

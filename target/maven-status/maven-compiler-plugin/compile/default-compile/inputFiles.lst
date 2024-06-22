@@ -12,8 +12,6 @@ D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planify
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\PicProyekDetailsController.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\DashboardDAO.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\KontenController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\filteredData.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\proyekDAO.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableUser.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\MediaDAO.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\TableClient.java
@@ -31,7 +29,6 @@ D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planify
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\DashboardController.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\User.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\EditMediaController.java
-D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\filterButton.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\MediaController.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\module-info.java
 D:\.College\Semester 4\PBO II\PlanifyContent\src\main\java\com\mycompany\planifycontent\database\UserDAO.java

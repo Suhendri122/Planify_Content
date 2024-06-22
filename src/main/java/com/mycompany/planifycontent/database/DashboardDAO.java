@@ -20,8 +20,8 @@ public class DashboardDAO {
         List<TableDashboard> dashboardData = new ArrayList<>();
         String query = "SELECT konten.id, proyek.nama_proyek, proyek.user_id AS pic_proyek, konten.tema, konten.media_id, konten.deadline, konten.tgl_post, konten.user_id AS pic_konten " +
                        "FROM proyek " +
-                       "INNER JOIN konten ON proyek.id = konten.user_id;";
-
+                       "INNER JOIN konten ON proyek.id = konten.proyek_id " +
+                       "WHERE konten.deadline BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY);";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -42,7 +42,7 @@ public class DashboardDAO {
 
                 // Mendapatkan nama media berdasarkan ID
                 String namaMedia = getNamaMediaById(mediaId);
-                
+
                 TableDashboard data = new TableDashboard(id, namaProyek, namaPicProyek, tema, namaMedia, deadline, tglPost, namaPicKonten);
 
                 dashboardData.add(data);
@@ -51,6 +51,7 @@ public class DashboardDAO {
 
         return dashboardData;
     }
+
 
     private String getNamaUserById(String userId) throws SQLException {
         String query = "SELECT nama FROM user WHERE id = ?";
