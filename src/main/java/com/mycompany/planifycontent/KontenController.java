@@ -155,7 +155,7 @@ public class KontenController implements Initializable {
 
             // Mengisi ChoiceBox statusChoiceBox dengan "Semua" dan status hardcoded
             statusChoiceBox.getItems().add("Semua");
-            List<String> statuses = Arrays.asList("Belum", "Sedang Berlangsung", "Selesai");
+            List<String> statuses = Arrays.asList("Belum", "Berjalan", "Selesai");
             statusChoiceBox.getItems().addAll(statuses);
 
             // Set default value "Semua" pada ChoiceBox

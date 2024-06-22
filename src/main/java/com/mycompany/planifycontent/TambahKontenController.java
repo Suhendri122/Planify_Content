@@ -49,13 +49,13 @@ public class TambahKontenController {
     private KontenDAO kontenDAO;
     private ObservableList<TableKonten> kontenData;
     private TableKonten konten;
-    
+    private TableProyek proyek;
+
     public enum Status {
         Belum,
         Berjalan,
         Selesai
     }
-
 
     @FXML
     private void initialize() {
@@ -67,26 +67,34 @@ public class TambahKontenController {
             List<String> mediaList = kontenDAO.getAllMedia();
             List<String> platformList = kontenDAO.getAllPlatforms();
             List<String> picKontenList = kontenDAO.getAllUsers(); // Assuming this method retrieves all users
-            List<String> statusList = getStatusList(); 
+            List<String> statusList = getStatusList();
 
             mediaChoice.setItems(FXCollections.observableArrayList(mediaList));
             platformChoice.setItems(FXCollections.observableArrayList(platformList));
             picKontenField.setItems(FXCollections.observableArrayList(picKontenList));
             statusField.setItems(FXCollections.observableArrayList(statusList)); // Set String list to statusField
 
+            // Set default value for DatePicker to today
+            dpTglPost.setValue(LocalDate.now());
+            dpDeadline.setValue(LocalDate.now());
+
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception appropriately
         }
     }
-    
+
     private List<String> getStatusList() {
         // Convert enum Status values to String
         return List.of(Status.Belum.toString(), Status.Berjalan.toString(), Status.Selesai.toString());
     }
-    
+
     public void setKonten(TableKonten konten) {
         this.konten = konten;
+    }
+    
+    public void setProyek(TableProyek konten) {
+        this.proyek = proyek;
     }
 
     @FXML
@@ -106,10 +114,9 @@ public class TambahKontenController {
             String picKonten = picKontenField.getValue();
             LocalDate deadline = dpDeadline.getValue();
             String statusString = statusField.getValue();
-            String status = statusField.getValue();
 
             // Validate input fields
-            if (tema.isEmpty() || media == null || platform == null || link.isEmpty() || tglPost == null || picKonten == null || deadline == null || status == null) {
+            if (tema.isEmpty() || media == null || platform == null || link.isEmpty() || tglPost == null || picKonten == null || deadline == null || statusString == null) {
                 showErrorMessage("Peringatan", "Harap lengkapi semua kolom.");
                 return;
             }
@@ -117,7 +124,7 @@ public class TambahKontenController {
             kontenDAO.insertKonten(picKonten, media, platform, link, tema, deadline.toString(), tglPost.toString(), statusString);
             Stage stage = (Stage) temaField.getScene().getWindow();
             stage.close();
-            
+
             refreshTable();
 
         } catch (SQLException e) {
@@ -150,13 +157,13 @@ public class TambahKontenController {
         try {
             List<TableKonten> kontenList = kontenDAO.getAllKontens();
             kontenData = FXCollections.observableArrayList(kontenList);
-            ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
             tableView.setItems(kontenData);
-            updateKontenIds(observableKontenList);
+            updateKontenIds(kontenData);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     private void updateKontenIds(List<TableKonten> kontenList) {
         for (int i = 0; i < kontenList.size(); i++) {
             kontenList.get(i).setId(i + 1);

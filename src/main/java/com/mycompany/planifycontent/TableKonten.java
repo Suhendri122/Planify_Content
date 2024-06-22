@@ -17,6 +17,7 @@ public class TableKonten {
     private final StringProperty status;
     private final StringProperty aksi;
     private int id;
+    private int proyekId; // Menyimpan id proyek terkait
 
     public TableKonten(int no, String namaUser, String namaMedia, String namaPlatform, String linkDesain, String tema, String deadline, String tglPost, String status, String aksi) {
         this.no = new SimpleIntegerProperty(no);
@@ -38,7 +39,7 @@ public class TableKonten {
     public void setNo(int no) {
         this.no.set(no);
     }
-    
+
     public IntegerProperty noProperty() {
         return no;
     }
@@ -138,7 +139,7 @@ public class TableKonten {
     public StringProperty statusProperty() {
         return status;
     }
-    
+
     public String getAksi() {
         return aksi.get();
     }
@@ -157,5 +158,13 @@ public class TableKonten {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getProyekId() {
+        return proyekId;
+    }
+
+    public void setProyekId(int proyekId) {
+        this.proyekId = proyekId;
     }
 }
