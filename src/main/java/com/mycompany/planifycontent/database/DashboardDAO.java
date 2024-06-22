@@ -36,11 +36,9 @@ public class DashboardDAO {
                 String tglPost = resultSet.getString("tgl_post");
                 String picKontenId = resultSet.getString("pic_konten");
 
-                // Mendapatkan nama pengguna berdasarkan ID
                 String namaPicProyek = getNamaUserById(picProyekId);
                 String namaPicKonten = getNamaUserById(picKontenId);
 
-                // Mendapatkan nama media berdasarkan ID
                 String namaMedia = getNamaMediaById(mediaId);
 
                 TableDashboard data = new TableDashboard(id, namaProyek, namaPicProyek, tema, namaMedia, deadline, tglPost, namaPicKonten);
@@ -48,10 +46,8 @@ public class DashboardDAO {
                 dashboardData.add(data);
             }
         }
-
         return dashboardData;
     }
-
 
     private String getNamaUserById(String userId) throws SQLException {
         String query = "SELECT nama FROM user WHERE id = ?";
@@ -62,7 +58,7 @@ public class DashboardDAO {
                 return resultSet.getString("nama");
             }
         }
-        return ""; // Return empty string jika ID tidak ditemukan
+        return ""; 
     }
 
     private String getNamaMediaById(String mediaId) throws SQLException {
@@ -74,6 +70,6 @@ public class DashboardDAO {
                 return resultSet.getString("nama_media");
             }
         }
-        return ""; // Return empty string jika ID tidak ditemukan
+        return "";
     }
 }

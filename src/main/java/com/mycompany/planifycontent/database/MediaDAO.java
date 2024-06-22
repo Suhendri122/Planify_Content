@@ -28,17 +28,17 @@ public class MediaDAO {
                 medias.add(media);
             }
         }
-    return medias;
-}
-
-public void deleteMedia(int id) throws SQLException {
-    String query = "DELETE FROM media WHERE id=?";
-    try (PreparedStatement stmt = connection.prepareStatement(query)) {
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
+        return medias;
     }
-    updateMediaNumbers(); // Update media numbers after deletion
-}
+
+    public void deleteMedia(int id) throws SQLException {
+        String query = "DELETE FROM media WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+        updateMediaNumbers();
+    }
 
     public void updateMediaNumbers() throws SQLException {
         String selectQuery = "SELECT id FROM media ORDER BY id";

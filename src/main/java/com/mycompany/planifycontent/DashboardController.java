@@ -4,31 +4,56 @@ import com.mycompany.planifycontent.database.DashboardDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.fxml.Initializable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.cell.PropertyValueFactory;
 
+public class DashboardController implements Initializable {
 
-public class DashboardController implements Initializable{
+    @FXML
+    private TableView<TableDashboard> tableView;
+
+    @FXML
+    private TableColumn<TableDashboard, String> noColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> proyekColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> picProyekColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> deadlineColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> tglPostColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> temaColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> mediaColumn;
+
+    @FXML
+    private TableColumn<TableDashboard, String> picKontenColumn;
 
     @FXML
     private void bukaHalamanDashboard(ActionEvent event) throws IOException {
         App.setRoot("dashboard");
     }
-            
+
     @FXML
     private void bukaHalamanProyek(ActionEvent event) throws IOException {
         App.setRoot("proyek");
@@ -58,11 +83,10 @@ public class DashboardController implements Initializable{
     private void bukaHalamanUser(ActionEvent event) throws IOException {
         App.setRoot("user");
     }
-    
-        @FXML
+
+    @FXML
     private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi Logout");
         alert.setHeaderText(null);
         alert.setContentText("Apakah Anda yakin ingin logout?");
@@ -71,34 +95,6 @@ public class DashboardController implements Initializable{
             App.setRoot("login");
         }
     }
-
-    
-    @FXML
-    private TableView<TableDashboard> tableView;
-
-    @FXML
-    private TableColumn<TableDashboard, String> noColumn;
-    
-    @FXML
-    private TableColumn<TableDashboard, String> proyekColumn;
-
-    @FXML
-    private TableColumn<TableDashboard, String> picProyekColumn;
-
-     @FXML
-    private TableColumn<TableDashboard, String> deadlineColumn;
-
-    @FXML
-    private TableColumn<TableDashboard, String> tglPostColumn;
-
-    @FXML
-    private TableColumn<TableDashboard, String> temaColumn;
-
-    @FXML
-    private TableColumn<TableDashboard, String> mediaColumn;
-
-    @FXML
-    private TableColumn<TableDashboard, String> picKontenColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -109,7 +105,6 @@ public class DashboardController implements Initializable{
             ObservableList<TableDashboard> observableDashboardData = FXCollections.observableArrayList(dashboardData);
             tableView.setItems(observableDashboardData);
 
-            // Inisialisasi kolom-kolom lain
             noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
             proyekColumn.setCellValueFactory(new PropertyValueFactory<>("proyek"));
             picProyekColumn.setCellValueFactory(new PropertyValueFactory<>("picProyek"));
@@ -119,16 +114,12 @@ public class DashboardController implements Initializable{
             mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
             picKontenColumn.setCellValueFactory(new PropertyValueFactory<>("picKonten"));
 
-            // Atur nomor untuk setiap item
             int index = 1;
             for (TableDashboard item : dashboardData) {
                 item.noProperty().set(index++);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
-
 }
-

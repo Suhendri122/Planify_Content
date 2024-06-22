@@ -4,7 +4,6 @@ import com.mycompany.planifycontent.database.MediaDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -18,15 +17,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import com.mycompany.planifycontent.TableMedia;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
@@ -50,7 +46,7 @@ public class MediaController implements Initializable {
     @FXML
     private TableColumn<TableMedia, String> mediaColumn;
     
-        @FXML
+    @FXML
     private TableColumn<TableMedia, String> aksiColumn;
 
     @FXML
@@ -68,11 +64,8 @@ public class MediaController implements Initializable {
 
             tableView.setItems(observableMediaData);
 
-            // Inisialisasi kolom-kolom lain
             noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
             mediaColumn.setCellValueFactory(new PropertyValueFactory<>("media"));
-            
-            // Inisialisasi kolom aksi
             aksiColumn.setCellFactory(new Callback<TableColumn<TableMedia, String>, TableCell<TableMedia, String>>() {
                 @Override
                 public TableCell<TableMedia, String> call(TableColumn<TableMedia, String> param) {
@@ -83,7 +76,6 @@ public class MediaController implements Initializable {
                         final AnchorPane anchorPane = new AnchorPane();
 
                         {
-                            // Setup buttons
                             ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
                             ivEdit.setFitHeight(20);
                             ivEdit.setFitWidth(20);
@@ -93,8 +85,6 @@ public class MediaController implements Initializable {
                             ivDelete.setFitHeight(20);
                             ivDelete.setFitWidth(20);
                             btnDelete.setGraphic(ivDelete);
-             
-
 
                             AnchorPane.setLeftAnchor(btnEdit, 0.0);
                             AnchorPane.setLeftAnchor(btnDelete, 40.0);
@@ -102,7 +92,6 @@ public class MediaController implements Initializable {
                             btnEdit.setPadding(new Insets(5));
                             btnDelete.setPadding(new Insets(5));
 
-                            // Setup button actions
                             btnEdit.setOnAction(event -> {
                                 TableMedia media = getTableView().getItems().get(getIndex());
                                 showEditPopup(media);
@@ -120,14 +109,13 @@ public class MediaController implements Initializable {
                                     try (Connection connection = DatabaseConnection.getConnection()) {
                                         MediaDAO mediaDAO = new MediaDAO(connection);
                                         mediaDAO.deleteMedia(media.getNo());
-                                        refreshTable(); // Refresh table after deleting media
+                                        refreshTable();
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
-                        });
-
+                            });
 
                         }
 
@@ -155,15 +143,12 @@ public class MediaController implements Initializable {
                     };
                 }
             });
-
-            // Atur nomor untuk setiap item
             int index = 1;
             for (TableMedia item : mediaData) {
                 item.noProperty().set(index++);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
         }
     }
 }
@@ -203,9 +188,8 @@ public class MediaController implements Initializable {
         App.setRoot("user");
     }
     
-        @FXML
+    @FXML
     private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi Logout");
         alert.setHeaderText(null);
@@ -215,10 +199,6 @@ public class MediaController implements Initializable {
             App.setRoot("login");
         }
     }
-
-    
-    
-    //popup tambah, edit, dan filter
     
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
@@ -230,43 +210,40 @@ public class MediaController implements Initializable {
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UTILITY);
         stage.showAndWait();
-        initialize(null, null); // Refresh data setelah pop-up ditutup
+        initialize(null, null);
     }
 
     @FXML
-private void handleTambah(ActionEvent event) {
-    if (mediaNameField != null) {
-        String mediaName = mediaNameField.getText();
-        if (mediaName != null && !mediaName.isEmpty()) {
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                MediaDAO mediaDAO = new MediaDAO(connection);
-                mediaDAO.tambahMedia(mediaName);
-                List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
+    private void handleTambah(ActionEvent event) {
+        if (mediaNameField != null) {
+            String mediaName = mediaNameField.getText();
+            if (mediaName != null && !mediaName.isEmpty()) {
+                try {
+                    Connection connection = DatabaseConnection.getConnection();
+                    MediaDAO mediaDAO = new MediaDAO(connection);
+                    mediaDAO.tambahMedia(mediaName);
+                    List<TableMedia> mediaList = mediaDAO.getAllDataMedia();
 
-                if (mediaData != null) {
-                    mediaData.setAll(mediaList);
+                    if (mediaData != null) {
+                        mediaData.setAll(mediaList);
 
-                    // Set ulang nomor untuk setiap item
-                    int index = 1;
-                    for (TableMedia item : mediaData) {
-                        item.setNo(index++);
+                        int index = 1;
+                        for (TableMedia item : mediaData) {
+                            item.setNo(index++);
+                        }
+
+                        refreshTable();
                     }
-
-                    // Refresh tabel setelah memperbarui data
-                    refreshTable();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
                 }
-            } catch (SQLException e) {
-                // Handle the SQL exception and display an error message
-                e.printStackTrace();
-                showErrorMessage("Error adding media", "An error occurred while adding the media. Please try again.");
+            } else {
+                showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
             }
-        } else {
-            showErrorMessage("Peringatan", "Masukkan Nama Media Terlebih Dahulu");
+            closeWindow();
         }
-        closeWindow();
     }
-}
 
 
     @FXML
@@ -282,7 +259,6 @@ private void handleTambah(ActionEvent event) {
     }
 
     private void showErrorMessage(String title, String message) {
-        // You can use an Alert to display error messages to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -290,29 +266,29 @@ private void handleTambah(ActionEvent event) {
         alert.showAndWait();
     }
     
-public void refreshTable() {
-    try (Connection connection = DatabaseConnection.getConnection()) {
-        MediaDAO mediaDAO = new MediaDAO(connection);
-        List<TableMedia> mediaList = mediaDAO.getAllMedia();
-        ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
-        updateMediaIds(observableMediaList); // Reorder IDs before setting the items
-        tableView.setItems(observableMediaList);
-        tableView.getSelectionModel().clearSelection(); // Clear existing selection
-        tableView.refresh(); // Refresh the TableView to ensure it updates
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
+    public void refreshTable() {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            MediaDAO mediaDAO = new MediaDAO(connection);
+            List<TableMedia> mediaList = mediaDAO.getAllMedia();
+            ObservableList<TableMedia> observableMediaList = FXCollections.observableArrayList(mediaList);
+            updateMediaIds(observableMediaList);
+            tableView.setItems(observableMediaList);
+            tableView.getSelectionModel().clearSelection();
+            tableView.refresh();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }  
 
-private void updateMediaIds(ObservableList<TableMedia> mediaList) {
-    int index = 1;
-    for (TableMedia media : mediaList) {
-        media.setNo(index++); // Update the media ID to ensure they are sequential
+    private void updateMediaIds(ObservableList<TableMedia> mediaList) {
+        int index = 1;
+        for (TableMedia media : mediaList) {
+            media.setNo(index++);
+        }
+        tableView.refresh(); 
     }
-    tableView.refresh(); // Refresh the TableView to ensure it updates
-}
 
-        private void showEditPopup(TableMedia media) {
+    private void showEditPopup(TableMedia media) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editMedia.fxml"));
             Parent root = loader.load();
@@ -326,7 +302,7 @@ private void updateMediaIds(ObservableList<TableMedia> mediaList) {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            refreshTable(); // Refresh table view to show updated data
+            refreshTable(); 
         } catch (IOException e) {
             e.printStackTrace();
         }

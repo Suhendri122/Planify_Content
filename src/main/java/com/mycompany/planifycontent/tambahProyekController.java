@@ -69,13 +69,10 @@ public class TambahProyekController {
     public void setProyek(TableProyek proyek) {
         this.proyek = proyek;
 
-        // Pastikan txtNoTelepon sudah diinisialisasi sebelum menambahkan listener
         if (txtNoTelepon != null) {
-            // Add listener to update phone number based on selected client
             choiceNamaClient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     try {
-                        // Pastikan proyekDAO sudah diinisialisasi sebelum digunakan
                         if (proyekDAO != null) {
                             txtNoTelepon.setText(proyekDAO.getPhoneNumberByClientName(newValue));
                         }
@@ -109,7 +106,6 @@ public class TambahProyekController {
             stage.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle SQL exception appropriately
         }
     }
 
@@ -128,7 +124,6 @@ private void handleTambah(ActionEvent event) {
     LocalDate tglMulai = dpTglMulai.getValue();
     LocalDate tglSelesai = dpTglSelesai.getValue();
 
-    // Periksa semua kolom apakah ada yang kosong atau null
     if (namaProyek.isEmpty() || picProyek == null || namaClient == null || hargaText.isEmpty() || tglMulai == null || tglSelesai == null) {
         showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
         return;
@@ -143,27 +138,18 @@ private void handleTambah(ActionEvent event) {
     }
 
     try {
-        // Ambil nomor telepon dari database jika tidak kosong
         String noTelepon = "";
         if (!namaClient.isEmpty()) {
             noTelepon = proyekDAO.getPhoneNumberByClientName(namaClient);
         }
-
-        // Get user id and client id
         int userId = proyekDAO.getUserIdByName(picProyek);
         int clientId = proyekDAO.getClientIdByName(namaClient);
 
-        // Buat objek TableProyek
         TableProyek proyekBaru = new TableProyek(0, userId, clientId, namaProyek, picProyek, namaClient, noTelepon, harga, tglMulai.toString(), tglSelesai.toString(), null);
-
-        // Tambahkan proyek ke database
         proyekDAO.addProyek(proyekBaru);
-
-        // Tutup jendela setelah penambahan berhasil
         Stage stage = (Stage) txtNamaProyek.getScene().getWindow();
         stage.close();
 
-        // Refresh tabel setelah berhasil menambahkan proyek
         refreshTable();
 
     } catch (SQLException e) {
@@ -172,10 +158,7 @@ private void handleTambah(ActionEvent event) {
     }
 }
 
-
-
     private void showErrorMessage(String title, String message) {
-        // You can use an Alert to display error messages to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -192,9 +175,9 @@ private void handleTambah(ActionEvent event) {
         try {
             Connection connection = DatabaseConnection.getConnection();
             ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", ""); // Sesuaikan dengan kebutuhan Anda
+            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", ""); 
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-            updateProyekIds(observableProyekList); // Reorder IDs before setting the items
+            updateProyekIds(observableProyekList);
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();

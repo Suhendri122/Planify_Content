@@ -43,7 +43,7 @@ public class ClientDAO {
             stmt.setString(3, client.getUsaha());
             stmt.executeUpdate();
         }
-        updateClientNumbers(); // Update client numbers after adding
+        updateClientNumbers();
     }
 
     public List<TableClient> getDataClientsByFilter(String nama, String usaha) throws SQLException {
@@ -91,7 +91,7 @@ public class ClientDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
-        updateClientNumbers(); // Update client numbers after deletion
+        updateClientNumbers();
     }
 
     public void updateClientNumbers() throws SQLException {
@@ -131,6 +131,6 @@ public class ClientDAO {
             stmt.setString(1, name);
             stmt.executeUpdate();
         }
-        updateClientNumbers(); // Update client numbers after insertion
+        updateClientNumbers();
     }
 }

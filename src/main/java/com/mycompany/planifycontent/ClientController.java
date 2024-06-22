@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,6 +34,7 @@ import java.io.IOException;
 import com.mycompany.planifycontent.database.ClientDAO;
 import com.mycompany.planifycontent.database.DatabaseConnection;
 import java.util.List;
+import javafx.scene.control.ButtonType;
 
 public class ClientController implements Initializable {
 
@@ -122,99 +122,48 @@ public class ClientController implements Initializable {
             stage.setScene(new Scene(root));
             stage.initStyle(StageStyle.UTILITY);
             stage.showAndWait();
-            initialize(null, null); // Refresh data setelah pop-up ditutup
+            initialize(null, null);
         } catch (IOException e) {
             e.printStackTrace();
-            // Tampilkan pesan kesalahan
             System.out.println("Error loading FXML: " + e.getMessage());
         }
     }
 
-
     @Override
-public void initialize(URL url, ResourceBundle resourceBundle) {
-    // Initialize TableView and TableColumns if they exist
-    if (tableView != null) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            ClientDAO clientDAO = new ClientDAO(connection);
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (tableView != null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ClientDAO clientDAO = new ClientDAO(connection);
 
-            List<TableClient> clientList = clientDAO.getAllClients();
-            clientData = FXCollections.observableArrayList(clientList);
-            tableView.setItems(clientData);
+                List<TableClient> clientList = clientDAO.getAllClients();
+                clientData = FXCollections.observableArrayList(clientList);
+                tableView.setItems(clientData);
 
-            // Inisialisasi kolom-kolom
-            noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
-            namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
-            usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
+                noColumn.setCellValueFactory(new PropertyValueFactory<>("no"));
+                namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+                noTelpColumn.setCellValueFactory(new PropertyValueFactory<>("no_telp"));
+                usahaColumn.setCellValueFactory(new PropertyValueFactory<>("usaha"));
 
-            // Inisialisasi kolom aksi
-            aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
-                @Override
-                public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
-                    return new TableCell<TableClient, String>() {
-                        final Button btnEdit = new Button();
-                        final Button btnDelete = new Button();
-                        final HBox hbox = new HBox(btnEdit, btnDelete);
-                        final AnchorPane anchorPane = new AnchorPane();
+                aksiColumn.setCellFactory(new Callback<TableColumn<TableClient, String>, TableCell<TableClient, String>>() {
+                    @Override
+                    public TableCell<TableClient, String> call(TableColumn<TableClient, String> param) {
+                        return new TableCell<TableClient, String>() {
+                            final Button btnEdit = new Button();
+                            final Button btnDelete = new Button();
+                            final HBox hbox = new HBox(btnEdit, btnDelete);
+                            final AnchorPane anchorPane = new AnchorPane();
 
-                        {
-                            // Setup buttons
-                            ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
-                            ivEdit.setFitHeight(20);
-                            ivEdit.setFitWidth(20);
-                            btnEdit.setGraphic(ivEdit);
+                            {
+                                ImageView ivEdit = new ImageView(new Image(getClass().getResourceAsStream("/assets/edit.png")));
+                                ivEdit.setFitHeight(20);
+                                ivEdit.setFitWidth(20);
+                                btnEdit.setGraphic(ivEdit);
 
-                            ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
-                            ivDelete.setFitHeight(20);
-                            ivDelete.setFitWidth(20);
-                            btnDelete.setGraphic(ivDelete);
-
-                            AnchorPane.setLeftAnchor(btnEdit, 0.0);
-                            AnchorPane.setLeftAnchor(btnDelete, 40.0);
-
-                            btnEdit.setPadding(new Insets(5));
-                            btnDelete.setPadding(new Insets(5));
-
-                            // Setup button actions
-                            btnEdit.setOnAction(event -> {
-                                TableClient client = getTableView().getItems().get(getIndex());
-                                showEditPopup(client);
-                            });
-
-                            btnDelete.setOnAction(event -> {
-                                TableClient client = getTableView().getItems().get(getIndex());
-
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                alert.setTitle("Konfirmasi Penghapusan");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Apakah Anda yakin ingin menghapus client ini?");
-
-                                alert.showAndWait().ifPresent(response -> {
-                                    if (response == ButtonType.OK) {
-                                        try {
-                                            Connection connection = DatabaseConnection.getConnection();
-                                            ClientDAO clientDAO = new ClientDAO(connection);
-                                            clientDAO.deleteClient(client.getId()); // Menggunakan nomor client untuk penghapusan
-                                            refreshTable(); // Memperbarui tampilan tabel setelah menghapus data
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                            });
-                        }
-
-                        @Override
-                        protected void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty) {
-                                setGraphic(null);
-                                setText(null);
-                            } else {
-                                anchorPane.getChildren().clear();
-                                anchorPane.getChildren().addAll(btnEdit, btnDelete);
+                                ImageView ivDelete = new ImageView(new Image(getClass().getResourceAsStream("/assets/delete.png")));
+                                ivDelete.setFitHeight(20);
+                                ivDelete.setFitWidth(20);
+                                btnDelete.setGraphic(ivDelete);
 
                                 AnchorPane.setLeftAnchor(btnEdit, 0.0);
                                 AnchorPane.setLeftAnchor(btnDelete, 40.0);
@@ -222,69 +171,104 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                                 btnEdit.setPadding(new Insets(5));
                                 btnDelete.setPadding(new Insets(5));
 
-                                setGraphic(anchorPane);
-                                setText(null);
+                                btnEdit.setOnAction(event -> {
+                                    TableClient client = getTableView().getItems().get(getIndex());
+                                    showEditPopup(client);
+                                });
+
+                                btnDelete.setOnAction(event -> {
+                                    TableClient client = getTableView().getItems().get(getIndex());
+
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Konfirmasi Penghapusan");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Apakah Anda yakin ingin menghapus client ini?");
+
+                                    alert.showAndWait().ifPresent(response -> {
+                                        if (response == ButtonType.OK) {
+                                            try {
+                                                Connection connection = DatabaseConnection.getConnection();
+                                                ClientDAO clientDAO = new ClientDAO(connection);
+                                                clientDAO.deleteClient(client.getId());
+                                                refreshTable();
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                });
                             }
-                        }
-                    };
+
+                            @Override
+                            protected void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    anchorPane.getChildren().clear();
+                                    anchorPane.getChildren().addAll(btnEdit, btnDelete);
+
+                                    AnchorPane.setLeftAnchor(btnEdit, 0.0);
+                                    AnchorPane.setLeftAnchor(btnDelete, 40.0);
+
+                                    btnEdit.setPadding(new Insets(5));
+                                    btnDelete.setPadding(new Insets(5));
+
+                                    setGraphic(anchorPane);
+                                    setText(null);
+                                }
+                            }
+                        };
+                    }
+                });
+
+                int index = 1;
+                for (TableClient item : clientList) {
+                    item.noProperty().set(index++);
                 }
-            });
 
-            // Atur nomor untuk setiap item
-            int index = 1;
-            for (TableClient item : clientList) {
-                item.noProperty().set(index++);
+                refreshTable();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+        }
 
-            // Panggil refreshTable() di sini setelah semua inisialisasi selesai
-            refreshTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
+        if (namaclient != null && namausaha != null) {
+            try {
+                Connection connection = DatabaseConnection.getConnection();
+                ClientDAO clientDAO = new ClientDAO(connection);
+
+                ObservableList<String> namaItems = FXCollections.observableArrayList();
+                ObservableList<String> usahaItems = FXCollections.observableArrayList();
+
+                List<TableClient> clientList = clientDAO.getAllClients();
+                for (TableClient client : clientList) {
+                    if (!namaItems.contains(client.getNama())) {
+                        namaItems.add(client.getNama());
+                    }
+                    if (!usahaItems.contains(client.getUsaha())) {
+                        usahaItems.add(client.getUsaha());
+                    }
+                }
+
+                namaclient.setItems(namaItems);
+                namausaha.setItems(usahaItems);
+
+                namaclient.getItems().add(0, "Semua");
+                namausaha.getItems().add(0, "Semua");
+
+                namaclient.setValue("Semua");
+                namausaha.setValue("Semua");
+
+                filtercari.setOnAction(event -> {
+                    filterCariAction(event);
+                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-
-    // Initialize ChoiceBoxes if they exist
-    if (namaclient != null && namausaha != null) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            ClientDAO clientDAO = new ClientDAO(connection);
-
-            ObservableList<String> namaItems = FXCollections.observableArrayList();
-            ObservableList<String> usahaItems = FXCollections.observableArrayList();
-
-            List<TableClient> clientList = clientDAO.getAllClients();
-            for (TableClient client : clientList) {
-                if (!namaItems.contains(client.getNama())) {
-                    namaItems.add(client.getNama());
-                }
-                if (!usahaItems.contains(client.getUsaha())) {
-                    usahaItems.add(client.getUsaha());
-                }
-            }
-
-            namaclient.setItems(namaItems);
-            namausaha.setItems(usahaItems);
-
-            // Add default value "Semua"
-            namaclient.getItems().add(0, "Semua");
-            namausaha.getItems().add(0, "Semua");
-
-            // Set default value to "Semua"
-            namaclient.setValue("Semua");
-            namausaha.setValue("Semua");
-
-            // Add an action listener to the "Cari" button
-            filtercari.setOnAction(event -> {
-                filterCariAction(event);
-            });
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle kesalahan jika gagal mendapatkan koneksi atau data
-        }
-    }
-}
-
 
     @FXML
     private void filterCariAction(ActionEvent event) {
@@ -292,7 +276,6 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         String usaha = namausaha.getSelectionModel().getSelectedItem();
 
         if ("Semua".equals(nama) && "Semua".equals(usaha)) {
-            // Clear filter and show all data
             try {
                 Connection connection = DatabaseConnection.getConnection();
                 ClientDAO dataClientDAO = new ClientDAO(connection);
@@ -315,6 +298,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
             }
         }
     }
+
     public void refreshTable() {
         if (tableView == null) {
             System.out.println("Error: tableView is null in refreshTable()");
@@ -326,7 +310,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
             ClientDAO clientDAO = new ClientDAO(connection);
             List<TableClient> clientList = clientDAO.getAllClients();
             ObservableList<TableClient> observableClientList = FXCollections.observableArrayList(clientList);
-            updateClientIds(observableClientList); // Reorder IDs before setting the items
+            updateClientIds(observableClientList);
             tableView.setItems(observableClientList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -335,7 +319,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
 
     private void updateClientIds(ObservableList<TableClient> clientList) {
         for (int i = 0; i < clientList.size(); i++) {
-            clientList.get(i).setNo(i + 1); // Reorder IDs to be sequential starting from 1
+            clientList.get(i).setNo(i + 1);
         }
     }
 
@@ -350,10 +334,10 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                     Connection connection = DatabaseConnection.getConnection();
                     ClientDAO clientDAO = new ClientDAO(connection);
                     TableClient newClient = new TableClient(0, nama, noTelp, usaha, "");
-                    clientDAO.addClient(newClient); // Menambahkan client baru ke database
+                    clientDAO.addClient(newClient);
                     List<TableClient> clientList = clientDAO.getAllClients();
-                    
-                                        if (clientData != null) {
+
+                    if (clientData != null) {
                         clientData.setAll(clientList);
 
                         int index = 1;
@@ -380,7 +364,6 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
 
     @FXML
     private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi Logout");
         alert.setHeaderText(null);
@@ -399,7 +382,6 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
     private void showErrorMessage(String title, String message) {
-        // You can use an Alert to display error messages to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -421,7 +403,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            refreshTable(); // Refresh table view to show updated data
+            refreshTable();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -440,7 +422,6 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
             tableView.setItems(observableFilteredClients);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle SQL exception if necessary
         }
     }
 }

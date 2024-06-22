@@ -15,7 +15,6 @@ public class HistoriDAO {
         this.connection = connection;
     }
 
-    // Method untuk mendapatkan data histori dengan filter tanggal dan status "Selesai"
     public List<TableHistori> getHistoriData(String startDate, String endDate) throws SQLException {
         List<TableHistori> historiList = new ArrayList<>();
         String query = "SELECT proyek.id AS proyek_id, proyek.nama_proyek, user.nama AS pic_proyek, client.nama AS nama_client, " +
@@ -28,7 +27,7 @@ public class HistoriDAO {
                        "INNER JOIN media ON konten.media_id = media.id " +
                        "INNER JOIN platform ON konten.platform_id = platform.id " +
                        "INNER JOIN user AS user_konten ON konten.user_id = user_konten.id " +
-                       "WHERE konten.status = 'Selesai'"; // Filter berdasarkan status "Selesai"
+                       "WHERE konten.status = 'Selesai'";
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
             query += " AND konten.tgl_post BETWEEN ? AND ?";
@@ -65,7 +64,6 @@ public class HistoriDAO {
                 String picKonten = resultSet.getString("pic_konten");
                 String status = resultSet.getString("status");
 
-                // Buat objek TableHistori dari hasil query
                 TableHistori histori = new TableHistori(proyekId, namaProyek, picProyek, namaClient, tema, media, platform, link, deadline, tglPost, picKonten, status);
                 historiList.add(histori);
             }

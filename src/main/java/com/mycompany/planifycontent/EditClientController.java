@@ -29,12 +29,12 @@ public class EditClientController implements Initializable {
 
     private TableClient client;
 
-@Override
-public void initialize(URL url, ResourceBundle resourceBundle) {
-    if (client != null) {
-        clientNameField.setText(client.getNama());
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (client != null) {
+            clientNameField.setText(client.getNama());
+        }
     }
-}
 
 
     public void setClient(TableClient client) {
@@ -42,7 +42,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         fillForm();  
     }
 
-@FXML
+    @FXML
     private void saveChanges(ActionEvent event) {
         try {
             String newName = clientNameField.getText().trim();
@@ -56,22 +56,19 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
                 updateClient(client);
                 closeWindow();
             } else {
-                // Handle empty input
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database error
         }
     }
     
-        private void fillForm() {
+    private void fillForm() {
         if (client != null) {
-                    clientNameField.setText(client.getNama());
-                    clientNoTelpField.setText(client.getNo_telp());
-                    clientUsahaField.setText(client.getUsaha());
-        }
-        
-        }
+            clientNameField.setText(client.getNama());
+            clientNoTelpField.setText(client.getNo_telp());
+            clientUsahaField.setText(client.getUsaha());
+        }   
+    }
         
     @FXML
     private void cancelEdit(ActionEvent event) {

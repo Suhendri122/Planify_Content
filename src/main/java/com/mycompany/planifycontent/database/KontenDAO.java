@@ -38,10 +38,10 @@ public class KontenDAO {
                 String deadline = resultSet.getString("deadline");
                 String tglPost = resultSet.getString("tgl_post");
                 String status = resultSet.getString("status");
-                String aksi = ""; // Default value for aksi
+                String aksi = "";
 
                 TableKonten konten = new TableKonten(no++, namaUser, namaMedia, namaPlatform, linkDesain, tema, deadline, tglPost, status, aksi);
-                konten.setId(id); // Set the ID for each konten
+                konten.setId(id);
                 kontenList.add(konten);
             }
         }
@@ -230,7 +230,7 @@ public class KontenDAO {
                 }
             }
         }
-        return -1; // Indicating not found
+        return -1;
     }
     
     private int getProyekIdForNextKonten() throws SQLException {
@@ -241,11 +241,11 @@ public class KontenDAO {
                 return rs.getInt("id");
             }
         }
-        return 1; // Default to 1 if no proyek exists
+        return 1;
     }
 
     public void insertKonten(String namaUser, String namaMedia, String namaPlatform, String linkDesain, String tema, String deadline, String tglPost, String status) throws SQLException {
-        int proyekId = getProyekIdForNextKonten(); // Get the next proyek_id
+        int proyekId = getProyekIdForNextKonten();
 
         String query = "INSERT INTO konten (user_id, media_id, platform_id, link_desain, tema, deadline, tgl_post, status, proyek_id) VALUES ((SELECT id FROM user WHERE nama = ?), (SELECT id FROM media WHERE nama_media = ?), (SELECT id FROM platform WHERE nama_platform = ?), ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -270,9 +270,9 @@ public class KontenDAO {
         try (PreparedStatement resetStmt = connection.prepareStatement(resetQuery);
              PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
 
-            resetStmt.execute(); // Execute the reset query
+            resetStmt.execute(); 
 
-            updateStmt.executeUpdate(); // Execute the update query
+            updateStmt.executeUpdate();
         }
     }
 }

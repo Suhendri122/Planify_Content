@@ -4,22 +4,22 @@ import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.ProyekDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
-import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class EditProyekController {
-    
+
     @FXML
     private TableView<TableProyek> tableView;
-    
+
     @FXML
     private TextField txtNamaProyek;
 
@@ -62,7 +62,6 @@ public class EditProyekController {
         this.proyek = proyek;
         fillForm();
 
-        // Add listener to update phone number based on selected client
         choiceNamaClient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
@@ -87,48 +86,34 @@ public class EditProyekController {
     }
 
     @FXML
-private void saveProyek() {
-    try {
-        proyek.setNamaProyek(txtNamaProyek.getText());
-        proyek.setPicProyek(choicePicProyek.getValue());
-        proyek.setNamaClient(choiceNamaClient.getValue());
-        proyek.setNoTelepon(txtNoTelepon.getText());
-        double harga = Double.parseDouble(txtHarga.getText());
-        proyek.setHarga((int) harga);
+    private void saveProyek() {
+        try {
+            proyek.setNamaProyek(txtNamaProyek.getText());
+            proyek.setPicProyek(choicePicProyek.getValue());
+            proyek.setNamaClient(choiceNamaClient.getValue());
+            proyek.setNoTelepon(txtNoTelepon.getText());
+            double harga = Double.parseDouble(txtHarga.getText());
+            proyek.setHarga((int) harga);
 
-        // Set tanggal mulai dan tanggal selesai
-        proyek.setTglMulai(dpTglMulai.getValue().toString());
-        proyek.setTglSelesai(dpTglSelesai.getValue().toString());
+            proyek.setTglMulai(dpTglMulai.getValue().toString());
+            proyek.setTglSelesai(dpTglSelesai.getValue().toString());
 
-        System.out.println("Nama Proyek: " + proyek.getNamaProyek());
-        System.out.println("Pic Proyek: " + proyek.getPicProyek());
-        System.out.println("Nama Client: " + proyek.getNamaClient());
-        System.out.println("No Telepon: " + proyek.getNoTelepon());
-        System.out.println("Harga: " + proyek.getHarga());
-        System.out.println("Tanggal Mulai: " + proyek.getTglMulai());
-        System.out.println("Tanggal Selesai: " + proyek.getTglSelesai());
+            int userId = proyekDAO.getUserIdByName(choicePicProyek.getValue());
+            int clientId = proyekDAO.getClientIdByName(choiceNamaClient.getValue());
+            proyek.setUserId(userId);
+            proyek.setClientId(clientId);
 
-        // Mengambil ID dari user dan client
-        int userId = proyekDAO.getUserIdByName(choicePicProyek.getValue());
-        int clientId = proyekDAO.getClientIdByName(choiceNamaClient.getValue());
-        proyek.setUserId(userId);
-        proyek.setClientId(clientId);
+            proyekDAO.updateProyek(proyek);
 
-        // Update proyek menggunakan DAO
-        proyekDAO.updateProyek(proyek);
-
-        // Tutup stage setelah data disimpan
-        Stage stage = (Stage) txtNamaProyek.getScene().getWindow();
-        stage.close();
-    } catch (NumberFormatException e) {
-        e.printStackTrace();
-    } catch (SQLException e) {
-        e.printStackTrace();
+            Stage stage = (Stage) txtNamaProyek.getScene().getWindow();
+            stage.close();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        refreshTable();
     }
-    refreshTable();
-}
-
-
 
     @FXML
     private void cancelEdit() {
@@ -136,19 +121,12 @@ private void saveProyek() {
         stage.close();
         refreshTable();
     }
-    
-    
+
     private void refreshTable() {
-        if (tableView == null) {
-            System.out.println("Error: tableView is null in refreshTable()");
-            return;
-        }
-        
         try {
-            Connection connection = DatabaseConnection.getConnection();
-            ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", ""); // Sesuaikan dengan kebutuhan Anda
+            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", "");
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
+            tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
         }

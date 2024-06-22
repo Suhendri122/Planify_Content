@@ -102,13 +102,13 @@ public class UserDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, nama);
             preparedStatement.setString(2, email);
-            preparedStatement.setString(3, hashPasswordMD5(password)); // Hash password before storing
+            preparedStatement.setString(3, hashPasswordMD5(password));
             preparedStatement.executeUpdate();
             updateUserNumbers();
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1); // Return the generated user ID
+                    return generatedKeys.getInt(1);
                 } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }

@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -18,11 +17,12 @@ public class EditPlatformController implements Initializable {
 
     @FXML
     private TextField platformNameField;
+
     private TablePlatform platform;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fillForm(); // Fill the form with initial data
+        fillForm();
     }
 
     @FXML
@@ -30,8 +30,8 @@ public class EditPlatformController implements Initializable {
         try {
             String newName = platformNameField.getText().trim();
             if (!newName.isEmpty()) {
-                platform.setPlatform(newName); // Update the local object
-                updatePlatform(platform); // Update the database
+                platform.setPlatform(newName);
+                updatePlatform(platform);
                 closeWindow();
             } else {
                 showAlert("Input Error", "Platform name cannot be empty.");
@@ -44,7 +44,7 @@ public class EditPlatformController implements Initializable {
 
     public void setPlatform(TablePlatform platform) {
         this.platform = platform;
-        fillForm(); // Fill the form with the selected platform data
+        fillForm();
     }
 
     private void fillForm() {

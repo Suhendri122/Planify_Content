@@ -63,29 +63,27 @@ public class TambahKontenController {
             Connection connection = DatabaseConnection.getConnection();
             kontenDAO = new KontenDAO(connection);
 
-            // Populate choice boxes with data from DAO
             List<String> mediaList = kontenDAO.getAllMedia();
             List<String> platformList = kontenDAO.getAllPlatforms();
-            List<String> picKontenList = kontenDAO.getAllUsers(); // Assuming this method retrieves all users
+            List<String> picKontenList = kontenDAO.getAllUsers();
             List<String> statusList = getStatusList();
 
             mediaChoice.setItems(FXCollections.observableArrayList(mediaList));
             platformChoice.setItems(FXCollections.observableArrayList(platformList));
             picKontenField.setItems(FXCollections.observableArrayList(picKontenList));
-            statusField.setItems(FXCollections.observableArrayList(statusList)); // Set String list to statusField
+            statusField.setItems(FXCollections.observableArrayList(statusList));
 
-            // Set default value for DatePicker to today
             dpTglPost.setValue(LocalDate.now());
             dpDeadline.setValue(LocalDate.now());
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle exception appropriately
+
         }
     }
 
     private List<String> getStatusList() {
-        // Convert enum Status values to String
+
         return List.of(Status.Belum.toString(), Status.Berjalan.toString(), Status.Selesai.toString());
     }
 
@@ -114,13 +112,10 @@ public class TambahKontenController {
             String picKonten = picKontenField.getValue();
             LocalDate deadline = dpDeadline.getValue();
             String statusString = statusField.getValue();
-
-            // Validate input fields
             if (tema.isEmpty() || media == null || platform == null || link.isEmpty() || tglPost == null || picKonten == null || deadline == null || statusString == null) {
                 showErrorMessage("Peringatan", "Harap Lengkapi Semua Kolom Terlebih Dahulu!");
                 return;
             }
-
             kontenDAO.insertKonten(picKonten, media, platform, link, tema, deadline.toString(), tglPost.toString(), statusString);
             Stage stage = (Stage) temaField.getScene().getWindow();
             stage.close();

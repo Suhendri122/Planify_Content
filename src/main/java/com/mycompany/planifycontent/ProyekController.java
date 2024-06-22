@@ -4,7 +4,6 @@ import com.mycompany.planifycontent.database.DatabaseConnection;
 import com.mycompany.planifycontent.database.ProyekDAO;
 import com.mycompany.planifycontent.database.UserDAO;
 import com.mycompany.planifycontent.database.ClientDAO;
-import com.mycompany.planifycontent.TableProyek;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -48,68 +47,70 @@ public class ProyekController implements Initializable {
     
     @FXML
     private Button btnTambah;
+    
     @FXML
     private TableView<TableProyek> tableView;
+    
     @FXML
     private TableColumn<TableProyek, Integer> no;
+    
     @FXML
     private TableColumn<TableProyek, String> namaProyek;
+    
     @FXML
     private TableColumn<TableProyek, String> picProyek;
+    
     @FXML
     private TableColumn<TableProyek, String> namaClient;
+    
     @FXML
     private TableColumn<TableProyek, String> noTelepon;
+    
     @FXML
     private TableColumn<TableProyek, Double> harga;
+    
     @FXML
     private TableColumn<TableProyek, String> tglMulai;
+    
     @FXML
     private TableColumn<TableProyek, String> tglSelesai;
+    
     @FXML
     private TableColumn<TableProyek, String> aksi;
     
     @FXML
     private ChoiceBox<String> userBox;
+    
     @FXML
     private ChoiceBox<String> clientBox;
+    
     @FXML
     private ChoiceBox<String> picProyekBox;
+    
     @FXML
     private DatePicker tglMulaiDatePicker;
+    
     @FXML
     private DatePicker tglSelesaiDatePicker;
+    
     @FXML
     private Button filterButton;
-    @FXML
-    private TextField txtNamaProyek;
-    @FXML
-    private ChoiceBox<String> choicePicProyek;
-    @FXML
-    private ChoiceBox<String> choiceNamaClient;
-    @FXML
-    private TextField txtNoTelepon;
-    @FXML
-    private TextField txtHarga;
-    @FXML
-    private DatePicker dpTglMulai;
-    @FXML
-    private DatePicker dpTglSelesai;
-
+    
     private ProyekDAO proyekDAO;
+    
     private Stage mainStage;
+    
     private TableProyek proyek;
 
-    String pic = "0";  // Semua PIC
-    String client = "0";  // Semua Client
-    String startDate = "0";  // Tanggal mulai tidak di-filter
-    String endDate = "0";  // Tanggal selesai tidak di-filter
+    String pic = "0";  
+    String client = "0";  
+    String startDate = "0";  
+    String endDate = "0";  
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
     
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tglMulaiDatePicker.setValue(LocalDate.now());
@@ -137,8 +138,6 @@ public class ProyekController implements Initializable {
                 harga.setCellValueFactory(new PropertyValueFactory<>("hargaFormatted"));
                 tglMulai.setCellValueFactory(new PropertyValueFactory<>("tglMulaiFormatted"));
                 tglSelesai.setCellValueFactory(new PropertyValueFactory<>("tglSelesaiFormatted"));
-
-
                 aksi.setCellFactory(new Callback<TableColumn<TableProyek, String>, TableCell<TableProyek, String>>() {
                     @Override
                     public TableCell<TableProyek, String> call(final TableColumn<TableProyek, String> param) {
@@ -285,20 +284,19 @@ public class ProyekController implements Initializable {
             }));
             
         }
-}
+    }
 
     private void refreshTable() {
         if (tableView == null) {
             System.out.println("Error: tableView is null in refreshTable()");
             return;
         }
-        
         try {
             Connection connection = DatabaseConnection.getConnection();
             ProyekDAO proyekDAO = new ProyekDAO(connection);
-            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", ""); // Sesuaikan dengan kebutuhan Anda
+            List<TableProyek> proyekList = proyekDAO.getAllProyek("0", "0", "", "");
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
-            updateProyekIds(observableProyekList); // Reorder IDs before setting the items
+            updateProyekIds(observableProyekList);
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -311,11 +309,11 @@ public class ProyekController implements Initializable {
             String endDate = tglSelesaiDatePicker.getValue() == null ? "" : tglSelesaiDatePicker.getValue().toString();
 
             if ("Semua".equals(userBox.getValue())) {
-                pic = "0";  // Semua PIC
+                pic = "0";  
             }
 
             if ("Semua".equals(clientBox.getValue())) {
-                client = "0";  // Semua Client
+                client = "0";
             }
 
             Connection connection = DatabaseConnection.getConnection();
@@ -323,7 +321,7 @@ public class ProyekController implements Initializable {
             List<TableProyek> proyekList = proyekDAO.getAllProyek(pic, client, startDate, endDate);
             ObservableList<TableProyek> observableProyekList = FXCollections.observableArrayList(proyekList);
 
-            updateProyekIds(observableProyekList);  // Reorder IDs before setting the items
+            updateProyekIds(observableProyekList); 
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -337,7 +335,7 @@ public class ProyekController implements Initializable {
         }
     }
 
-     private void filterDataByPIC(String picProyek) {
+    private void filterDataByPIC(String picProyek) {
     try {
         Connection connection = DatabaseConnection.getConnection();
         ProyekDAO proyekDAO = new ProyekDAO(connection);
@@ -366,18 +364,14 @@ public class ProyekController implements Initializable {
             Connection connection = DatabaseConnection.getConnection();
             ProyekDAO proyekDAO = new ProyekDAO(connection);
             List<TableProyek> proyekList = proyekDAO.getProyekByTglMulai(tglMulai);
-            ObservableList<TableProyek> observableProyekList = FXCollections.observableList(proyekList); // Konversi daftar ke ObservableList
+            ObservableList<TableProyek> observableProyekList = FXCollections.observableList(proyekList);
             tableView.setItems(observableProyekList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    
-    
-    
-    
-   private void showEditPopup(TableProyek proyek) {
+    private void showEditPopup(TableProyek proyek) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editProyek.fxml"));
             Parent root = loader.load();
@@ -469,9 +463,9 @@ public class ProyekController implements Initializable {
     private void bukaHalamanKonten(ActionEvent event) throws IOException {
         App.setRoot("konten") ;
     }
+    
     @FXML
     private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi Logout");
         alert.setHeaderText(null);
@@ -484,15 +478,11 @@ public class ProyekController implements Initializable {
     @FXML
     private void bukaHalamanTambah(ActionEvent event) throws IOException {
         try {
-            // Memuat FXML untuk Tambah Proyek
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahProyek.fxml"));
             Parent root = loader.load();
-
-            // Mengambil controller dari loader
             TambahProyekController controller = loader.getController();
-            controller.setProyek(proyek); // Mengeset proyek jika diperlukan
-
-            // Membuat Stage baru untuk menampilkan form Tambah Proyek
+            controller.setProyek(proyek);
+            
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UTILITY);
@@ -508,6 +498,6 @@ public class ProyekController implements Initializable {
     
     public void setProyek(TableProyek proyek) {
         this.proyek = proyek;
-        }
+    }
 
 }

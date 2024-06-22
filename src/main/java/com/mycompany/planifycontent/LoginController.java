@@ -30,21 +30,20 @@ public class LoginController extends App {
     @FXML
     public void handleLogin(ActionEvent event) {
         try {
-            Connection connection = DatabaseConnection.getConnection(); // Mengambil koneksi dari database
+            Connection connection = DatabaseConnection.getConnection();
             String query = "SELECT * FROM user WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, txtEmail.getText());
             preparedStatement.setString(2, getMd5(txtPassword.getText()));
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) { // Jika query mengembalikan hasil
-                setRoot("dashboard"); // Pindah ke halaman dashboard
-                
+            if (resultSet.next()) {
+                setRoot("dashboard");
             } else {
                 showAlert(Alert.AlertType.ERROR, "Login Gagal", "Email atau password salah!");
             }
 
-            connection.close(); // Tutup koneksi
+            connection.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Kesalahan", "Terjadi kesalahan saat login.");

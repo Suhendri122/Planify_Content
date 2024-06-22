@@ -1,21 +1,17 @@
 package com.mycompany.planifycontent;
 
 import com.mycompany.planifycontent.database.DatabaseConnection;
+import com.mycompany.planifycontent.database.MediaDAO;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.mycompany.planifycontent.database.MediaDAO;
-import com.mycompany.planifycontent.TableMedia;
-import java.time.LocalDate;
-import javafx.scene.control.Alert;
 
 public class EditMediaController implements Initializable {
 
@@ -26,7 +22,7 @@ public class EditMediaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fillForm(); // Memanggil fillForm untuk mengisi data saat inisialisasi
+        fillForm();
     }
 
     @FXML
@@ -34,7 +30,7 @@ public class EditMediaController implements Initializable {
         try {
             String newName = mediaNameField.getText().trim();
             if (!newName.isEmpty()) {
-                media.mediaProperty().set(newName);
+                media.setMedia(newName);
                 updateMedia(media);
                 closeWindow();
             } else {

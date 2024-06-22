@@ -44,55 +44,6 @@ import javafx.util.Callback;
 public class KontenController implements Initializable {
     
     @FXML
-    private void bukaHalamanDashboard(ActionEvent event) throws IOException {
-        App.setRoot("dashboard");
-    }
-    
-    @FXML
-    private void bukaHalamanProyek(ActionEvent event) throws IOException {
-        App.setRoot("proyek");
-    }
-
-    @FXML
-    private void bukaHalamanHistori(ActionEvent event) throws IOException {
-        App.setRoot("histori");
-    }
-
-    @FXML
-    private void bukaHalamanPlatform(ActionEvent event) throws IOException {
-        App.setRoot("platform");
-    }
-
-    @FXML
-    private void bukaHalamanMedia(ActionEvent event) throws IOException {
-        App.setRoot("media");
-    }
-
-    @FXML
-    private void bukaHalamanUser(ActionEvent event) throws IOException {
-        App.setRoot("user");
-    }
-    
-    @FXML
-    private void bukaHalamanClient(ActionEvent event) throws IOException {
-        App.setRoot("client");
-    }
-    
-        @FXML
-    private void logout(ActionEvent event) throws IOException {
-        // Membuat dialog konfirmasi
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Konfirmasi Logout");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin logout?");
-
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            App.setRoot("login");
-        }
-    }
-
-    
-    @FXML
     private TableView<TableKonten> tableView;
 
     @FXML
@@ -135,17 +86,54 @@ public class KontenController implements Initializable {
     private UserDAO userDAO;
     private KontenDAO kontenDAO;
 
-    // Metode untuk mengatur objek proyek
-    public void setProyek(TableProyek proyek) {
-        this.proyek = proyek;
-        // Lakukan tindakan yang diperlukan dengan objek proyek, misalnya menampilkan informasi proyek di antarmuka pengguna
+    @FXML
+    private void bukaHalamanDashboard(ActionEvent event) throws IOException {
+        App.setRoot("dashboard");
     }
     
-    public void setProyekId(int proyekId) {
-        this.proyekId = proyekId;
-        loadTableData();
+    @FXML
+    private void bukaHalamanProyek(ActionEvent event) throws IOException {
+        App.setRoot("proyek");
     }
-        
+
+    @FXML
+    private void bukaHalamanHistori(ActionEvent event) throws IOException {
+        App.setRoot("histori");
+    }
+
+    @FXML
+    private void bukaHalamanPlatform(ActionEvent event) throws IOException {
+        App.setRoot("platform");
+    }
+
+    @FXML
+    private void bukaHalamanMedia(ActionEvent event) throws IOException {
+        App.setRoot("media");
+    }
+
+    @FXML
+    private void bukaHalamanUser(ActionEvent event) throws IOException {
+        App.setRoot("user");
+    }
+    
+    @FXML
+    private void bukaHalamanClient(ActionEvent event) throws IOException {
+        App.setRoot("client");
+    }
+    
+    @FXML
+    private void logout(ActionEvent event) throws IOException {
+        // Membuat dialog konfirmasi
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Apakah Anda yakin ingin logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            App.setRoot("login");
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -211,8 +199,6 @@ public class KontenController implements Initializable {
             // Handle the error if failed to get the connection or data
         }
     }
-
-
 
     private void updateKontenIds(ObservableList<TableKonten> kontenList) {
         for (int i = 0; i < kontenList.size(); i++) {
@@ -302,22 +288,22 @@ public class KontenController implements Initializable {
         });
     }
 
-public void refreshTable() {
-    if (tableView == null) {
-        System.out.println("Error: tableView is null in refreshTable()");
-        return;
+    public void refreshTable() {
+        if (tableView == null) {
+            System.out.println("Error: tableView is null in refreshTable()");
+            return;
+        }
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            KontenDAO kontenDAO = new KontenDAO(connection);
+            List<TableKonten> kontenList = kontenDAO.getAllKontens();
+            ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
+            updateKontenIds(observableKontenList);
+            tableView.setItems(observableKontenList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-    try {
-        Connection connection = DatabaseConnection.getConnection();
-        KontenDAO kontenDAO = new KontenDAO(connection);
-        List<TableKonten> kontenList = kontenDAO.getAllKontens();
-        ObservableList<TableKonten> observableKontenList = FXCollections.observableArrayList(kontenList);
-        updateKontenIds(observableKontenList);
-        tableView.setItems(observableKontenList);
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
 
     private void showEditPopup(TableKonten konten) {
         try {
@@ -364,16 +350,25 @@ public void refreshTable() {
         }
     }
     
-        public void setKonten(TableKonten konten) {
+    public void setProyek(TableProyek proyek) {
+        this.proyek = proyek;
+        // Lakukan tindakan yang diperlukan dengan objek proyek, misalnya menampilkan informasi proyek di antarmuka pengguna
+    }
+    
+    public void setProyekId(int proyekId) {
+        this.proyekId = proyekId;
+        loadTableData();
+    }
+    
+    public void setKonten(TableKonten konten) {
         this.konten = konten;
-        }
-        
-        
+    }
+
     @FXML
     private void handleSearchButtonAction(ActionEvent event) {
         filterData();
     }
-    
+
     @FXML
     private void filterData() {
         String picKontenFilterValue = picKontenChoiceBox.getValue();
@@ -406,5 +401,5 @@ public void refreshTable() {
 
         tableView.setItems(tableViewList);
     }
-    
 }
+

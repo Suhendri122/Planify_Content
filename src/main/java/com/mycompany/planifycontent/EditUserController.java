@@ -1,6 +1,7 @@
 package com.mycompany.planifycontent;
 
 import com.mycompany.planifycontent.database.DatabaseConnection;
+import com.mycompany.planifycontent.database.UserDAO;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import java.net.URL;
@@ -10,20 +11,17 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.mycompany.planifycontent.TableUser;
-import com.mycompany.planifycontent.database.UserDAO;
 
 public class EditUserController implements Initializable {
-    
 
     @FXML
     private TextField nameField;
-    
+
     @FXML
     private TextField emailField;
 
     private TableUser user;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillForm();
@@ -31,17 +29,15 @@ public class EditUserController implements Initializable {
 
     public void setUser(TableUser user) {
         this.user = user;
-        fillForm();  // Ensure fillForm is called after user is set
+        fillForm();
     }
 
     private void fillForm() {
         if (user != null) {
             nameField.setText(user.getUser());
             emailField.setText(user.getEmail());
-        } else {
         }
     }
-
 
     @FXML
     private void saveChanges(ActionEvent event) {
@@ -54,11 +50,10 @@ public class EditUserController implements Initializable {
                 updateUser(user);
                 closeWindow();
             } else {
-                // Handle empty input
+                System.out.println("Please fill in all fields.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database error
         }
     }
 

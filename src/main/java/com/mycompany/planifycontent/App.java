@@ -9,9 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
     private static Stage window;
     private static Scene scene;
@@ -24,15 +21,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         window = stage;
-        
+
         scene = new Scene(loadFXML("login"), 1000, 570);
         scene.getStylesheets().add(App.class.getResource("/style.css").toExternalForm());
         stage.setTitle("Planify Content");
-        
+
         Image icon = new Image("/assets/logo.png");
         stage.getIcons().add(icon);
-        
-        stage.resizableProperty() .setValue (false);
+
+        stage.resizableProperty().setValue(false);
         window.setScene(scene);
         window.show();
     }
@@ -47,7 +44,7 @@ public class App extends Application {
         loader = fxmlLoader; // Mengatur objek FXMLLoader ke variabel loader
         return root;
     }
-    
+
     public static void main(String[] args) {
         launch();
     }

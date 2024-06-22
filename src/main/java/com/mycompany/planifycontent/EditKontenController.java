@@ -14,26 +14,33 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.DatePicker;
 
 public class EditKontenController implements Initializable {
 
     @FXML
     private ChoiceBox<String> kontenUserField;
+
     @FXML
     private ChoiceBox<String> kontenMediaField;
+
     @FXML
     private ChoiceBox<String> kontenPlatformField;
+
     @FXML
     private TextField kontenLinkDesainField;
+
     @FXML
     private TextField kontenTemaField;
+
     @FXML
-    private DatePicker kontenDeadlineField; // Menggunakan DatePicker
+    private DatePicker kontenDeadlineField;
+
     @FXML
-    private DatePicker kontenTglPostField; // Menggunakan DatePicker
+    private DatePicker kontenTglPostField;
+
     @FXML
     private ChoiceBox<Status> kontenStatusField;
 
@@ -60,7 +67,7 @@ public class EditKontenController implements Initializable {
                     return status;
                 }
             }
-            return null; // or throw an exception if statusString doesn't match any enum value
+            return null;
         }
     }
 
@@ -70,7 +77,6 @@ public class EditKontenController implements Initializable {
             Connection connection = DatabaseConnection.getConnection();
             KontenDAO kontenDAO = new KontenDAO(connection);
 
-            // Mengisi ChoiceBox dengan data dari database
             List<String> users = kontenDAO.getAllUsers();
             List<String> media = kontenDAO.getAllMedia();
             List<String> platforms = kontenDAO.getAllPlatforms();
@@ -106,8 +112,6 @@ public class EditKontenController implements Initializable {
         kontenTemaField.setText(konten.getTema());
         kontenDeadlineField.setValue(LocalDate.parse(konten.getDeadline()));
         kontenTglPostField.setValue(LocalDate.parse(konten.getTglPost()));
-
-        // Memastikan pilihan status yang tepat terpilih
         kontenStatusField.setValue(Status.getStatusFromString(konten.getStatus()));
     }
 
@@ -123,7 +127,9 @@ public class EditKontenController implements Initializable {
             String newTglPost = kontenTglPostField.getValue().toString();
             Status newStatus = kontenStatusField.getValue();
 
-            if (!newNamaUser.isEmpty() && !newNamaMedia.isEmpty() && !newNamaPlatform.isEmpty() && !newLinkDesain.isEmpty() && !newTema.isEmpty() && !newDeadline.isEmpty() && !newTglPost.isEmpty() && newStatus != null) {
+            if (!newNamaUser.isEmpty() && !newNamaMedia.isEmpty() && !newNamaPlatform.isEmpty() &&
+                !newLinkDesain.isEmpty() && !newTema.isEmpty() && !newDeadline.isEmpty() &&
+                !newTglPost.isEmpty() && newStatus != null) {
                 // Set fields that can be changed by the user
                 konten.setNamaUser(newNamaUser);
                 konten.setNamaMedia(newNamaMedia);
@@ -134,10 +140,8 @@ public class EditKontenController implements Initializable {
                 konten.setTglPost(newTglPost);
                 konten.setStatus(newStatus.getStatusString());
 
-                // Update the konten
                 updateKonten(konten);
 
-                // Close the window
                 closeWindow();
             } else {
                 showAlert("Peringatan", "Harap lengkapi semua kolom.");
@@ -156,7 +160,9 @@ public class EditKontenController implements Initializable {
     private void updateKonten(TableKonten konten) throws SQLException {
         Connection connection = DatabaseConnection.getConnection();
         KontenDAO kontenDAO = new KontenDAO(connection);
-        kontenDAO.updateKonten(konten.getId(), konten.getNamaUser(), konten.getNamaMedia(), konten.getNamaPlatform(), konten.getLinkDesain(), konten.getTema(), konten.getDeadline(), konten.getTglPost(), konten.getStatus());
+        kontenDAO.updateKonten(konten.getId(), konten.getNamaUser(), konten.getNamaMedia(),
+                               konten.getNamaPlatform(), konten.getLinkDesain(), konten.getTema(),
+                               konten.getDeadline(), konten.getTglPost(), konten.getStatus());
     }
 
     private void closeWindow() {
@@ -172,4 +178,3 @@ public class EditKontenController implements Initializable {
         alert.showAndWait();
     }
 }
- 
