@@ -21,7 +21,8 @@ public class DashboardDAO {
         String query = "SELECT konten.id, proyek.nama_proyek, proyek.user_id AS pic_proyek, konten.tema, konten.media_id, konten.deadline, konten.tgl_post, konten.user_id AS pic_konten " +
                        "FROM proyek " +
                        "INNER JOIN konten ON proyek.id = konten.proyek_id " +
-                       "WHERE konten.deadline BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY);";
+                       "WHERE konten.deadline BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY) " +
+                       "AND konten.status <> 'Selesai';";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
